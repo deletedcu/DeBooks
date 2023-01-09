@@ -1,6 +1,6 @@
+import * as spl_token from "@solana/spl-token";
 import * as web3 from "@solana/web3.js";
 import * as metadata from "./Metadata";
-import * as spl_token from "@solana/spl-token";
 
 interface TokenType {
   mint: string;
@@ -9,10 +9,10 @@ interface TokenType {
   nft: boolean;
 }
 
-interface WorkType {
+export interface WorkType {
   signature: string;
   key: string;
-  timestamp: number | null | undefined;
+  timestamp: number;
   slot: number;
   success: boolean;
   fee: number | null;
@@ -26,7 +26,7 @@ interface WorkType {
   description: string;
 }
 
-interface UtlType {
+export interface UtlType {
   address: string;
   chainId: number;
   name: string;
@@ -56,8 +56,7 @@ export async function classifyTransaction(
 ) {
   //new fee item
   connection = cnx;
-  const feePayer: string =
-    item.transaction.message.accountKeys[0].pubkey.toBase58();
+  const feePayer: string = item.transaction.message.accountKeys[0].pubkey.toBase58();
   let fee_context = "";
   let txn_context = " Transaction ";
   if (item.meta && item.meta.err === null) {
@@ -75,26 +74,19 @@ export async function classifyTransaction(
       txn_type = "Swap";
     }
     // Magic Eden V2
-    else if (
-      programIDs.includes("M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K")
-    ) {
+    else if (programIDs.includes("M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K")) {
       // Search for NFT names upfront becasue we know its Magic Eden
       txn_type = "Marketplace";
       if (item.meta.logMessages) {
         if (
-          (item.meta.logMessages[1].includes(" Sell") &&
-            item.meta.logMessages[6]?.includes(" ExecuteSale")) ||
-          (item.meta.logMessages[1].includes(" Sell") &&
-            item.meta.logMessages[12]?.includes(" ExecuteSale"))
+          (item.meta.logMessages[1].includes(" Sell") && item.meta.logMessages[6]?.includes(" ExecuteSale")) ||
+          (item.meta.logMessages[1].includes(" Sell") && item.meta.logMessages[12]?.includes(" ExecuteSale"))
         ) {
           //fee_context = " Make Offer"
           fee_context = " Sale via Offer ";
           txn_context = " Sale via Offer ";
         } else if (item.meta.logMessages[1].includes(" Buy")) {
-          if (
-            item.meta.innerInstructions &&
-            item.meta.innerInstructions.length > 0
-          ) {
+          if (item.meta.innerInstructions && item.meta.innerInstructions.length > 0) {
             fee_context = " Make Offer ";
             txn_context = " Make Offer ";
           } else {
@@ -126,40 +118,26 @@ export async function classifyTransaction(
       customDescripton = "Magic Eden";
     }
     //hadeswap
-    else if (
-      programIDs.includes("hadeK9DLv9eA7ya5KCTqSvSvRZeJC3JgD5a9Y3CNbvu")
-    ) {
+    else if (programIDs.includes("hadeK9DLv9eA7ya5KCTqSvSvRZeJC3JgD5a9Y3CNbvu")) {
       customDescripton = "Hadeswap";
       txn_type = "AMM";
       if (item.meta.logMessages) {
         if (item.meta.logMessages[1].includes("BuyNftFromPair")) {
           txn_context = " Purchase ";
           fee_context = "";
-        } else if (
-          item.meta.logMessages[1].includes("SellNftToLiquidityPair")
-        ) {
+        } else if (item.meta.logMessages[1].includes("SellNftToLiquidityPair")) {
           txn_context = " Sell ";
           fee_context = "";
-        } else if (
-          item.meta.logMessages[1].includes("DepositLiquidityToPair")
-        ) {
+        } else if (item.meta.logMessages[1].includes("DepositLiquidityToPair")) {
           txn_context = " Deposit Liquidity ";
           fee_context = "";
-        } else if (
-          item.meta.logMessages[1].includes(
-            "WithdrawLiquidityFromBuyOrdersPair"
-          )
-        ) {
+        } else if (item.meta.logMessages[1].includes("WithdrawLiquidityFromBuyOrdersPair")) {
           txn_context = " Withdraw Liquidity ";
           fee_context = "";
-        } else if (
-          item.meta.logMessages[1].includes("WithdrawLiquidityFromBalancedPair")
-        ) {
+        } else if (item.meta.logMessages[1].includes("WithdrawLiquidityFromBalancedPair")) {
           txn_context = " Withdraw Liquidity ";
           fee_context = "";
-        } else if (
-          item.meta.logMessages[1].includes("WithdrawLiquidityOrderVirtualFees")
-        ) {
+        } else if (item.meta.logMessages[1].includes("WithdrawLiquidityOrderVirtualFees")) {
           txn_context = " Withdraw Fees ";
           fee_context = "";
         } else if (item.meta.logMessages[1].includes("InitializePair")) {
@@ -172,9 +150,7 @@ export async function classifyTransaction(
       }
     }
     //hadeswap
-    else if (
-      programIDs.includes("trsMRg3GzFSNgC3tdhbuKUES8YvGtUBbzp5fjxLtVQW")
-    ) {
+    else if (programIDs.includes("trsMRg3GzFSNgC3tdhbuKUES8YvGtUBbzp5fjxLtVQW")) {
       customDescripton = "Hyperspace | Cardinal";
       txn_type = "Marketplace";
       if (item.meta.logMessages) {
@@ -191,9 +167,7 @@ export async function classifyTransaction(
       }
     }
     //Foxy Swap
-    else if (
-      programIDs.includes("8guzmt92HbM7yQ69UJg564hRRX6N4nCdxWE5L6ENrA8P")
-    ) {
+    else if (programIDs.includes("8guzmt92HbM7yQ69UJg564hRRX6N4nCdxWE5L6ENrA8P")) {
       customDescripton = "FoxySwap";
       txn_type = "Swap";
       if (item.meta.logMessages) {
@@ -201,11 +175,7 @@ export async function classifyTransaction(
           if (value.includes("InitSwap")) {
             try {
               txn_context =
-                " Initiate Swap " +
-                item.transaction.message.accountKeys[1].pubkey
-                  .toBase58()
-                  .substring(0, 4) +
-                " - ";
+                " Initiate Swap " + item.transaction.message.accountKeys[1].pubkey.toBase58().substring(0, 4) + " - ";
               fee_context = "";
 
               break;
@@ -217,10 +187,7 @@ export async function classifyTransaction(
             try {
               txn_context =
                 " Complete Swap " +
-                (
-                  item.transaction.message
-                    .instructions[0] as web3.PartiallyDecodedInstruction
-                ).accounts[0]
+                (item.transaction.message.instructions[0] as web3.PartiallyDecodedInstruction).accounts[0]
                   .toBase58()
                   .substring(0, 4) +
                 " - ";
@@ -234,10 +201,7 @@ export async function classifyTransaction(
             try {
               txn_context =
                 " Cancel Swap " +
-                (
-                  item.transaction.message
-                    .instructions[0] as web3.PartiallyDecodedInstruction
-                ).accounts[0]
+                (item.transaction.message.instructions[0] as web3.PartiallyDecodedInstruction).accounts[0]
                   .toBase58()
                   .substring(0, 4) +
                 " - ";
@@ -252,9 +216,7 @@ export async function classifyTransaction(
       }
     }
     //YAWWW Swap
-    else if (
-      programIDs.includes("1RzgwLNLcLXCnK6eiev5jPmEP6TyJbmkTtvN6NShvXy")
-    ) {
+    else if (programIDs.includes("1RzgwLNLcLXCnK6eiev5jPmEP6TyJbmkTtvN6NShvXy")) {
       customDescripton = "YAWWW";
       txn_type = "Swap";
       if (item.meta.logMessages) {
@@ -263,10 +225,7 @@ export async function classifyTransaction(
             try {
               txn_context =
                 " Initiate Swap " +
-                (
-                  item.transaction.message
-                    .instructions[1] as web3.PartiallyDecodedInstruction
-                ).accounts[1]
+                (item.transaction.message.instructions[1] as web3.PartiallyDecodedInstruction).accounts[1]
                   .toBase58()
                   .substring(0, 4) +
                 " -";
@@ -279,38 +238,26 @@ export async function classifyTransaction(
             try {
               txn_context =
                 " Complete Swap " +
-                (
-                  item.transaction.message
-                    .instructions[1] as web3.PartiallyDecodedInstruction
-                ).accounts[1]
+                (item.transaction.message.instructions[1] as web3.PartiallyDecodedInstruction).accounts[1]
                   .toBase58()
                   .substring(0, 4) +
                 " - ";
               break;
             } catch (e) {
-              console.log(
-                "Error complete  ywaee swap",
-                item.transaction.signatures
-              );
+              console.log("Error complete  ywaee swap", item.transaction.signatures);
               console.log(e);
             }
           } else if (value.includes("Cancel swap")) {
             try {
               txn_context =
                 " Cancel Swap " +
-                (
-                  item.transaction.message
-                    .instructions[0] as web3.PartiallyDecodedInstruction
-                ).accounts[2]
+                (item.transaction.message.instructions[0] as web3.PartiallyDecodedInstruction).accounts[2]
                   .toBase58()
                   .substring(0, 4) +
                 " - ";
               break;
             } catch (e) {
-              console.log(
-                "Error cancel yaww swap",
-                item.transaction.signatures
-              );
+              console.log("Error cancel yaww swap", item.transaction.signatures);
               console.log(e);
             }
           }
@@ -318,9 +265,7 @@ export async function classifyTransaction(
       }
     }
     //YAWWW Loan
-    else if (
-      programIDs.includes("76f9QiXhCc8YLJc2LEE4Uae4Xu3itc3JCGLmup3VQwRH")
-    ) {
+    else if (programIDs.includes("76f9QiXhCc8YLJc2LEE4Uae4Xu3itc3JCGLmup3VQwRH")) {
       customDescripton = "YAWWW Loan";
       txn_type = "Loan";
       if (item.meta.logMessages) {
@@ -329,10 +274,7 @@ export async function classifyTransaction(
             try {
               txn_context =
                 " Initiate Loan request " +
-                (
-                  item.transaction.message
-                    .instructions[5] as web3.PartiallyDecodedInstruction
-                ).accounts[5]
+                (item.transaction.message.instructions[5] as web3.PartiallyDecodedInstruction).accounts[5]
                   .toBase58()
                   .substring(0, 4) +
                 " -";
@@ -345,10 +287,7 @@ export async function classifyTransaction(
             try {
               txn_context =
                 " Cancel Loan request " +
-                (
-                  item.transaction.message
-                    .instructions[1] as web3.PartiallyDecodedInstruction
-                ).accounts[3]
+                (item.transaction.message.instructions[1] as web3.PartiallyDecodedInstruction).accounts[3]
                   .toBase58()
                   .substring(0, 4) +
                 " -";
@@ -361,10 +300,7 @@ export async function classifyTransaction(
             try {
               txn_context =
                 " Create Loan offer " +
-                (
-                  item.transaction.message
-                    .instructions[0] as web3.PartiallyDecodedInstruction
-                ).accounts[1]
+                (item.transaction.message.instructions[0] as web3.PartiallyDecodedInstruction).accounts[1]
                   .toBase58()
                   .substring(0, 4) +
                 " -";
@@ -377,10 +313,7 @@ export async function classifyTransaction(
             try {
               txn_context =
                 " Cancel Loan offer " +
-                (
-                  item.transaction.message
-                    .instructions[0] as web3.PartiallyDecodedInstruction
-                ).accounts[1]
+                (item.transaction.message.instructions[0] as web3.PartiallyDecodedInstruction).accounts[1]
                   .toBase58()
                   .substring(0, 4) +
                 " -";
@@ -393,10 +326,7 @@ export async function classifyTransaction(
             try {
               txn_context =
                 " Loan Repaid " +
-                (
-                  item.transaction.message
-                    .instructions[1] as web3.PartiallyDecodedInstruction
-                ).accounts[3]
+                (item.transaction.message.instructions[1] as web3.PartiallyDecodedInstruction).accounts[3]
                   .toBase58()
                   .substring(0, 4) +
                 " -";
@@ -410,10 +340,7 @@ export async function classifyTransaction(
               if (feePayer === keyIn) {
                 txn_context =
                   " Lend Out " +
-                  (
-                    item.transaction.message
-                      .instructions[0] as web3.PartiallyDecodedInstruction
-                  ).accounts[2]
+                  (item.transaction.message.instructions[0] as web3.PartiallyDecodedInstruction).accounts[2]
                     .toBase58()
                     .substring(0, 4) +
                   " -";
@@ -421,10 +348,7 @@ export async function classifyTransaction(
               } else {
                 txn_context =
                   " Receive Loan " +
-                  (
-                    item.transaction.message
-                      .instructions[0] as web3.PartiallyDecodedInstruction
-                  ).accounts[2]
+                  (item.transaction.message.instructions[0] as web3.PartiallyDecodedInstruction).accounts[2]
                     .toBase58()
                     .substring(0, 4) +
                   " -";
@@ -438,10 +362,7 @@ export async function classifyTransaction(
             try {
               customDescripton =
                 " YAWWW Collateral Claimed " +
-                (
-                  item.transaction.message
-                    .instructions[0] as web3.PartiallyDecodedInstruction
-                ).accounts[1]
+                (item.transaction.message.instructions[0] as web3.PartiallyDecodedInstruction).accounts[1]
                   .toBase58()
                   .substring(0, 4) +
                 " -";
@@ -459,24 +380,15 @@ export async function classifyTransaction(
       if (item.meta.logMessages) {
         for (const value of item.meta.logMessages) {
           try {
-            if (
-              value.toLowerCase().includes(" stake") ||
-              value.toLowerCase().includes(" staking")
-            ) {
+            if (value.toLowerCase().includes(" stake") || value.toLowerCase().includes(" staking")) {
               customDescripton = "Stake";
               txn_type = "Stake";
               break;
-            } else if (
-              value.toLowerCase().includes(" unstake") ||
-              value.toLowerCase().includes(" unstaking")
-            ) {
+            } else if (value.toLowerCase().includes(" unstake") || value.toLowerCase().includes(" unstaking")) {
               customDescripton = "Unstake";
               txn_type = "Stake";
               break;
-            } else if (
-              value.toLowerCase().includes(" claim") ||
-              value.toLowerCase().includes(" claiming")
-            ) {
+            } else if (value.toLowerCase().includes(" claim") || value.toLowerCase().includes(" claiming")) {
               customDescripton = "Claim";
               break;
             } else if (value.toLowerCase().includes(" burn")) {
@@ -502,10 +414,7 @@ export async function classifyTransaction(
           const owner = await connection.getAccountInfoAndContext(
             item.transaction.message.accountKeys[token.accountIndex].pubkey
           );
-          if (
-            owner.value?.owner.toBase58() ==
-            "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
-          ) {
+          if (owner.value?.owner.toBase58() == "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA") {
             //SPL token
             //get ultimate owner
             const decoded = spl_token.AccountLayout.decode(owner.value.data);
@@ -525,10 +434,7 @@ export async function classifyTransaction(
           const owner = await connection.getAccountInfoAndContext(
             item.transaction.message.accountKeys[token.accountIndex].pubkey
           );
-          if (
-            owner.value?.owner.toBase58() ==
-            "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
-          ) {
+          if (owner.value?.owner.toBase58() == "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA") {
             //SPL token
             //get ultimate owner
             const decoded = spl_token.AccountLayout.decode(owner.value.data);
@@ -544,27 +450,20 @@ export async function classifyTransaction(
     const preFiltered = preTokens.filter((token) => token.owner === keyIn);
     const postFiltered = postTokens.filter((token) => token.owner === keyIn);
 
-    const combined = [
-      ...preFiltered.flatMap((s) => s.mint),
-      ...postFiltered.flatMap((s) => s.mint),
-    ];
+    const combined = [...preFiltered.flatMap((s) => s.mint), ...postFiltered.flatMap((s) => s.mint)];
     const uniqueTokens = combined.filter((v, i, a) => a.indexOf(v) === i);
     //console.log("Unique tokens ", combined,  uniqueTokens)
     //token balance loop
 
     for await (const uniqueToken of uniqueTokens) {
-      let decimals = preTokens.filter((line) => line.mint == uniqueToken)[0]
-        ?.uiTokenAmount.decimals;
+      let decimals = preTokens.filter((line) => line.mint == uniqueToken)[0]?.uiTokenAmount.decimals;
       if (decimals == undefined) {
-        decimals = postFiltered.filter((line) => line.mint == uniqueToken)[0]
-          ?.uiTokenAmount.decimals;
+        decimals = postFiltered.filter((line) => line.mint == uniqueToken)[0]?.uiTokenAmount.decimals;
       }
-      const preFil = preTokens.filter(
-        (token) => token.owner === keyIn && token.mint == uniqueToken
-      )[0]?.uiTokenAmount.uiAmount;
-      const postFil = postTokens.filter(
-        (token) => token.owner === keyIn && token.mint == uniqueToken
-      )[0]?.uiTokenAmount.uiAmount;
+      const preFil = preTokens.filter((token) => token.owner === keyIn && token.mint == uniqueToken)[0]?.uiTokenAmount
+        .uiAmount;
+      const postFil = postTokens.filter((token) => token.owner === keyIn && token.mint == uniqueToken)[0]?.uiTokenAmount
+        .uiAmount;
       let created = false;
       let closed = false;
       let preBal;
@@ -588,25 +487,18 @@ export async function classifyTransaction(
 
       let tokenChange = parseFloat((postBal - preBal).toFixed(decimals));
 
-      const preIndex = preTokens.filter(
-        (token) => token.owner === keyIn && token.mint == uniqueToken
-      )[0]?.accountIndex;
-      const postIndex = postTokens.filter(
-        (token) => token.owner === keyIn && token.mint == uniqueToken
-      )[0]?.accountIndex;
+      const preIndex = preTokens.filter((token) => token.owner === keyIn && token.mint == uniqueToken)[0]?.accountIndex;
+      const postIndex = postTokens.filter((token) => token.owner === keyIn && token.mint == uniqueToken)[0]
+        ?.accountIndex;
       //need to find the SOL balance change of the wrapped sol account
       if (uniqueToken == "So11111111111111111111111111111111111111112") {
         if (postIndex) {
           tokenChange = item.meta
-            ? (item.meta.postBalances[postIndex] -
-                item.meta.preBalances[postIndex]) /
-              web3.LAMPORTS_PER_SOL
+            ? (item.meta.postBalances[postIndex] - item.meta.preBalances[postIndex]) / web3.LAMPORTS_PER_SOL
             : 0;
         } else if (preIndex) {
           tokenChange = item.meta
-            ? (item.meta.postBalances[preIndex] -
-                item.meta.preBalances[preIndex]) /
-              web3.LAMPORTS_PER_SOL
+            ? (item.meta.postBalances[preIndex] - item.meta.preBalances[preIndex]) / web3.LAMPORTS_PER_SOL
             : 0;
           //console.log("NaN? ", amount, account_index)
         }
@@ -616,33 +508,23 @@ export async function classifyTransaction(
         let accountSuffix = "";
         if (postIndex) {
           amount = item.meta
-            ? (item.meta.postBalances[postIndex] -
-                item.meta.preBalances[postIndex]) /
-              web3.LAMPORTS_PER_SOL
+            ? (item.meta.postBalances[postIndex] - item.meta.preBalances[postIndex]) / web3.LAMPORTS_PER_SOL
             : 0;
-          accountSuffix =
-            item.transaction.message.accountKeys[postIndex]?.pubkey.toBase58();
+          accountSuffix = item.transaction.message.accountKeys[postIndex]?.pubkey.toBase58();
         } else if (preIndex) {
           amount = item.meta
-            ? (item.meta.postBalances[preIndex] -
-                item.meta.preBalances[preIndex]) /
-              web3.LAMPORTS_PER_SOL
+            ? (item.meta.postBalances[preIndex] - item.meta.preBalances[preIndex]) / web3.LAMPORTS_PER_SOL
             : 0;
-          accountSuffix =
-            item.transaction.message.accountKeys[preIndex]?.pubkey.toBase58();
+          accountSuffix = item.transaction.message.accountKeys[preIndex]?.pubkey.toBase58();
           //console.log("NaN? ", amount, account_index)
         }
-        const subacccontext = created
-          ? "created "
-          : "" + closed
-          ? "closed "
-          : "";
+        const subacccontext = created ? "created " : "" + closed ? "closed " : "";
         if (amount != 0) {
           const direction = amount < 0 ? "Out: " : "In: ";
           const new_line = {
             signature: item.transaction.signatures[0],
             key: keyIn,
-            timestamp: item.blockTime,
+            timestamp: item.blockTime ?? 0,
             slot: item.slot,
             success: item.meta?.err == null ? true : false,
             fee: item.meta ? item.meta.fee : null,
@@ -652,9 +534,7 @@ export async function classifyTransaction(
             token_name: "SOL",
             uri: "",
             type: txn_type,
-            account_keys: item.transaction.message.accountKeys.flatMap((k) =>
-              k.pubkey.toBase58()
-            ),
+            account_keys: item.transaction.message.accountKeys.flatMap((k) => k.pubkey.toBase58()),
             description:
               customDescripton +
               txn_context +
@@ -678,15 +558,11 @@ export async function classifyTransaction(
         //console.log("--> unique token ", uniqueToken)
         const direction = tokenChange < 0 ? "Out: " : "In: ";
         //console.log("--> unique token ", tokenName.symbol? )
-        const tokenName = await fetchTokenData(
-          [uniqueToken],
-          utl,
-          showMetadata
-        );
+        const tokenName = await fetchTokenData([uniqueToken], utl, showMetadata);
         const new_line = {
           signature: item.transaction.signatures[0],
           key: keyIn,
-          timestamp: item.blockTime,
+          timestamp: item.blockTime ?? 0,
           slot: item.slot,
           success: item.meta?.err == null ? true : false,
           fee: item.meta ? item.meta.fee : null,
@@ -696,11 +572,8 @@ export async function classifyTransaction(
           token_name: tokenName.name,
           uri: tokenName.uri,
           type: txn_type,
-          account_keys: item.transaction.message.accountKeys.flatMap((k) =>
-            k.pubkey.toBase58()
-          ),
-          description:
-            customDescripton + txn_context + direction + tokenName.name,
+          account_keys: item.transaction.message.accountKeys.flatMap((k) => k.pubkey.toBase58()),
+          description: customDescripton + txn_context + direction + tokenName.name,
         };
         workingArray.push(new_line);
         //console.log(new_line, decimals)
@@ -712,16 +585,12 @@ export async function classifyTransaction(
       let amount = 0;
       if (feePayer === keyIn) {
         amount = item.meta
-          ? (item.meta.postBalances[account_index] -
-              item.meta.preBalances[account_index] +
-              item.meta.fee) /
+          ? (item.meta.postBalances[account_index] - item.meta.preBalances[account_index] + item.meta.fee) /
             web3.LAMPORTS_PER_SOL
           : 0;
       } else {
         amount = item.meta
-          ? (item.meta.postBalances[account_index] -
-              item.meta.preBalances[account_index]) /
-            web3.LAMPORTS_PER_SOL
+          ? (item.meta.postBalances[account_index] - item.meta.preBalances[account_index]) / web3.LAMPORTS_PER_SOL
           : 0;
         //console.log("NaN? ", amount, account_index)
       }
@@ -732,7 +601,7 @@ export async function classifyTransaction(
         const new_line = {
           signature: item.transaction.signatures[0],
           key: keyIn,
-          timestamp: item.blockTime,
+          timestamp: item.blockTime ?? 0,
           slot: item.slot,
           success: item.meta?.err == null ? true : false,
           fee: item.meta ? item.meta.fee : null,
@@ -742,9 +611,7 @@ export async function classifyTransaction(
           token_name: "SOL",
           uri: "",
           type: txn_type,
-          account_keys: item.transaction.message.accountKeys.flatMap((k) =>
-            k.pubkey.toBase58()
-          ),
+          account_keys: item.transaction.message.accountKeys.flatMap((k) => k.pubkey.toBase58()),
           description: customDescripton + txn_context + direction + " SOL",
         };
         workingArray.push(new_line);
@@ -764,7 +631,7 @@ export async function classifyTransaction(
       const fee_expense = {
         signature: item.transaction.signatures[0],
         key: keyIn,
-        timestamp: item.blockTime,
+        timestamp: item.blockTime ?? 0,
         slot: item.slot,
         success: true,
         fee: item.meta ? item.meta.fee / web3.LAMPORTS_PER_SOL : null,
@@ -774,11 +641,8 @@ export async function classifyTransaction(
         token_name: "SOL",
         uri: "",
         type: "Fees",
-        account_keys: item.transaction.message.accountKeys.flatMap((k) =>
-          k.pubkey.toBase58()
-        ),
-        description:
-          "Txn fees: " + customDescripton + fee_context + failed_text,
+        account_keys: item.transaction.message.accountKeys.flatMap((k) => k.pubkey.toBase58()),
+        description: "Txn fees: " + customDescripton + fee_context + failed_text,
       };
       workingArray.push(fee_expense);
       //console.log("fee paid by user", fee_expense)
@@ -789,7 +653,7 @@ export async function classifyTransaction(
       const fee_expense = {
         signature: item.transaction.signatures[0],
         key: keyIn,
-        timestamp: item.blockTime,
+        timestamp: item.blockTime ?? 0,
         slot: item.slot,
         success: true,
         fee: item.meta ? item.meta.fee / web3.LAMPORTS_PER_SOL : null,
@@ -799,9 +663,7 @@ export async function classifyTransaction(
         token_name: "SOL",
         uri: "",
         type: "Fees",
-        account_keys: item.transaction.message.accountKeys.flatMap((k) =>
-          k.pubkey.toBase58()
-        ),
+        account_keys: item.transaction.message.accountKeys.flatMap((k) => k.pubkey.toBase58()),
         description: "Txn fees: failed",
       };
       workingArray.push(fee_expense);
@@ -810,17 +672,11 @@ export async function classifyTransaction(
   }
 }
 
-async function fetchTokenData(
-  mintsIn: string[],
-  utl: UtlType[],
-  showMetadata: boolean
-): Promise<TokenType> {
+async function fetchTokenData(mintsIn: string[], utl: UtlType[], showMetadata: boolean): Promise<TokenType> {
   let namedToken = { mint: "", name: "Unknown Token ", uri: "", nft: false };
   if (mintsIn.length == 1) {
     if (showMetadata) {
-      const existingIndex = fetchedList
-        .flatMap((s) => s.mint)
-        .indexOf(mintsIn[0]);
+      const existingIndex = fetchedList.flatMap((s) => s.mint).indexOf(mintsIn[0]);
       if (existingIndex != -1) {
         namedToken = fetchedList[existingIndex];
         //console.log("found existing mint ",fetchedList[existingIndex], existingIndex)
@@ -831,9 +687,7 @@ async function fetchTokenData(
       const utlToken = utl.filter((item) => item.address == mintsIn[0])[0];
       if (utlToken == null || utlToken == undefined) {
         try {
-          const nftnames = await metadata.getTokenMetadata(
-            new web3.PublicKey(mintsIn[0])
-          );
+          const nftnames = await metadata.getTokenMetadata(new web3.PublicKey(mintsIn[0]));
           if (nftnames) {
             if (nftnames?.name != "") {
               const add_item = {
@@ -890,16 +744,13 @@ async function fetchTokenData(
         const existingIndex = fetchedList.flatMap((s) => s.mint).indexOf(mint);
         if (existingIndex != -1) {
           //console.log("found existing mint ",fetchedList[existingIndex], existingIndex)
-          namedToken.name =
-            namedToken.name + " " + fetchedList[existingIndex].name;
+          namedToken.name = namedToken.name + " " + fetchedList[existingIndex].name;
         }
         //let utlToken:Token = await utl.fetchMint(new web3.PublicKey(mintIn))
         const utlToken = utl.filter((item) => item.address == mint)[0];
         if (utlToken == null || utlToken == undefined) {
           try {
-            const nftnames = await metadata.getTokenMetadata(
-              new web3.PublicKey(mint)
-            );
+            const nftnames = await metadata.getTokenMetadata(new web3.PublicKey(mint));
             //console.log(mintIn, nftnames)
             if (nftnames) {
               if (nftnames.name != "") {

@@ -2,9 +2,7 @@ import { decodeMetadata } from "./MetadataUtils";
 import { PublicKey } from "@solana/web3.js";
 import { Buffer } from "buffer";
 
-const METADATA_PUBKEY = new PublicKey(
-  "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
-);
+const METADATA_PUBKEY = new PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s");
 
 const get_metadataPda = async (address: PublicKey) => {
   const [pda] = await PublicKey.findProgramAddressSync(
@@ -43,10 +41,7 @@ export async function getTokenMetadata(token_address: PublicKey) {
     //console.log("parsed ", token_address.toBase58(), metadata_pda.toBase58(), metadata_parsed)
 
     if (metadata_parsed.result.value) {
-      const metadata_buf = Buffer.from(
-        metadata_parsed.result.value.data[0],
-        "base64"
-      );
+      const metadata_buf = Buffer.from(metadata_parsed.result.value.data[0], "base64");
       const metadata = decodeMetadata(metadata_buf);
       //console.log(metadata)
 
@@ -90,10 +85,7 @@ export async function getTokensMetadata(token_addresses: PublicKey[]) {
       const metadata_parsed = await metadata_res.json();
       //console.log("parsed ", token_address.toBase58(), metadata_pda.toBase58(), metadata_parsed)
       if (metadata_parsed.result.value) {
-        const metadata_buf = Buffer.from(
-          metadata_parsed.result.value.data[0],
-          "base64"
-        );
+        const metadata_buf = Buffer.from(metadata_parsed.result.value.data[0], "base64");
         const metadata = decodeMetadata(metadata_buf);
         //console.log(metadata)
         nft_data.push(metadata.data);

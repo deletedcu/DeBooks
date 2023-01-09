@@ -1,6 +1,6 @@
-import { deserializeUnchecked, BinaryReader, BinaryWriter } from "borsh";
 import { PublicKey } from "@solana/web3.js";
 import type BN from "bn.js";
+import { BinaryReader, BinaryWriter, deserializeUnchecked } from "borsh";
 import base58 from "bs58";
 
 export type StringPublicKey = string;
@@ -23,9 +23,7 @@ export const extendBorsh = () => {
     return base58.encode(array) as StringPublicKey;
   };
 
-  (BinaryWriter.prototype as any).writePubkeyAsString = function (
-    value: StringPublicKey
-  ) {
+  (BinaryWriter.prototype as any).writePubkeyAsString = function (value: StringPublicKey) {
     const writer = this as unknown as BinaryWriter;
     writer.writeFixedArray(base58.decode(value));
   };
@@ -79,11 +77,7 @@ export class Uses {
   /// Starting at 0 for master record, this is incremented for each edition minted.
   total: typeof BN;
 
-  constructor(args: {
-    useMethod: number;
-    remaining: typeof BN;
-    total: typeof BN;
-  }) {
+  constructor(args: { useMethod: number; remaining: typeof BN; total: typeof BN }) {
     this.useMethod = args.useMethod;
     this.remaining = args.remaining;
     this.total = args.total;
@@ -94,11 +88,7 @@ export class Creator {
   verified: boolean;
   share: number;
 
-  constructor(args: {
-    address: StringPublicKey;
-    verified: boolean;
-    share: number;
-  }) {
+  constructor(args: { address: StringPublicKey; verified: boolean; share: number }) {
     this.address = args.address;
     this.verified = args.verified;
     this.share = args.share;
@@ -243,11 +233,7 @@ const METADATA_REPLACE = new RegExp("\u0000", "g");
 
 export const decodeMetadata = (buffer: Buffer): Metadata => {
   //console.log(Metadata.length)
-  const metadata = deserializeUnchecked(
-    METADATA_SCHEMA,
-    Metadata,
-    buffer
-  ) as Metadata;
+  const metadata = deserializeUnchecked(METADATA_SCHEMA, Metadata, buffer) as Metadata;
   metadata.data.name = metadata.data.name.replace(METADATA_REPLACE, "");
   metadata.data.uri = metadata.data.uri.replace(METADATA_REPLACE, "");
   metadata.data.symbol = metadata.data.symbol.replace(METADATA_REPLACE, "");

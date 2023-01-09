@@ -1,9 +1,4 @@
-export const csvGenerator = (
-  totalData: any[],
-  actualHeaderKey: string[],
-  headerToShow: string[],
-  fileName: string
-) => {
+export const csvGenerator = (totalData: any[], actualHeaderKey: string[], headerToShow: string[], fileName: string) => {
   let data = totalData || null;
   if (data == null || !data.length) {
     return null;
@@ -19,10 +14,7 @@ export const csvGenerator = (
     actualHeaderKey.forEach(function (key) {
       if (ctr > 0) result += columnDelimiter;
       if (Array.isArray(item[key])) {
-        let arrayItem =
-          item[key] && item[key].length > 0
-            ? '"' + item[key].join(",") + '"'
-            : "-";
+        let arrayItem = item[key] && item[key].length > 0 ? '"' + item[key].join(",") + '"' : "-";
         result += arrayItem;
       } else if (typeof item[key] == "string") {
         let strItem = item[key] ? '"' + item[key] + '"' : "-";
