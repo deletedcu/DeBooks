@@ -109,3 +109,7 @@ a {
     color-scheme: dark;
   }
 }
+
+.react-datepicker-wrapper {
+  width: 120px !important;
+}
