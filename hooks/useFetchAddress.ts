@@ -3,7 +3,7 @@ import { ConfirmedSignatureInfo, Connection, ParsedTransactionWithMeta, PublicKe
 import dayjs, { Dayjs } from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UtlType, WorkType, classifyTransaction } from "../utils/SolanaClassify";
 
 interface FetchedTransactionType {
@@ -22,6 +22,7 @@ export default function useFetchAddress() {
   const [metadataAnimation, setMetadataAnimation] = useState(false);
   const [metadataAnimText, setMetadataAnimText] = useState("");
   const [showFees, setShowFees] = useState(false);
+  const [showConversion, setShowConversion] = useState(false);
   const [showFailed, setShowFailed] = useState(false);
   const [textFilter, setTextFilter] = useState("");
   const [fullArray, setFullArray] = useState<WorkType[]>([]);
@@ -31,14 +32,10 @@ export default function useFetchAddress() {
   const [fetchedTransactionDicts, setFetchedTransactionDicts] = useState<FetchedTransactionType[]>([]);
   const [fetchedTransactions, setFetchedTransactions] = useState<ParsedTransactionWithMeta[]>([]);
 
-  const PER_PAGE = 20;
+  const PER_PAGE = 10;
   const FETCH_LIMIT = 250;
-  const solana_rpc: string = process.env.SOLANA_RPC ? process.env.SOLANA_RPC : "https://api.mainnet-beta.solana.com";
+  const solana_rpc: string = process.env.SOLANA_RPC ? process.env.SOLANA_RPC : "https://necessary-wandering-flower.solana-mainnet.discover.quiknode.pro/d7339a265b1518217396ac5f2827114e5fee6424/";
   const connection = new Connection(solana_rpc);
-
-  function sleep(milliseconds: number): Promise<void> {
-    return new Promise((resolve) => setTimeout(resolve, milliseconds));
-  }
 
   async function classifyArray(keyIn: string): Promise<void> {
     let response = await fetch("https://token-list-api.solana.cloud/v1/list");
@@ -97,40 +94,40 @@ export default function useFetchAddress() {
     }
   }
 
-  function sliceDisplayArray(keyIn: string): void {
-    let filteredArray = fullArray.filter((tx) => tx.key === keyIn);
+  function sliceDisplayArray(arr: WorkType[]): void {
+    let filteredArray: WorkType[] = [];
 
     if (showFees && showFailed) {
-      filteredArray = filteredArray.filter(
+      filteredArray = arr.filter(
         (tx) =>
           tx.description.toLowerCase().includes(textFilter.toLowerCase()) ||
           tx.signature.toLowerCase().includes(textFilter.toLowerCase())
       );
     } else if (showFees && !showFailed) {
-      let temp = filteredArray.filter(
+      let temp = arr.filter(
         (tx) =>
           tx.success &&
           (tx.description.toLowerCase().includes(textFilter.toLowerCase()) ||
             tx.signature.toLowerCase().includes(textFilter.toLowerCase()))
       );
-      filteredArray = filteredArray.filter((tx) => temp.flatMap((txn) => txn.signature).includes(tx.signature));
+      filteredArray = arr.filter((tx) => temp.flatMap((txn) => txn.signature).includes(tx.signature));
     } else if (!showFees && showFailed) {
-      let temp = filteredArray.filter(
+      let temp = arr.filter(
         (tx) =>
           tx.description.toLowerCase().includes(textFilter.toLowerCase()) ||
           tx.signature.toLowerCase().includes(textFilter.toLowerCase())
       );
-      filteredArray = filteredArray.filter(
+      filteredArray = arr.filter(
         (tx) => temp.flatMap((txn) => txn.signature).includes(tx.signature) && tx.description.substring(0, 3) !== "Txn"
       );
     } else if (!showFees && !showFailed) {
-      let temp = filteredArray.filter(
+      let temp = arr.filter(
         (tx) =>
           tx.success &&
           (tx.description.toLowerCase().includes(textFilter.toLowerCase()) ||
             tx.signature.toLowerCase().includes(textFilter.toLowerCase()))
       );
-      filteredArray = filteredArray.filter(
+      filteredArray = arr.filter(
         (tx) => temp.flatMap((txn) => txn.signature).includes(tx.signature) && tx.description.substring(0, 3) !== "Txn"
       );
     }
@@ -147,6 +144,7 @@ export default function useFetchAddress() {
     setLoading(true);
 
     const signatureBracket = await interpolateBlockSignatures(startDay, endDay);
+    console.log('interpolateBlockSignatures:', signatureBracket);
     let tokenAccounts = await connection.getParsedTokenAccountsByOwner(new PublicKey(keyIn), {
       programId: token.TOKEN_PROGRAM_ID,
     });
@@ -174,53 +172,53 @@ export default function useFetchAddress() {
             before: signatureBracket[1],
             until: signatureBracket[0],
           });
-          if (fetched) {
+          if (fetched.length > 0) {
             signatures.push(...fetched);
-          }
 
-          let lastSig: string = signatures[signatures.length - 1].signature;
-          let lastDay = dayjs.unix(signatures[signatures.length - 1].blockTime ?? 0);
-          let firstLastDay = dayjs.unix(signatures[signatures.length - 1].blockTime ?? 0);
-
-          while (lastDay > startDay) {
-            try {
-              let loopSigs = await connection.getSignaturesForAddress(new PublicKey(keyIn), {
-                limit: FETCH_LIMIT,
-                before: lastSig,
-                until: signatureBracket[0],
-              });
-              for await (const account of tokenAccounts.value) {
-                if (
-                  utl_api.content.flatMap((s: UtlType) => s.address).indexOf(account.account.data.parsed.info.mint) !==
-                  -1
-                ) {
-                  let fetched1 = (
-                    await connection.getSignaturesForAddress(account.pubkey, {
-                      limit: FETCH_LIMIT,
-                      before: lastSig,
-                      until: signatureBracket[0],
-                    })
-                  )[0];
-                  if (fetched1) {
-                    loopSigs.push(fetched1);
+            let lastSig: string = signatures[signatures.length - 1].signature;
+            let lastDay = dayjs.unix(signatures[signatures.length - 1].blockTime ?? 0);
+            let firstLastDay = dayjs.unix(signatures[signatures.length - 1].blockTime ?? 0);
+  
+            while (lastDay > startDay) {
+              try {
+                let loopSigs = await connection.getSignaturesForAddress(new PublicKey(keyIn), {
+                  limit: FETCH_LIMIT,
+                  before: lastSig,
+                  until: signatureBracket[0],
+                });
+                for await (const account of tokenAccounts.value) {
+                  if (
+                    utl_api.content.flatMap((s: UtlType) => s.address).indexOf(account.account.data.parsed.info.mint) !==
+                    -1
+                  ) {
+                    let fetched1 = (
+                      await connection.getSignaturesForAddress(account.pubkey, {
+                        limit: FETCH_LIMIT,
+                        before: lastSig,
+                        until: signatureBracket[0],
+                      })
+                    )[0];
+                    if (fetched1) {
+                      loopSigs.push(fetched1);
+                    }
                   }
                 }
+  
+                if (loopSigs.length === 0) break;
+  
+                loopSigs = loopSigs.filter((x) => x !== undefined);
+                lastDay = dayjs.unix(loopSigs[loopSigs.length - 1].blockTime ?? 0);
+                setLoadingText(
+                  `pre-fetch... ${Math.round((accountList.indexOf(account) / accountList.length) * 100)}% (${Math.min(
+                    Math.round((firstLastDay.diff(lastDay, "hours") / firstLastDay.diff(startDay, "hours")) * 100),
+                    100
+                  )}%)`
+                );
+                lastSig = loopSigs[loopSigs.length - 1].signature;
+                signatures.push(...loopSigs);
+              } catch (e) {
+                console.log("error in loogSigs", e);
               }
-
-              if (loopSigs.length === 0) break;
-
-              loopSigs = loopSigs.filter((x) => x !== undefined);
-              lastDay = dayjs.unix(loopSigs[loopSigs.length - 1].blockTime ?? 0);
-              setLoadingText(
-                `pre-fetch... ${Math.round((accountList.indexOf(account) / accountList.length) * 100)}% (${Math.min(
-                  Math.round((firstLastDay.diff(lastDay, "hours") / firstLastDay.diff(startDay, "hours")) * 100),
-                  100
-                )}%)`
-              );
-              lastSig = loopSigs[loopSigs.length - 1].signature;
-              signatures.push(...loopSigs);
-            } catch (e) {
-              console.log("error in loogSigs", e);
             }
           }
         })
@@ -301,9 +299,8 @@ export default function useFetchAddress() {
       workingArray.sort((a, b) => (b.timestamp > a.timestamp ? 1 : b.timestamp < a.timestamp ? -1 : 0));
       setFullArray((prev) => [...prev, ...workingArray]);
       setCurrentPage(1);
-      sliceDisplayArray(keyIn);
-      setLoading(false);
     }
+    setLoading(false);
   }
 
   async function interpolateBlockSignatures(startDay: Dayjs, endDay: Dayjs): Promise<readonly [string, string]> {
@@ -312,10 +309,10 @@ export default function useFetchAddress() {
 
     try {
       topSlot = latestBlockhash.context.slot;
-      endBlockTime = (await connection.getBlockTime(topSlot)) ?? 0;
+      endBlockTime = (await connection.getBlockTime(topSlot))!;
     } catch (e) {
       topSlot = latestBlockhash.context.slot - 50;
-      endBlockTime = (await connection.getBlockTime(topSlot)) ?? 0;
+      endBlockTime = (await connection.getBlockTime(topSlot))!;
       console.log("Failed to get block time.");
     }
 
@@ -325,7 +322,8 @@ export default function useFetchAddress() {
     const smallerIncrements = 25000;
     setLoadingText("optimizing retrieval...");
 
-    end_loop: while (dayjs.unix(endBlockTime).diff(endDay, "hours") >= 6) {
+    end_loop:
+    while (dayjs.unix(endBlockTime).diff(endDay, "hours") > 0) {
       try {
         if (dayjs.unix(endBlockTime).diff(endDay, "hours") > 24) {
           topSlot -= Math.floor((biggerIncrements * dayjs.unix(endBlockTime).diff(endDay, "hours")) / 24);
@@ -333,7 +331,7 @@ export default function useFetchAddress() {
           topSlot -= smallerIncrements;
         }
         topSlot = Math.max(topSlot, 1);
-        endBlockTime = (await connection.getBlockTime(topSlot)) ?? 0;
+        endBlockTime = (await connection.getBlockTime(topSlot))!;
 
         setLoadingText("optimizing retrieval 1/2...");
         // Need to catch if endBlock is less than endDay then top op till over
@@ -346,7 +344,7 @@ export default function useFetchAddress() {
                 topSlot += smallerIncrements;
               }
               topSlot = Math.max(topSlot, 1);
-              endBlockTime = (await connection.getBlockTime(topSlot)) ?? 0;
+              endBlockTime = (await connection.getBlockTime(topSlot))!;
               setLoadingText("optimizing retrieval 1/2...");
             } catch (e) {
               console.log("error in interpolate 1b", e);
@@ -357,10 +355,7 @@ export default function useFetchAddress() {
           endSignature = sigs.signatures[0];
           console.log("END BLOCK SIG1 ", sigs.signatures[0], dayjs.unix(endBlockTime));
           break end_loop;
-        } else if (
-          dayjs.unix(endBlockTime).diff(endDay, "hours") < 6 &&
-          dayjs.unix(endBlockTime).diff(endDay, "hours") > 0
-        ) {
+        } else {
           let sigs = await connection.getBlockSignatures(topSlot);
           endSignature = sigs.signatures[0];
           console.log("END BLOCK SIG1 ", sigs.signatures[0], dayjs.unix(endBlockTime));
@@ -374,7 +369,8 @@ export default function useFetchAddress() {
     let startBlockTime = endBlockTime;
     let startSlot = topSlot;
 
-    start_loop: while (dayjs.unix(startBlockTime).diff(startDay, "hours") > 0 && startSlot != 38669748) {
+    start_loop:
+    while (dayjs.unix(startBlockTime).diff(startDay, "hours") > 0 && startSlot != 38669748) {
       try {
         if (dayjs.unix(startBlockTime).diff(startDay, "hours") > 24) {
           startSlot -= Math.floor((biggerIncrements * 2 * dayjs.unix(startBlockTime).diff(startDay, "hours")) / 24);
@@ -383,7 +379,7 @@ export default function useFetchAddress() {
         }
 
         startSlot = Math.max(startSlot, 38669748);
-        startBlockTime = (await connection.getBlockTime(startSlot)) ?? 0;
+        startBlockTime = (await connection.getBlockTime(startSlot))!;
         setLoadingText("optimizing retrieval 2/2...");
 
         if (dayjs.unix(startBlockTime).diff(startDay, "hours") <= -8 && startBlockTime !== null) {
@@ -397,7 +393,7 @@ export default function useFetchAddress() {
             }
 
             try {
-              startBlockTime = (await connection.getBlockTime(startSlot)) ?? 0;
+              startBlockTime = (await connection.getBlockTime(startSlot))!;
               setLoadingText("optimizing retrieval 2/2...");
             } catch (e) {
               console.log("error in interpolate 2b", e);
@@ -424,7 +420,18 @@ export default function useFetchAddress() {
     return [startSignature, endSignature] as const;
   }
 
+  async function conversionHandler() {
+    setShowConversion(!showConversion);
+    console.log(showConversion);
+  }
+
+  useEffect(() => {
+    console.log('useEffect fullArray', fullArray);
+    sliceDisplayArray(fullArray);
+  }, [fullArray]);
+
   return {
+    PER_PAGE,
     loading,
     loadingText,
     currentPage,
@@ -435,11 +442,15 @@ export default function useFetchAddress() {
     metadataAnimText,
     textFilter,
     setTextFilter,
+    showFees,
+    setShowFees,
+    showConversion,
     fullArray,
     displayArray,
     totalPages,
     fetchedTransactions,
     fetchForAddress,
     toggleMetadata,
+    conversionHandler
   };
 }

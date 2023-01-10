@@ -10,20 +10,20 @@ interface TokenType {
 }
 
 export interface WorkType {
-  signature: string;
-  key: string;
-  timestamp: number;
-  slot: number;
   success: boolean;
-  fee: number | null;
+  key: string;
+  signature: string;
+  timestamp: number;
+  description: string;
+  account_keys: string[];
+  token_name: string;
+  type: string;
   amount: number | null;
   usd_amount: number | null;
+  slot: number;
+  fee: number | null;
   mint: string;
-  token_name: string;
   uri: string;
-  type: string;
-  account_keys: string[];
-  description: string;
 }
 
 export interface UtlType {

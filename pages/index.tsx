@@ -1,34 +1,37 @@
-import { Alert, Badge, Button, DarkThemeToggle, Dropdown, Pagination, Spinner, TextInput } from "flowbite-react";
+import { Alert, Badge, Button, DarkThemeToggle, Dropdown, Spinner, TextInput } from "flowbite-react";
 import { KeyboardEvent, useState } from "react";
-import "react-datepicker/dist/react-datepicker.css";
 import { FiAlertCircle, FiHelpCircle, FiSearch, FiSettings } from "react-icons/fi";
 import { HiLightningBolt, HiOutlineLightningBolt } from "react-icons/hi";
 import MyFooter from "../components/footer";
 import useFetchAddress from "../hooks/useFetchAddress";
 import { PublicKey } from "@solana/web3.js";
 import dayjs from "dayjs";
+import RecordTable from "../components/recordTable";
 
 export default function Home() {
   const [address, setAddress] = useState("");
   const [validKey, setValidKey] = useState(false);
-  const [startDate, setStartDate] = useState<string>(dayjs().subtract(7, "days").format("YYYY-MM-DD"));
-  const [endDate, setEndDate] = useState<string>(dayjs().format("YYYY-MM-DD"));
+  const [startDay, setStartDay] = useState<string>(dayjs().subtract(7, "days").format("YYYY-MM-DD"));
+  const [endDay, setEndDay] = useState<string>(dayjs().format("YYYY-MM-DD"));
 
   const {
     loading,
     loadingText,
-    currentPage,
-    setCurrentPage,
     showMetadata,
     setShowMetadata,
-    metadataAnimation,
-    metadataAnimText,
-    setTextFilter,
-    displayArray,
-    totalPages,
-    fetchedTransactions,
     fetchForAddress,
     toggleMetadata,
+    PER_PAGE,
+    currentPage,
+    totalPages,
+    displayArray,
+    fullArray,
+    textFilter,
+    setTextFilter,
+    showFees,
+    setShowFees,
+    showConversion,
+    conversionHandler,
   } = useFetchAddress();
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -48,7 +51,7 @@ export default function Home() {
       if (PublicKey.isOnCurve(keyIn)) {
         setValidKey(true);
         if (fetch && !loading) {
-          await fetchForAddress(keyIn, dayjs(startDate), dayjs(endDate));
+          await fetchForAddress(keyIn, dayjs(startDay), dayjs(endDay));
         }
       } else {
         setValidKey(false);
@@ -57,7 +60,7 @@ export default function Home() {
   }
 
   return (
-    <div className="h-screen flex flex-col bg-white dark:bg-gray-800 dark:text-white">
+    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-800 dark:text-white">
       <div className="flex items-center justify-center py-4">
         <span className="text-4xl font-bold mr-8 dark:text-white">DeBooks</span>
         <Dropdown label={<FiSettings />} arrowIcon={false} color="gray">
@@ -71,7 +74,11 @@ export default function Home() {
               aria-label="Toggle metadata"
               onClick={() => setShowMetadata(!showMetadata)}
             >
-              {showMetadata ? <HiLightningBolt color="#a855f7" size={20} /> : <HiOutlineLightningBolt color="#a855f7" size={20} />}
+              {showMetadata ? (
+                <HiLightningBolt color="#a855f7" size={20} />
+              ) : (
+                <HiOutlineLightningBolt color="#a855f7" size={20} />
+              )}
             </button>
           </Dropdown.Item>
           <Dropdown.Item>
@@ -85,44 +92,43 @@ export default function Home() {
           </Dropdown.Item>
         </Dropdown>
       </div>
-      <main className="flex flex-col flex-1 items-center">
-        <div>
-          <TextInput
-            type="text"
-            placeholder="enter account address e.g. DeDao...uw2r"
-            className="w-96"
-            value={address}
-            onKeyDown={handleKeyDown}
-            onChange={(e) => setAddress(e.target.value)}
-          />
-          {address && !validKey && (
-            <Badge color="failure" className="mt-2">
-              Wallet address is invalid
-            </Badge>
-          )}
-        </div>
+      <main className="flex flex-col flex-1 items-center max-w-7xl mx-auto my-0 px-4 py-0">
+        <TextInput
+          type="text"
+          placeholder="enter account address e.g. DeDao...uw2r"
+          className="w-96"
+          value={address}
+          onKeyDown={handleKeyDown}
+          onChange={(e) => setAddress(e.target.value)}
+        />
+        {address && !validKey && (
+          <Badge color="failure" className="mt-2">
+            Wallet address is invalid
+          </Badge>
+        )}
         <p className="mt-4 mb-2 text-xl font-semibold">Transaction Statement</p>
         <div className="flex items-center">
           <span className="mr-2">For the period</span>
-          <TextInput 
+          <TextInput
             type="date"
-            value={startDate}
+            value={startDay}
             min="2020-10-02"
-            max={endDate}
-            onChange={e => setStartDate(e.target.value)}
+            max={endDay}
+            onChange={(e) => setStartDay(e.target.value)}
           />
           <span className="mx-2">To</span>
-          <TextInput 
+          <TextInput
             type="date"
-            value={endDate}
-            min={startDate}
-            max={dayjs().format("YYYY-MM-DD")}
-            onChange={e => setEndDate(e.target.value)}
+            value={endDay}
+            min={startDay}
+            max={new Date().toJSON().slice(0, 10)}
+            onChange={(e) => setEndDay(e.target.value)}
           />
           <Button
             color="gray"
             className="ml-4"
             disabled={!validKey}
+            onClick={async () => await checkKey(address, true)}
           >
             <FiSearch />
           </Button>
@@ -133,18 +139,29 @@ export default function Home() {
               <Spinner size="sm" />
               <span className="ml-4">{loadingText}</span>
             </Alert>
-          ) : validKey ? (
+          ) : !validKey ? (
             <Alert color="info" icon={FiAlertCircle}>
               <span>
                 Enter a <strong>Solana Wallet</strong> or <strong>.sol</strong> address to display records
               </span>
             </Alert>
           ) : (
-            <div>
-              <span>{`${currentPage} / 100`}</span>
-              
-              <Pagination currentPage={currentPage} totalPages={100} showIcons onPageChange={(page) => setCurrentPage(page)} />
-            </div>
+            <RecordTable
+              keyIn={address}
+              startDay={startDay}
+              endDay={endDay}
+              PER_PAGE={PER_PAGE}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              displayArray={displayArray}
+              fullArray={fullArray}
+              textFilter={textFilter}
+              setTextFilter={setTextFilter}
+              showFees={showFees}
+              setShowFees={setShowFees}
+              showConversion={showConversion}
+              conversionHandler={conversionHandler}
+            />
           )}
         </div>
       </main>
