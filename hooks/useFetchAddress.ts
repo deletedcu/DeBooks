@@ -302,6 +302,7 @@ export default function useFetchAddress() {
       setFullArray((prev) => [...prev, ...workingArray]);
       setCurrentPage(1);
       sliceDisplayArray(keyIn);
+      setLoading(false);
     }
   }
 
@@ -432,9 +433,13 @@ export default function useFetchAddress() {
     setShowMetadata,
     metadataAnimation,
     metadataAnimText,
+    textFilter,
     setTextFilter,
+    fullArray,
     displayArray,
     totalPages,
     fetchedTransactions,
+    fetchForAddress,
+    toggleMetadata,
   };
 }
