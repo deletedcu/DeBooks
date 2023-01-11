@@ -416,10 +416,9 @@ export default function useFetchAddress() {
   }
 
   useEffect(() => {
-    console.log("useEffect fullArray", fullArray);
     sliceDisplayArray(fullArray);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fullArray, showFees, showFailed]);
+  }, [fullArray, showFees, showFailed, textFilter]);
 
   return {
     perPage,

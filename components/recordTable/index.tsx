@@ -108,7 +108,7 @@ export default function RecordTable({
 
   return (
     <div className="w-full">
-      {displayArray.length > 0 ? (
+      {fullArray.length > 0 ? (
         <div className="flex flex-col">
           <div className="flex flex-wrap items-center justify-between mb-2 text-gray-900 dark:text-gray-100">
             <div className="inline-flex items-center gap-2">
@@ -234,76 +234,86 @@ export default function RecordTable({
               </Tooltip>
             </div>
           </div>
-          <div className="flex flex-col">
-            <Table className="text-gray-900 dark:text-gray-100">
-              <Table.Head className="bg-gray-100">
-                <Table.HeadCell>Date</Table.HeadCell>
-                <Table.HeadCell>Description</Table.HeadCell>
-                <Table.HeadCell>Ref</Table.HeadCell>
-                <Table.HeadCell>Change Amount</Table.HeadCell>
-                {showConversion && <Table.HeadCell>USD</Table.HeadCell>}
-                <Table.HeadCell>Token</Table.HeadCell>
-              </Table.Head>
-              <Table.Body className="divide-y">
-                {displayArray.slice(perPage * (currentPage - 1), perPage * currentPage).map((item, index) => (
-                  <Table.Row key={index} className="bg-white dark:bg-gray-800 dark:border-gray-700">
-                    <Table.Cell>{dayjs.unix(item.timestamp).format("YYYY-MM-DD")}</Table.Cell>
-                    <Table.Cell className="whitespace-nowrap">{item.description}</Table.Cell>
-                    <Table.Cell>
-                      <Link
-                        href={`https://solscan.io/tx/${item.signature}`}
-                        target="_blank"
-                        className="hover:underline"
-                      >
-                        {item.signature.substring(0, 4)}...
-                      </Link>
-                    </Table.Cell>
-                    <Table.Cell>
-                      <span className={item.amount! >= 0 ? "text-green-500" : "text-red-500"}>
-                        {item.amount! > 0 && "+"}
-                        {item.amount?.toLocaleString("en-US", { maximumFractionDigits: 10 })}
-                      </span>
-                    </Table.Cell>
-                    {showConversion && (
+          {displayArray.length > 0 ? (
+            <div className="flex flex-col">
+              <Table className="text-gray-900 dark:text-gray-100">
+                <Table.Head className="bg-gray-100">
+                  <Table.HeadCell>Date</Table.HeadCell>
+                  <Table.HeadCell>Description</Table.HeadCell>
+                  <Table.HeadCell>Ref</Table.HeadCell>
+                  <Table.HeadCell>Change Amount</Table.HeadCell>
+                  {showConversion && <Table.HeadCell>USD</Table.HeadCell>}
+                  <Table.HeadCell>Token</Table.HeadCell>
+                </Table.Head>
+                <Table.Body className="divide-y">
+                  {displayArray.slice(perPage * (currentPage - 1), perPage * currentPage).map((item, index) => (
+                    <Table.Row key={index} className="bg-white dark:bg-gray-800 dark:border-gray-700">
+                      <Table.Cell>{dayjs.unix(item.timestamp).format("YYYY-MM-DD")}</Table.Cell>
+                      <Table.Cell className="whitespace-nowrap">{item.description}</Table.Cell>
                       <Table.Cell>
-                        <span className={item.usd_amount! >= 0 ? "text-green-500" : "text-red-500"}>
-                          {item.usd_amount! > 0 && "+"}
-                          {item.usd_amount?.toLocaleString("en-US", { maximumFractionDigits: 2 })}
+                        <Link
+                          href={`https://solscan.io/tx/${item.signature}`}
+                          target="_blank"
+                          className="hover:underline"
+                        >
+                          {item.signature.substring(0, 4)}...
+                        </Link>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <span className={item.amount! >= 0 ? "text-green-500" : "text-red-500"}>
+                          {item.amount! > 0 && "+"}
+                          {item.amount?.toLocaleString("en-US", { maximumFractionDigits: 10 })}
                         </span>
                       </Table.Cell>
-                    )}
-                    <Table.Cell>
-                      <div className="flex items-center gap-2">
-                        {item.logo_uri ? (
-                          <img
-                            src={item.logo_uri}
-                            alt={item.token_name}
-                            width="20"
-                            height="20"
-                            className="rounded-full"
-                          />
-                        ) : (
-                          <svg viewBox="64 64 896 896" focusable="false" width="20" height="20" fill="#0ea5e9">
-                            <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372zm5.6-532.7c53 0 89 33.8 93 83.4.3 4.2 3.8 7.4 8 7.4h56.7c2.6 0 4.7-2.1 4.7-4.7 0-86.7-68.4-147.4-162.7-147.4C407.4 290 344 364.2 344 486.8v52.3C344 660.8 407.4 734 517.3 734c94 0 162.7-58.8 162.7-141.4 0-2.6-2.1-4.7-4.7-4.7h-56.8c-4.2 0-7.6 3.2-8 7.3-4.2 46.1-40.1 77.8-93 77.8-65.3 0-102.1-47.9-102.1-133.6v-52.6c.1-87 37-135.5 102.2-135.5z"></path>
-                          </svg>
-                        )}
-                        <span>{item.token_name}</span>
-                      </div>
-                    </Table.Cell>
-                  </Table.Row>
-                ))}
-              </Table.Body>
-            </Table>
-            <div className="flex justify-end mt-4">
-              <Pagination
-                perPage={perPage}
-                setPerPage={setPerPage}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-                totalPages={totalPages}
-              />
+                      {showConversion && (
+                        <Table.Cell>
+                          <span className={item.usd_amount! >= 0 ? "text-green-500" : "text-red-500"}>
+                            {item.usd_amount! > 0 && "+"}
+                            {item.usd_amount?.toLocaleString("en-US", { maximumFractionDigits: 2 })}
+                          </span>
+                        </Table.Cell>
+                      )}
+                      <Table.Cell>
+                        <div className="flex items-center gap-2">
+                          {item.logo_uri ? (
+                            <img
+                              src={item.logo_uri}
+                              alt={item.token_name}
+                              width="20"
+                              height="20"
+                              className="rounded-full"
+                            />
+                          ) : (
+                            <svg viewBox="64 64 896 896" focusable="false" width="20" height="20" fill="#0ea5e9">
+                              <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372zm5.6-532.7c53 0 89 33.8 93 83.4.3 4.2 3.8 7.4 8 7.4h56.7c2.6 0 4.7-2.1 4.7-4.7 0-86.7-68.4-147.4-162.7-147.4C407.4 290 344 364.2 344 486.8v52.3C344 660.8 407.4 734 517.3 734c94 0 162.7-58.8 162.7-141.4 0-2.6-2.1-4.7-4.7-4.7h-56.8c-4.2 0-7.6 3.2-8 7.3-4.2 46.1-40.1 77.8-93 77.8-65.3 0-102.1-47.9-102.1-133.6v-52.6c.1-87 37-135.5 102.2-135.5z"></path>
+                            </svg>
+                          )}
+                          <span>{item.token_name}</span>
+                        </div>
+                      </Table.Cell>
+                    </Table.Row>
+                  ))}
+                </Table.Body>
+              </Table>
+              <div className="flex justify-end mt-4">
+                <Pagination
+                  perPage={perPage}
+                  setPerPage={setPerPage}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  totalPages={totalPages}
+                />
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="flex justify-center flex-row">
+              <div className="pt-10 min-w-[28rem]">
+                <Alert color="failure" icon={FiAlertCircle}>
+                  <span>No records for this period.</span>
+                </Alert>
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <div className="flex justify-center flex-row">

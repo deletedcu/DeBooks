@@ -92,6 +92,7 @@ export default function Home() {
                 type="button"
                 aria-label="Toggle metadata"
                 onClick={() => setShowMetadata(!showMetadata)}
+                disabled={loading}
               >
                 {showMetadata ? <HiLightningBolt color="#7e22ce" size={20} /> : <HiOutlineLightningBolt size={20} />}
               </button>
@@ -108,7 +109,7 @@ export default function Home() {
           </Dropdown.Item>
         </Dropdown>
       </div>
-      <main className="flex flex-col flex-1 items-center max-w-7xl mx-auto my-0 px-4 py-0">
+      <main className="flex flex-col flex-1 items-center w-full max-w-7xl mx-auto my-0 px-4 py-0">
         <TextInput
           type="text"
           placeholder="enter account address e.g. DeDao...uw2r"
@@ -116,6 +117,7 @@ export default function Home() {
           value={address}
           onKeyDown={handleKeyDown}
           onChange={(e) => setAddress(e.target.value)}
+          disabled={loading}
         />
         {address && !validKey && (
           <Badge color="failure" className="mt-2">
@@ -131,6 +133,7 @@ export default function Home() {
             min="2020-10-02"
             max={endDay}
             onChange={(e) => setStartDay(e.target.value)}
+            disabled={loading}
           />
           <span className="mx-2">To</span>
           <TextInput
@@ -139,17 +142,18 @@ export default function Home() {
             min={startDay}
             max={new Date().toJSON().slice(0, 10)}
             onChange={(e) => setEndDay(e.target.value)}
+            disabled={loading}
           />
           <Button
             color="gray"
             className="ml-4"
-            disabled={!validKey}
+            disabled={!validKey || loading}
             onClick={async () => await checkKey(address, true)}
           >
             <FiSearch />
           </Button>
         </div>
-        <div className="flex items-center mt-4">
+        <div className="flex justify-center mt-4 w-full lg:w-4/5">
           {loading ? (
             <Alert>
               <Spinner size="sm" />
