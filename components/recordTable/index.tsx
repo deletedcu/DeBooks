@@ -274,7 +274,7 @@ export default function RecordTable({
                           ) : (
                             <span className={item.usd_amount! >= 0 ? "text-green-500" : "text-red-500"}>
                               {item.usd_amount! > 0 && "+"}
-                              {item.usd_amount?.toLocaleString("en-US", { maximumFractionDigits: 2 })}
+                              {item.usd_amount?.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 4 })}
                             </span>
                           )}
                         </Table.Cell>
@@ -313,7 +313,7 @@ export default function RecordTable({
             </div>
           ) : (
             <div className="flex justify-center flex-row">
-              <div className="pt-10 min-w-[28rem]">
+              <div className="min-w-[28rem]">
                 <Alert color="failure" icon={FiAlertCircle}>
                   <span>No records for this period.</span>
                 </Alert>
@@ -323,7 +323,7 @@ export default function RecordTable({
         </div>
       ) : (
         <div className="flex justify-center flex-row">
-          <div className="pt-10 min-w-[28rem]">
+          <div className="min-w-[28rem]">
             <Alert color="failure" icon={FiAlertCircle}>
               <span>No records for this period.</span>
             </Alert>

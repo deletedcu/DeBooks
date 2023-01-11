@@ -100,13 +100,16 @@ export default function Home() {
             </Tooltip>
           </Dropdown.Item>
           <Dropdown.Item>
-            <button
-              className="rounded-lg p-2.5 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
-              type="button"
-              aria-label="Toggle metadata"
-            >
-              <FiHelpCircle size={20} />
-            </button>
+            <Tooltip content="Help" placement="left">
+              <button
+                className="rounded-lg p-2.5 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+                type="button"
+                aria-label="Help"
+                onClick={() => window.open("https://curest0x-organization.gitbook.io/debooks/")}
+              >
+                <FiHelpCircle size={20} />
+              </button>
+            </Tooltip>
           </Dropdown.Item>
         </Dropdown>
       </div>
@@ -120,11 +123,6 @@ export default function Home() {
           onChange={(e) => setAddress(e.target.value)}
           disabled={loading}
         />
-        {address && !validKey && (
-          <Badge color="failure" className="mt-2">
-            Wallet address is invalid
-          </Badge>
-        )}
         <p className="mt-4 mb-2 text-xl font-semibold">Transaction Statement</p>
         <div className="flex items-center">
           <span className="mr-2">For the period</span>
@@ -160,10 +158,16 @@ export default function Home() {
               <Spinner size="sm" />
               <span className="ml-4">{loadingText}</span>
             </Alert>
-          ) : !validKey ? (
+          ) : address === "" ? (
             <Alert color="info" icon={FiAlertCircle}>
               <span>
                 Enter a <strong>Solana Wallet</strong> or <strong>.sol</strong> address to display records
+              </span>
+            </Alert>
+          ) : !validKey ? (
+            <Alert color="warning" icon={FiAlertCircle}>
+              <span>
+                Invalid key entered - Try again with a <strong>Solana Wallet</strong> or <strong>.sol</strong> address
               </span>
             </Alert>
           ) : (
