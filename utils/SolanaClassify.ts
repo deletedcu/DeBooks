@@ -35,10 +35,10 @@ export interface UtlType {
   symbol: string;
   verified: boolean;
   decimals: number;
-  holders: number;
+  holders: number | null;
   logoURI: string;
   tags: string[];
-  extensions: { string: string } | undefined;
+  extensions: { "coingeckoId": string } | undefined;
 }
 
 const SOL_LOGO_URI =

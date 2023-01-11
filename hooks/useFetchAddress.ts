@@ -5,9 +5,16 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useEffect, useState } from "react";
 import { UtlType, WorkType, classifyTransaction } from "../utils/SolanaClassify";
+import priceData from "./wrappedSolana.json";
 
 dayjs.extend(localizedFormat);
 dayjs.extend(relativeTime);
+
+interface PriceType {
+  id: string;
+  date: string;
+  usd: number;
+}
 
 export default function useFetchAddress() {
   const [perPage, setPerPage] = useState(10);
@@ -17,13 +24,14 @@ export default function useFetchAddress() {
   const [showMetadata, setShowMetadata] = useState(false);
   const [showFees, setShowFees] = useState(false);
   const [showConversion, setShowConversion] = useState(false);
+  const [converting, setConverting] = useState(false);
   const [showFailed, setShowFailed] = useState(false);
   const [textFilter, setTextFilter] = useState("");
   const [fullArray, setFullArray] = useState<WorkType[]>([]);
   const [displayArray, setDisplayArray] = useState<WorkType[]>([]);
   const [totalPages, setTotalPages] = useState(0);
-  const [currentTransaction, setCurrentTransaction] = useState(0);
   const [fetchedTransactions, setFetchedTransactions] = useState<ParsedTransactionWithMeta[]>([]);
+  const [storedCoinGeckoData, setStoredCoinGeckoData] = useState<PriceType[]>(priceData);
 
   const FETCH_LIMIT = 250;
   const solana_rpc: string = process.env.SOLANA_RPC
@@ -154,7 +162,7 @@ export default function useFetchAddress() {
     }
 
     let signatures: ConfirmedSignatureInfo[] = [];
-    setLoadingText("pre-fetch...");
+    setLoadingText("pre-fetching...");
 
     let position = 0;
     let batchSize = 200;
@@ -162,7 +170,7 @@ export default function useFetchAddress() {
       const itemsForBatch = accountList.slice(position, position + batchSize);
       await Promise.all(
         itemsForBatch.map(async (account) => {
-          setLoadingText(`pre-fetch... ${Math.round((accountList.indexOf(account) / accountList.length) * 100)}%`);
+          setLoadingText(`pre-fetching... ${Math.round((accountList.indexOf(account) / accountList.length) * 100)}%`);
           let fetched = await connection.getSignaturesForAddress(account, {
             limit: FETCH_LIMIT,
             before: signatureBracket[1],
@@ -173,7 +181,6 @@ export default function useFetchAddress() {
 
             let lastSig: string = signatures[signatures.length - 1].signature;
             let lastDay = dayjs.unix(signatures[signatures.length - 1].blockTime ?? 0);
-            let firstLastDay = dayjs.unix(signatures[signatures.length - 1].blockTime ?? 0);
 
             while (lastDay > startDay) {
               try {
@@ -205,13 +212,6 @@ export default function useFetchAddress() {
 
                 loopSigs = loopSigs.filter((x) => x !== undefined);
                 lastDay = dayjs.unix(loopSigs[loopSigs.length - 1].blockTime!);
-                console.log("day diff", firstLastDay.diff(lastDay, "hours"), firstLastDay.diff(startDay, "hours"));
-                setLoadingText(
-                  `pre-fetch... ${Math.round((accountList.indexOf(account) / accountList.length) * 100)}% (${Math.min(
-                    Math.round((firstLastDay.diff(lastDay, "hours") / firstLastDay.diff(startDay, "hours")) * 100),
-                    100
-                  )}%)`
-                );
                 lastSig = loopSigs[loopSigs.length - 1].signature;
                 signatures.push(...loopSigs);
               } catch (e) {
@@ -259,10 +259,9 @@ export default function useFetchAddress() {
         }
       }
 
-      setLoadingText(showMetadata ? "analyzing with metadata..." : "analyzing...");
-
+      let curTxn = 0;
       for await (const item of fetchedTransactions) {
-        setCurrentTransaction((prev) => prev++);
+        curTxn++;
 
         if (item) {
           let account_index = item.transaction.message.accountKeys.flatMap((s) => s.pubkey.toBase58()).indexOf(keyIn);
@@ -286,6 +285,12 @@ export default function useFetchAddress() {
             console.log("failed to classify, ", e, item);
           }
         }
+
+        setLoadingText(
+          `${showMetadata ? "analyzing with metadata..." : "analyzing..."} ${Math.round(
+            (curTxn / fetchedTransactions.length) * 100
+          )}%`
+        );
       }
 
       setFetchedTransactions(fetchedTransactions);
@@ -410,15 +415,95 @@ export default function useFetchAddress() {
     return [startSignature, endSignature] as const;
   }
 
-  async function conversionHandler() {
-    setShowConversion(!showConversion);
-    console.log(showConversion);
+  const sleep = (milliseconds: number) => {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+  };
+
+  async function fetchAndRetryIfNecessary(callAPIFn: Function): Promise<Response> {
+    const response = await callAPIFn();
+    //console.log(response)
+    if (response.status == "429") {
+      await sleep(10000);
+      return fetchAndRetryIfNecessary(callAPIFn);
+    }
+    return response;
+  }
+
+  async function convertTransactions(): Promise<void> {
+    let utl_api: UtlType[] = [];
+    try {
+      let response = await fetch("https://token-list-api.solana.cloud/v1/list");
+      let data = await response.json();
+      utl_api = data.content;
+    } catch (e) {
+      try {
+        let fetched = await fetch("https://cdn.jsdelivr.net/gh/solflare-wallet/token-list/solana-tokenlist.json");
+        let data = await fetched.json();
+        utl_api = data.tokens;
+      } catch (e) {
+        await sleep(500);
+        console.log("Failed to load UTL", e);
+        setShowConversion(false);
+        return;
+      }
+    }
+
+    let newArray: WorkType[] = [];
+    for await (const item of fullArray) {
+      let utlToken = utl_api.filter((x) => x.address === item.mint)[0];
+      if (utlToken && utlToken.extensions) {
+        let filteredData = storedCoinGeckoData.filter(
+          (x) => x.id === utlToken.extensions!.coingeckoId && x.date === dayjs.unix(item.timestamp).format("DD-MM-YYYY")
+        );
+        if (storedCoinGeckoData.length === 0 || filteredData.length === 0) {
+          try {
+            let req =
+              "https://api.coingecko.com/api/v3/coins/" +
+              utlToken.extensions.coingeckoId +
+              "/history?date=" +
+              dayjs.unix(item.timestamp).format("DD-MM-YYYY");
+            let response = await fetchAndRetryIfNecessary(() => fetch(req));
+            let data = await response.json();
+
+            let new_value: PriceType = {
+              id: utlToken.extensions!.coingeckoId,
+              date: dayjs.unix(item.timestamp).format("DD-MM-YYYY"),
+              usd: data.market_data.current_price.usd,
+            };
+            storedCoinGeckoData.push(new_value);
+            item.usd_amount = (item.amount ?? 0) * new_value.usd;
+          } catch (e) {
+            console.log("CoinGecko api error", e);
+          }
+        } else {
+          item.usd_amount = (item.amount ?? 0) * filteredData[0].usd;
+        }
+      } else {
+        item.usd_amount = 0;
+      }
+      newArray.push(item);
+    }
+
+    sliceDisplayArray(newArray);
   }
 
   useEffect(() => {
     sliceDisplayArray(fullArray);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fullArray, showFees, showFailed, textFilter]);
+
+  useEffect(() => {
+    if (showConversion) {
+      const fetchData = async () => {
+        setConverting(true);
+        await convertTransactions();
+        setConverting(false);
+      };
+
+      fetchData();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showConversion]);
 
   return {
     perPage,
@@ -436,12 +521,13 @@ export default function useFetchAddress() {
     showFailed,
     setShowFailed,
     showConversion,
+    setShowConversion,
+    converting,
     fullArray,
     displayArray,
     totalPages,
     fetchedTransactions,
     fetchForAddress,
     toggleMetadata,
-    conversionHandler,
   };
 }

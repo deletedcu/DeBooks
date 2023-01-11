@@ -25,7 +25,8 @@ export default function RecordTable({
   showFailed,
   setShowFailed,
   showConversion,
-  conversionHandler,
+  setShowConversion,
+  converting,
 }: {
   keyIn: string;
   startDay: string;
@@ -44,7 +45,8 @@ export default function RecordTable({
   showFailed: boolean;
   setShowFailed: (a: boolean) => void;
   showConversion: boolean;
-  conversionHandler: () => Promise<void>;
+  setShowConversion: (a: boolean) => void;
+  converting: boolean;
 }) {
   const downloadHandler = () => {
     let filename = `debooks_${keyIn}_${startDay}_${endDay}.csv`;
@@ -186,7 +188,7 @@ export default function RecordTable({
                 </button>
               </Tooltip> */}
               <Tooltip content="Convert transactions to USD (daily close)">
-                <button className="btn btn-xs btn-ghost normal-case" onClick={() => conversionHandler()}>
+                <button className="btn btn-xs btn-ghost normal-case" onClick={() => setShowConversion(!showConversion)}>
                   {showConversion ? (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -267,10 +269,14 @@ export default function RecordTable({
                       </Table.Cell>
                       {showConversion && (
                         <Table.Cell>
-                          <span className={item.usd_amount! >= 0 ? "text-green-500" : "text-red-500"}>
-                            {item.usd_amount! > 0 && "+"}
-                            {item.usd_amount?.toLocaleString("en-US", { maximumFractionDigits: 2 })}
-                          </span>
+                          {converting ? (
+                            <progress className="progress w-[2rem]" />
+                          ) : (
+                            <span className={item.usd_amount! >= 0 ? "text-green-500" : "text-red-500"}>
+                              {item.usd_amount! > 0 && "+"}
+                              {item.usd_amount?.toLocaleString("en-US", { maximumFractionDigits: 2 })}
+                            </span>
+                          )}
                         </Table.Cell>
                       )}
                       <Table.Cell>

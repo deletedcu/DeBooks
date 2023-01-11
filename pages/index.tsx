@@ -34,13 +34,14 @@ export default function Home() {
     showFailed,
     setShowFailed,
     showConversion,
+    setShowConversion,
+    converting,
     toggleMetadata,
-    conversionHandler,
   } = useFetchAddress();
 
   useEffect(() => {
     toggleMetadata(address);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showMetadata]);
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -184,7 +185,8 @@ export default function Home() {
               showFailed={showFailed}
               setShowFailed={setShowFailed}
               showConversion={showConversion}
-              conversionHandler={conversionHandler}
+              setShowConversion={setShowConversion}
+              converting={converting}
             />
           )}
         </div>
