@@ -741,13 +741,12 @@ async function fetchTokenData(mintsIn: string[], utl: UtlType[], showMetadata: b
         namedToken = add_item;
       }
     } else {
-      const utlToken = utl.filter((item) => item.address == mintsIn[0])[0];
       const add_item: TokenType = {
         mint: mintsIn[0],
-        name: utlToken ? utlToken.symbol : "Unknown Token " + mintsIn[0].substring(0, 4),
+        name: "Unknown Token " + mintsIn[0].substring(0, 4),
         uri: "",
         nft: false,
-        logo_uri: utlToken ? utlToken.logoURI : "",
+        logo_uri: "",
       };
       namedToken = add_item;
     }

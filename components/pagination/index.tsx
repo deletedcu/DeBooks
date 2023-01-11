@@ -1,5 +1,5 @@
 import { Button } from "flowbite-react";
-import { FaStepForward, FaStepBackward, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight, FaStepBackward, FaStepForward } from "react-icons/fa";
 
 export default function Pagination({
   perPage,
@@ -28,7 +28,7 @@ export default function Pagination({
               className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-1 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
               {PER_PAGES.map((val) => (
-                <option key={val} value={val} selected={val === perPage}>
+                <option key={val} value={val}>
                   {val}
                 </option>
               ))}
@@ -56,7 +56,12 @@ export default function Pagination({
             >
               <FaChevronRight />
             </Button>
-            <Button color="gray" size="xs" disabled={currentPage === totalPages} onClick={() => setCurrentPage(totalPages)}>
+            <Button
+              color="gray"
+              size="xs"
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage(totalPages)}
+            >
               <FaStepForward />
             </Button>
           </div>

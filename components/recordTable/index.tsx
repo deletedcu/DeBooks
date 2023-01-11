@@ -22,6 +22,8 @@ export default function RecordTable({
   setTextFilter,
   showFees,
   setShowFees,
+  showFailed,
+  setShowFailed,
   showConversion,
   conversionHandler,
 }: {
@@ -39,6 +41,8 @@ export default function RecordTable({
   setTextFilter: (a: string) => void;
   showFees: boolean;
   setShowFees: (a: boolean) => void;
+  showFailed: boolean;
+  setShowFailed: (a: boolean) => void;
   showConversion: boolean;
   conversionHandler: () => Promise<void>;
 }) {
@@ -105,8 +109,8 @@ export default function RecordTable({
   return (
     <div className="w-full">
       {displayArray.length > 0 ? (
-        <div>
-          <div className="flex flex-wrap items-center justify-between mb-2">
+        <div className="flex flex-col">
+          <div className="flex flex-wrap items-center justify-between mb-2 text-gray-900 dark:text-gray-100">
             <div className="inline-flex items-center gap-2">
               <span className="text-sm">
                 Total <strong>{displayArray.length}</strong> transactions
@@ -154,6 +158,33 @@ export default function RecordTable({
                   )}
                 </button>
               </Tooltip>
+              {/* <Tooltip content="Toggle failed Txns on/off">
+                <button className="btn btn-xs btn-ghost normal-case" onClick={() => setShowFailed(!showFailed)}>
+                  {showFailed ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" className="h-5 w-5 fill-purple-700">
+                      <g>
+                        <path d="M11.28 5.47a.75.75 0 010 1.06l-4 4a.75.75 0 01-1.06 0l-2-2a.75.75 0 011.06-1.06l1.47 1.47 3.47-3.47a.75.75 0 011.06 0z" />
+                        <path
+                          fillRule="evenodd"
+                          d="M7.26.213a2.25 2.25 0 011.48 0l4.75 1.653A2.25 2.25 0 0115 3.991v4.01c0 2.048-1.181 3.747-2.45 4.991-1.282 1.255-2.757 2.15-3.573 2.598a2.024 2.024 0 01-1.954 0c-.816-.447-2.291-1.342-3.572-2.598C2.18 11.748 1 10.05 1 8V3.991c0-.957.606-1.81 1.51-2.125L7.26.213zm.986 1.417a.75.75 0 00-.493 0l-4.75 1.653a.75.75 0 00-.503.708v4.01c0 1.455.847 2.79 2 3.92 1.142 1.118 2.483 1.937 3.244 2.353.163.09.35.09.512 0 .761-.416 2.102-1.235 3.244-2.353 1.153-1.13 2-2.465 2-3.92V3.99a.75.75 0 00-.504-.708L8.246 1.63z"
+                          clipRule="evenodd"
+                        />
+                      </g>
+                    </svg>
+                  ) : (
+                    <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 fill-current">
+                      <g>
+                        <path d="M8.74.213a2.25 2.25 0 00-1.48 0L6.035.64a.75.75 0 00.493 1.417l1.226-.427a.75.75 0 01.493 0l4.75 1.653a.75.75 0 01.504.708v4.01c0 .334-.044.661-.127.98a.75.75 0 101.453.374C14.938 8.922 15 8.47 15 8V3.991a2.25 2.25 0 00-1.51-2.125L8.74.213z" />
+                        <path
+                          fillRule="evenodd"
+                          d="M1.447 2.507L.72 1.78A.75.75 0 011.78.72l13.5 13.5a.75.75 0 11-1.06 1.06l-1.988-1.987c-1.2 1.098-2.505 1.886-3.254 2.296a2.026 2.026 0 01-1.955 0c-.816-.446-2.291-1.341-3.572-2.597C2.18 11.748 1 10.05 1 8V3.72c0-.456.165-.882.447-1.213zm1.078 1.079a.366.366 0 00-.025.133V8c0 1.456.847 2.79 2 3.92 1.142 1.12 2.483 1.938 3.244 2.354.162.09.35.09.513 0 .69-.378 1.854-1.084 2.913-2.043L2.525 3.586z"
+                          clipRule="evenodd"
+                        />
+                      </g>
+                    </svg>
+                  )}
+                </button>
+              </Tooltip> */}
               <Tooltip content="Convert transactions to USD (daily close)">
                 <button className="btn btn-xs btn-ghost normal-case" onClick={() => conversionHandler()}>
                   {showConversion ? (
@@ -203,9 +234,9 @@ export default function RecordTable({
               </Tooltip>
             </div>
           </div>
-          <div>
-            <Table>
-              <Table.Head>
+          <div className="flex flex-col">
+            <Table className="text-gray-900 dark:text-gray-100">
+              <Table.Head className="bg-gray-100">
                 <Table.HeadCell>Date</Table.HeadCell>
                 <Table.HeadCell>Description</Table.HeadCell>
                 <Table.HeadCell>Ref</Table.HeadCell>

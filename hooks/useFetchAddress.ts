@@ -6,11 +6,6 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { useEffect, useState } from "react";
 import { UtlType, WorkType, classifyTransaction } from "../utils/SolanaClassify";
 
-interface FetchedTransactionType {
-  key: string;
-  txns: ParsedTransactionWithMeta[];
-}
-
 dayjs.extend(localizedFormat);
 dayjs.extend(relativeTime);
 
@@ -20,8 +15,6 @@ export default function useFetchAddress() {
   const [loadingText, setLoadingText] = useState("initializing...");
   const [currentPage, setCurrentPage] = useState(1);
   const [showMetadata, setShowMetadata] = useState(false);
-  const [metadataAnimation, setMetadataAnimation] = useState(false);
-  const [metadataAnimText, setMetadataAnimText] = useState("");
   const [showFees, setShowFees] = useState(false);
   const [showConversion, setShowConversion] = useState(false);
   const [showFailed, setShowFailed] = useState(false);
@@ -30,11 +23,12 @@ export default function useFetchAddress() {
   const [displayArray, setDisplayArray] = useState<WorkType[]>([]);
   const [totalPages, setTotalPages] = useState(0);
   const [currentTransaction, setCurrentTransaction] = useState(0);
-  const [fetchedTransactionDicts, setFetchedTransactionDicts] = useState<FetchedTransactionType[]>([]);
   const [fetchedTransactions, setFetchedTransactions] = useState<ParsedTransactionWithMeta[]>([]);
 
   const FETCH_LIMIT = 250;
-  const solana_rpc: string = process.env.SOLANA_RPC ? process.env.SOLANA_RPC : "https://necessary-wandering-flower.solana-mainnet.discover.quiknode.pro/d7339a265b1518217396ac5f2827114e5fee6424/";
+  const solana_rpc: string = process.env.SOLANA_RPC
+    ? process.env.SOLANA_RPC
+    : "https://necessary-wandering-flower.solana-mainnet.discover.quiknode.pro/d7339a265b1518217396ac5f2827114e5fee6424/";
   const connection = new Connection(solana_rpc);
 
   useEffect(() => {
@@ -50,8 +44,7 @@ export default function useFetchAddress() {
     setLoadingText(showMetadata ? "analyzing with metadata..." : "analyzing...");
 
     let txn: number = 0;
-    let findArray = fetchedTransactionDicts.filter((k) => k.key === keyIn).flatMap((t) => t.txns);
-    for await (const item of findArray) {
+    for await (const item of fetchedTransactions) {
       txn++;
 
       if (item) {
@@ -77,7 +70,9 @@ export default function useFetchAddress() {
         }
       }
 
-      setMetadataAnimText(Math.min(99, Math.round((txn / findArray.length) * 100)) + "%");
+      setLoadingText(
+        `classifying transactions... ${Math.min(99, Math.round((txn / fetchedTransactions.length) * 100))}%`
+      );
     }
 
     workingArray.sort((a, b) => (b.timestamp > a.timestamp ? 1 : b.timestamp < a.timestamp ? -1 : 0));
@@ -85,17 +80,13 @@ export default function useFetchAddress() {
   }
 
   async function toggleMetadata(keyIn: string): Promise<void> {
-    setShowMetadata(!showMetadata);
-    if (showMetadata && !loading && fetchedTransactions.length > 0) {
+    if (!loading && fetchedTransactions.length > 0) {
       setLoading(true);
-      setMetadataAnimation(true);
-      setMetadataAnimText("");
       setFullArray([]);
 
       await classifyArray(keyIn);
 
       setLoading(false);
-      setMetadataAnimation(false);
     }
   }
 
@@ -145,10 +136,11 @@ export default function useFetchAddress() {
     let workingArray: WorkType[] = [];
     setCurrentPage(1);
     setFetchedTransactions([]);
+    setFullArray([]);
     setLoading(true);
 
     const signatureBracket = await interpolateBlockSignatures(startDay, endDay);
-    console.log('interpolateBlockSignatures:', signatureBracket);
+    console.log("interpolateBlockSignatures:", signatureBracket);
     let tokenAccounts = await connection.getParsedTokenAccountsByOwner(new PublicKey(keyIn), {
       programId: token.TOKEN_PROGRAM_ID,
     });
@@ -182,7 +174,7 @@ export default function useFetchAddress() {
             let lastSig: string = signatures[signatures.length - 1].signature;
             let lastDay = dayjs.unix(signatures[signatures.length - 1].blockTime ?? 0);
             let firstLastDay = dayjs.unix(signatures[signatures.length - 1].blockTime ?? 0);
-  
+
             while (lastDay > startDay) {
               try {
                 let loopSigs = await connection.getSignaturesForAddress(new PublicKey(keyIn), {
@@ -192,8 +184,9 @@ export default function useFetchAddress() {
                 });
                 for await (const account of tokenAccounts.value) {
                   if (
-                    utl_api.content.flatMap((s: UtlType) => s.address).indexOf(account.account.data.parsed.info.mint) !==
-                    -1
+                    utl_api.content
+                      .flatMap((s: UtlType) => s.address)
+                      .indexOf(account.account.data.parsed.info.mint) !== -1
                   ) {
                     let fetched1 = (
                       await connection.getSignaturesForAddress(account.pubkey, {
@@ -207,11 +200,12 @@ export default function useFetchAddress() {
                     }
                   }
                 }
-  
+
                 if (loopSigs.length === 0) break;
-  
+
                 loopSigs = loopSigs.filter((x) => x !== undefined);
                 lastDay = dayjs.unix(loopSigs[loopSigs.length - 1].blockTime!);
+                console.log("day diff", firstLastDay.diff(lastDay, "hours"), firstLastDay.diff(startDay, "hours"));
                 setLoadingText(
                   `pre-fetch... ${Math.round((accountList.indexOf(account) / accountList.length) * 100)}% (${Math.min(
                     Math.round((firstLastDay.diff(lastDay, "hours") / firstLastDay.diff(startDay, "hours")) * 100),
@@ -259,7 +253,6 @@ export default function useFetchAddress() {
               fetchedTransactions.push(tx);
             }
           });
-          setFetchedTransactions(fetchedTransactions);
           y += FETCH_LIMIT;
         } catch (e) {
           console.log("fetching parsed transactions error ", e);
@@ -295,14 +288,9 @@ export default function useFetchAddress() {
         }
       }
 
-      const newTxns: FetchedTransactionType = {
-        key: keyIn,
-        txns: fetchedTransactions,
-      };
-      setFetchedTransactionDicts((prev) => [...prev, newTxns]);
+      setFetchedTransactions(fetchedTransactions);
       workingArray.sort((a, b) => (b.timestamp > a.timestamp ? 1 : b.timestamp < a.timestamp ? -1 : 0));
       setFullArray((prev) => [...prev, ...workingArray]);
-      setCurrentPage(1);
     }
     setLoading(false);
   }
@@ -326,8 +314,7 @@ export default function useFetchAddress() {
     const smallerIncrements = 25000;
     setLoadingText("optimizing retrieval...");
 
-    end_loop:
-    while (dayjs.unix(endBlockTime).diff(endDay, "hours") > 0) {
+    end_loop: while (dayjs.unix(endBlockTime).diff(endDay, "hours") > 0) {
       try {
         if (dayjs.unix(endBlockTime).diff(endDay, "hours") > 24) {
           topSlot -= Math.floor((biggerIncrements * dayjs.unix(endBlockTime).diff(endDay, "hours")) / 24);
@@ -373,8 +360,7 @@ export default function useFetchAddress() {
     let startBlockTime = endBlockTime;
     let startSlot = topSlot;
 
-    start_loop:
-    while (dayjs.unix(startBlockTime).diff(startDay, "hours") > 0 && startSlot != 38669748) {
+    start_loop: while (dayjs.unix(startBlockTime).diff(startDay, "hours") > 0 && startSlot != 38669748) {
       try {
         if (dayjs.unix(startBlockTime).diff(startDay, "hours") > 24) {
           startSlot -= Math.floor((biggerIncrements * 2 * dayjs.unix(startBlockTime).diff(startDay, "hours")) / 24);
@@ -430,10 +416,10 @@ export default function useFetchAddress() {
   }
 
   useEffect(() => {
-    console.log('useEffect fullArray', fullArray);
+    console.log("useEffect fullArray", fullArray);
     sliceDisplayArray(fullArray);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fullArray]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fullArray, showFees, showFailed]);
 
   return {
     perPage,
@@ -444,12 +430,12 @@ export default function useFetchAddress() {
     setCurrentPage,
     showMetadata,
     setShowMetadata,
-    metadataAnimation,
-    metadataAnimText,
     textFilter,
     setTextFilter,
     showFees,
     setShowFees,
+    showFailed,
+    setShowFailed,
     showConversion,
     fullArray,
     displayArray,
@@ -457,6 +443,6 @@ export default function useFetchAddress() {
     fetchedTransactions,
     fetchForAddress,
     toggleMetadata,
-    conversionHandler
+    conversionHandler,
   };
 }

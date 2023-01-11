@@ -1,5 +1,5 @@
-import { Alert, Badge, Button, DarkThemeToggle, Dropdown, Spinner, TextInput } from "flowbite-react";
-import { KeyboardEvent, useState } from "react";
+import { Alert, Badge, Button, DarkThemeToggle, Dropdown, Spinner, TextInput, Tooltip } from "flowbite-react";
+import { KeyboardEvent, useEffect, useState } from "react";
 import { FiAlertCircle, FiHelpCircle, FiSearch, FiSettings } from "react-icons/fi";
 import { HiLightningBolt, HiOutlineLightningBolt } from "react-icons/hi";
 import MyFooter from "../components/footer";
@@ -20,7 +20,6 @@ export default function Home() {
     showMetadata,
     setShowMetadata,
     fetchForAddress,
-    toggleMetadata,
     perPage,
     setPerPage,
     currentPage,
@@ -32,9 +31,17 @@ export default function Home() {
     setTextFilter,
     showFees,
     setShowFees,
+    showFailed,
+    setShowFailed,
     showConversion,
+    toggleMetadata,
     conversionHandler,
   } = useFetchAddress();
+
+  useEffect(() => {
+    toggleMetadata(address);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showMetadata]);
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -63,25 +70,32 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-800 dark:text-white">
-      <div className="flex items-center justify-center py-4">
-        <span className="text-4xl font-bold mr-8 dark:text-white">DeBooks</span>
+      <div className="flex items-center justify-center py-4 gap-16">
+        <span className="text-4xl font-bold dark:text-white">DeBooks</span>
         <Dropdown label={<FiSettings />} arrowIcon={false} color="gray">
           <Dropdown.Item>
-            <DarkThemeToggle />
+            <Tooltip content="Toggle Dark Mode" placement="left">
+              <DarkThemeToggle />
+            </Tooltip>
           </Dropdown.Item>
           <Dropdown.Item>
-            <button
-              className="rounded-lg p-2.5 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
-              type="button"
-              aria-label="Toggle metadata"
-              onClick={() => setShowMetadata(!showMetadata)}
+            <Tooltip
+              content={
+                showMetadata
+                  ? "Token Metadata is On(loading can be slower)"
+                  : "Token Metadata is Off(loading is faster)"
+              }
+              placement="left"
             >
-              {showMetadata ? (
-                <HiLightningBolt color="#a855f7" size={20} />
-              ) : (
-                <HiOutlineLightningBolt color="#a855f7" size={20} />
-              )}
-            </button>
+              <button
+                className="rounded-lg p-2.5 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+                type="button"
+                aria-label="Toggle metadata"
+                onClick={() => setShowMetadata(!showMetadata)}
+              >
+                {showMetadata ? <HiLightningBolt color="#7e22ce" size={20} /> : <HiOutlineLightningBolt size={20} />}
+              </button>
+            </Tooltip>
           </Dropdown.Item>
           <Dropdown.Item>
             <button
@@ -163,6 +177,8 @@ export default function Home() {
               setTextFilter={setTextFilter}
               showFees={showFees}
               setShowFees={setShowFees}
+              showFailed={showFailed}
+              setShowFailed={setShowFailed}
               showConversion={showConversion}
               conversionHandler={conversionHandler}
             />
