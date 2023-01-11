@@ -21,8 +21,10 @@ export default function Home() {
     setShowMetadata,
     fetchForAddress,
     toggleMetadata,
-    PER_PAGE,
+    perPage,
+    setPerPage,
     currentPage,
+    setCurrentPage,
     totalPages,
     displayArray,
     fullArray,
@@ -150,8 +152,10 @@ export default function Home() {
               keyIn={address}
               startDay={startDay}
               endDay={endDay}
-              PER_PAGE={PER_PAGE}
+              perPage={perPage}
+              setPerPage={setPerPage}
               currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
               totalPages={totalPages}
               displayArray={displayArray}
               fullArray={fullArray}

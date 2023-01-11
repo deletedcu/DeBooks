@@ -7,6 +7,7 @@ interface TokenType {
   name: string;
   uri: string;
   nft: boolean;
+  logo_uri: string;
 }
 
 export interface WorkType {
@@ -24,6 +25,7 @@ export interface WorkType {
   fee: number | null;
   mint: string;
   uri: string;
+  logo_uri: string;
 }
 
 export interface UtlType {
@@ -38,6 +40,9 @@ export interface UtlType {
   tags: string[];
   extensions: { string: string } | undefined;
 }
+
+const SOL_LOGO_URI =
+  "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png";
 
 //let sol_rpc = process.env.SOLANA_RPC? process.env.SOLANA_RPC : "";
 let connection: web3.Connection;
@@ -521,7 +526,7 @@ export async function classifyTransaction(
         const subacccontext = created ? "created " : "" + closed ? "closed " : "";
         if (amount != 0) {
           const direction = amount < 0 ? "Out: " : "In: ";
-          const new_line = {
+          const new_line: WorkType = {
             signature: item.transaction.signatures[0],
             key: keyIn,
             timestamp: item.blockTime ?? 0,
@@ -533,6 +538,7 @@ export async function classifyTransaction(
             mint: "So11111111111111111111111111111111111111112",
             token_name: "SOL",
             uri: "",
+            logo_uri: SOL_LOGO_URI,
             type: txn_type,
             account_keys: item.transaction.message.accountKeys.flatMap((k) => k.pubkey.toBase58()),
             description:
@@ -559,7 +565,7 @@ export async function classifyTransaction(
         const direction = tokenChange < 0 ? "Out: " : "In: ";
         //console.log("--> unique token ", tokenName.symbol? )
         const tokenName = await fetchTokenData([uniqueToken], utl, showMetadata);
-        const new_line = {
+        const new_line: WorkType = {
           signature: item.transaction.signatures[0],
           key: keyIn,
           timestamp: item.blockTime ?? 0,
@@ -571,6 +577,7 @@ export async function classifyTransaction(
           mint: uniqueToken,
           token_name: tokenName.name,
           uri: tokenName.uri,
+          logo_uri: tokenName.logo_uri,
           type: txn_type,
           account_keys: item.transaction.message.accountKeys.flatMap((k) => k.pubkey.toBase58()),
           description: customDescripton + txn_context + direction + tokenName.name,
@@ -598,7 +605,7 @@ export async function classifyTransaction(
       if (amount != 0) {
         const direction = amount < 0 ? "Out: " : "In: ";
 
-        const new_line = {
+        const new_line: WorkType = {
           signature: item.transaction.signatures[0],
           key: keyIn,
           timestamp: item.blockTime ?? 0,
@@ -610,6 +617,7 @@ export async function classifyTransaction(
           mint: "So11111111111111111111111111111111111111112",
           token_name: "SOL",
           uri: "",
+          logo_uri: SOL_LOGO_URI,
           type: txn_type,
           account_keys: item.transaction.message.accountKeys.flatMap((k) => k.pubkey.toBase58()),
           description: customDescripton + txn_context + direction + " SOL",
@@ -628,7 +636,7 @@ export async function classifyTransaction(
     if (feePayer === keyIn) {
       const failed_text = item.meta.err != null ? " Failed txn" : "";
 
-      const fee_expense = {
+      const fee_expense: WorkType = {
         signature: item.transaction.signatures[0],
         key: keyIn,
         timestamp: item.blockTime ?? 0,
@@ -640,6 +648,7 @@ export async function classifyTransaction(
         mint: "So11111111111111111111111111111111111111112",
         token_name: "SOL",
         uri: "",
+        logo_uri: SOL_LOGO_URI,
         type: "Fees",
         account_keys: item.transaction.message.accountKeys.flatMap((k) => k.pubkey.toBase58()),
         description: "Txn fees: " + customDescripton + fee_context + failed_text,
@@ -650,7 +659,7 @@ export async function classifyTransaction(
   } else {
     if (feePayer === keyIn) {
       //failed txn
-      const fee_expense = {
+      const fee_expense: WorkType = {
         signature: item.transaction.signatures[0],
         key: keyIn,
         timestamp: item.blockTime ?? 0,
@@ -662,6 +671,7 @@ export async function classifyTransaction(
         mint: "So11111111111111111111111111111111111111112",
         token_name: "SOL",
         uri: "",
+        logo_uri: SOL_LOGO_URI,
         type: "Fees",
         account_keys: item.transaction.message.accountKeys.flatMap((k) => k.pubkey.toBase58()),
         description: "Txn fees: failed",
@@ -673,7 +683,7 @@ export async function classifyTransaction(
 }
 
 async function fetchTokenData(mintsIn: string[], utl: UtlType[], showMetadata: boolean): Promise<TokenType> {
-  let namedToken = { mint: "", name: "Unknown Token ", uri: "", nft: false };
+  let namedToken: TokenType = { mint: "", name: "Unknown Token ", uri: "", nft: false, logo_uri: "" };
   if (mintsIn.length == 1) {
     if (showMetadata) {
       const existingIndex = fetchedList.flatMap((s) => s.mint).indexOf(mintsIn[0]);
@@ -690,11 +700,12 @@ async function fetchTokenData(mintsIn: string[], utl: UtlType[], showMetadata: b
           const nftnames = await metadata.getTokenMetadata(new web3.PublicKey(mintsIn[0]));
           if (nftnames) {
             if (nftnames?.name != "") {
-              const add_item = {
+              const add_item: TokenType = {
                 mint: mintsIn[0],
                 name: nftnames.name,
                 uri: nftnames.uri,
                 nft: true,
+                logo_uri: "",
               };
               namedToken = add_item;
               fetchedList.push(add_item);
@@ -703,11 +714,12 @@ async function fetchTokenData(mintsIn: string[], utl: UtlType[], showMetadata: b
               const response = await fetch(nftnames.uri);
               const data = await response.json();
               //already have image link here
-              const add_item = {
+              const add_item: TokenType = {
                 mint: mintsIn[0],
                 name: data.name,
                 uri: nftnames.uri,
                 nft: true,
+                logo_uri: "",
               };
               namedToken = add_item;
               fetchedList.push(add_item);
@@ -718,21 +730,24 @@ async function fetchTokenData(mintsIn: string[], utl: UtlType[], showMetadata: b
           console.log("ERROR1 - Could not find token name for: ", mintsIn[0]);
         }
       } else {
-        const add_item = {
+        const add_item: TokenType = {
           mint: mintsIn[0],
           name: utlToken.symbol,
           uri: "",
           nft: false,
+          logo_uri: utlToken.logoURI,
         };
         fetchedList.push(add_item);
         namedToken = add_item;
       }
     } else {
-      const add_item = {
+      const utlToken = utl.filter((item) => item.address == mintsIn[0])[0];
+      const add_item: TokenType = {
         mint: mintsIn[0],
-        name: "Unknown Token " + mintsIn[0].substring(0, 4),
+        name: utlToken ? utlToken.symbol : "Unknown Token " + mintsIn[0].substring(0, 4),
         uri: "",
         nft: false,
+        logo_uri: utlToken ? utlToken.logoURI : "",
       };
       namedToken = add_item;
     }
@@ -754,11 +769,12 @@ async function fetchTokenData(mintsIn: string[], utl: UtlType[], showMetadata: b
             //console.log(mintIn, nftnames)
             if (nftnames) {
               if (nftnames.name != "") {
-                const add_item = {
+                const add_item: TokenType = {
                   mint: mint,
                   name: nftnames.name,
                   uri: nftnames.uri,
                   nft: true,
+                  logo_uri: "",
                 };
                 fetchedList.push(add_item);
                 namedToken.name = namedToken.name + " " + nftnames.name;
@@ -766,11 +782,12 @@ async function fetchTokenData(mintsIn: string[], utl: UtlType[], showMetadata: b
               } else if (nftnames.symbol != "" && nftnames.uri != "") {
                 const response = await fetch(nftnames.uri);
                 const data = await response.json();
-                const add_item = {
+                const add_item: TokenType = {
                   mint: mint,
-                  name: "" + data.name,
+                  name: data.name,
                   uri: data.uri,
                   nft: true,
+                  logo_uri: "",
                 };
                 fetchedList.push(add_item);
                 namedToken.name = namedToken.name + " " + data.name;
@@ -781,11 +798,12 @@ async function fetchTokenData(mintsIn: string[], utl: UtlType[], showMetadata: b
             console.log("ERROR2 - Could not find token name for: ", mint);
           }
         } else {
-          const add_item = {
+          const add_item: TokenType = {
             mint: mint,
-            name: "" + utlToken.symbol,
+            name: utlToken.symbol,
             uri: "",
             nft: false,
+            logo_uri: utlToken.logoURI,
           };
           fetchedList.push(add_item);
           namedToken.name = namedToken.name + " " + utlToken.symbol;

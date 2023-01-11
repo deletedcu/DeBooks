@@ -15,6 +15,7 @@ dayjs.extend(localizedFormat);
 dayjs.extend(relativeTime);
 
 export default function useFetchAddress() {
+  const [perPage, setPerPage] = useState(10);
   const [loading, setLoading] = useState(false);
   const [loadingText, setLoadingText] = useState("initializing...");
   const [currentPage, setCurrentPage] = useState(1);
@@ -32,10 +33,14 @@ export default function useFetchAddress() {
   const [fetchedTransactionDicts, setFetchedTransactionDicts] = useState<FetchedTransactionType[]>([]);
   const [fetchedTransactions, setFetchedTransactions] = useState<ParsedTransactionWithMeta[]>([]);
 
-  const PER_PAGE = 10;
   const FETCH_LIMIT = 250;
   const solana_rpc: string = process.env.SOLANA_RPC ? process.env.SOLANA_RPC : "https://necessary-wandering-flower.solana-mainnet.discover.quiknode.pro/d7339a265b1518217396ac5f2827114e5fee6424/";
   const connection = new Connection(solana_rpc);
+
+  useEffect(() => {
+    setCurrentPage(1);
+    setTotalPages(Math.ceil(displayArray.length / perPage));
+  }, [perPage, displayArray]);
 
   async function classifyArray(keyIn: string): Promise<void> {
     let response = await fetch("https://token-list-api.solana.cloud/v1/list");
@@ -134,7 +139,6 @@ export default function useFetchAddress() {
 
     filteredArray.sort((a, b) => (b.timestamp > a.timestamp ? 1 : b.timestamp < a.timestamp ? -1 : 0));
     setDisplayArray(filteredArray);
-    setTotalPages(Math.ceil(filteredArray.length / PER_PAGE));
   }
 
   async function fetchForAddress(keyIn: string, startDay: Dayjs, endDay: Dayjs) {
@@ -207,7 +211,7 @@ export default function useFetchAddress() {
                 if (loopSigs.length === 0) break;
   
                 loopSigs = loopSigs.filter((x) => x !== undefined);
-                lastDay = dayjs.unix(loopSigs[loopSigs.length - 1].blockTime ?? 0);
+                lastDay = dayjs.unix(loopSigs[loopSigs.length - 1].blockTime!);
                 setLoadingText(
                   `pre-fetch... ${Math.round((accountList.indexOf(account) / accountList.length) * 100)}% (${Math.min(
                     Math.round((firstLastDay.diff(lastDay, "hours") / firstLastDay.diff(startDay, "hours")) * 100),
@@ -428,10 +432,12 @@ export default function useFetchAddress() {
   useEffect(() => {
     console.log('useEffect fullArray', fullArray);
     sliceDisplayArray(fullArray);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fullArray]);
 
   return {
-    PER_PAGE,
+    perPage,
+    setPerPage,
     loading,
     loadingText,
     currentPage,
