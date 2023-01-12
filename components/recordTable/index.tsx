@@ -121,14 +121,14 @@ export default function RecordTable({
                 <FiAlertCircle />
               </Tooltip>
             </div>
-            <div className="flex items-center justify-end gap-4">
+            <div className="inline-flex items-center justify-end gap-4">
               <TextInput
                 type="text"
                 placeholder="Search: e.g. Magic Eden..."
                 sizing="sm"
                 value={textFilter}
                 onChange={(e) => setTextFilter(e.target.value)}
-                className="input input-xs lg:max-w-[20rem] md:max-w-[16rem] max-w-[12rem]"
+                className="input input-xs lg:w-[20rem] md:w-[16rem] w-[12rem]"
               />
               <Tooltip content="Toggle Txn fees on/off">
                 <button className="btn btn-xs btn-ghost normal-case" onClick={() => setShowFees(!showFees)}>
@@ -249,7 +249,7 @@ export default function RecordTable({
                 </Table.Head>
                 <Table.Body className="divide-y">
                   {displayArray.slice(perPage * (currentPage - 1), perPage * currentPage).map((item, index) => (
-                    <Table.Row key={index} className="bg-white dark:bg-gray-800 dark:border-gray-700">
+                    <Table.Row key={index} className="dark:border-gray-700">
                       <Table.Cell>{dayjs.unix(item.timestamp).format("YYYY-MM-DD")}</Table.Cell>
                       <Table.Cell className="whitespace-nowrap">{item.description}</Table.Cell>
                       <Table.Cell>
