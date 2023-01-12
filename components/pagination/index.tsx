@@ -19,8 +19,8 @@ export default function Pagination({
   return (
     <>
       {totalPages > 0 && (
-        <div className="flex items-center gap-4 text-sm text-gray-900 dark:text-gray-100">
-          <div className="inline-flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-4 text-sm text-gray-900 dark:text-gray-100">
+          <div className="items-center gap-2 hidden sm:inline-flex">
             <span>Show</span>
             <select
               value={perPage}

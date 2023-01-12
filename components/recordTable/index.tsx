@@ -121,7 +121,7 @@ export default function RecordTable({
                 <FiAlertCircle />
               </Tooltip>
             </div>
-            <div className="inline-flex items-center justify-end gap-4">
+            <div className="flex items-center justify-end gap-4">
               <TextInput
                 type="text"
                 placeholder="Search: e.g. Magic Eden..."
@@ -315,21 +315,17 @@ export default function RecordTable({
             </div>
           ) : (
             <div className="flex justify-center flex-row">
-              <div className="min-w-[28rem]">
-                <Alert color="failure" icon={FiAlertCircle}>
-                  <span>No records for this period.</span>
-                </Alert>
-              </div>
+              <Alert color="failure" icon={FiAlertCircle}>
+                <span>No records for this period.</span>
+              </Alert>
             </div>
           )}
         </div>
       ) : (
         <div className="flex justify-center flex-row">
-          <div className="min-w-[28rem]">
-            <Alert color="failure" icon={FiAlertCircle}>
-              <span>No records for this period.</span>
-            </Alert>
-          </div>
+          <Alert color="failure" icon={FiAlertCircle}>
+            <span>No records for this period.</span>
+          </Alert>
         </div>
       )}
     </div>

@@ -10,7 +10,7 @@ import useFetchAddress from "../hooks/useFetchAddress";
 
 export default function Home() {
   const [address, setAddress] = useState("");
-  const [validKey, setValidKey] = useState(false);
+  const [validKey, setValidKey] = useState(true);
   const [startDay, setStartDay] = useState<string>(dayjs().subtract(7, "days").format("YYYY-MM-DD"));
   const [endDay, setEndDay] = useState<string>(dayjs().format("YYYY-MM-DD"));
 
@@ -74,86 +74,90 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-800 dark:text-white">
-      <div className="flex items-center justify-center py-4 gap-16">
-        <span className="text-4xl font-bold dark:text-white">DeBooks</span>
-        <Dropdown label={<FiSettings />} arrowIcon={false} color="gray">
-          <Dropdown.Item>
-            <Tooltip content="Toggle Dark Mode" placement="left">
-              <DarkThemeToggle />
-            </Tooltip>
-          </Dropdown.Item>
-          <Dropdown.Item>
-            <Tooltip
-              content={
-                showMetadata
-                  ? "Token Metadata is On(loading can be slower)"
-                  : "Token Metadata is Off(loading is faster)"
-              }
-              placement="left"
-            >
-              <button
-                className="rounded-lg p-2.5 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
-                type="button"
-                aria-label="Toggle metadata"
-                onClick={() => setShowMetadata(!showMetadata)}
-                disabled={loading}
+      <header className="flex justify-center">
+        <div className="flex items-center p-4 w-full sm:w-[24rem] sm:px-0">
+          <div className="flex-none w-14"></div>
+          <span className="grow text-center text-4xl font-bold dark:text-white">DeBooks</span>
+          <Dropdown label={<FiSettings />} arrowIcon={false} color="gray" className="flex-none">
+            <Dropdown.Item>
+              <Tooltip content="Toggle Dark Mode" placement="left">
+                <DarkThemeToggle />
+              </Tooltip>
+            </Dropdown.Item>
+            <Dropdown.Item>
+              <Tooltip
+                content={
+                  showMetadata
+                    ? "Token Metadata is On(loading can be slower)"
+                    : "Token Metadata is Off(loading is faster)"
+                }
+                placement="left"
               >
-                {showMetadata ? <HiLightningBolt color="#7e22ce" size={20} /> : <HiOutlineLightningBolt size={20} />}
-              </button>
-            </Tooltip>
-          </Dropdown.Item>
-          <Dropdown.Item>
-            <Tooltip content="Help" placement="left">
-              <button
-                className="rounded-lg p-2.5 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
-                type="button"
-                aria-label="Help"
-                onClick={() => window.open("https://curest0x-organization.gitbook.io/debooks/")}
-              >
-                <FiHelpCircle size={20} />
-              </button>
-            </Tooltip>
-          </Dropdown.Item>
-        </Dropdown>
-      </div>
+                <button
+                  className="rounded-lg p-2.5 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+                  type="button"
+                  aria-label="Toggle metadata"
+                  onClick={() => setShowMetadata(!showMetadata)}
+                  disabled={loading}
+                >
+                  {showMetadata ? <HiLightningBolt color="#7e22ce" size={20} /> : <HiOutlineLightningBolt size={20} />}
+                </button>
+              </Tooltip>
+            </Dropdown.Item>
+            <Dropdown.Item>
+              <Tooltip content="Help" placement="left">
+                <button
+                  className="rounded-lg p-2.5 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+                  type="button"
+                  aria-label="Help"
+                  onClick={() => window.open("https://curest0x-organization.gitbook.io/debooks/")}
+                >
+                  <FiHelpCircle size={20} />
+                </button>
+              </Tooltip>
+            </Dropdown.Item>
+          </Dropdown>
+        </div>
+      </header>
       <main className="flex flex-col flex-1 items-center w-full max-w-7xl mx-auto my-0 px-4 py-0">
         <TextInput
           type="text"
           placeholder="enter account address e.g. DeDao...uw2r"
-          className="w-96"
+          className="w-full sm:w-96"
           value={address}
           onKeyDown={handleKeyDown}
           onChange={(e) => setAddress(e.target.value)}
           disabled={loading}
         />
         <p className="mt-4 mb-2 text-xl font-semibold">Transaction Statement</p>
-        <div className="flex items-center">
+        <div className="flex flex-wrap items-center">
           <span className="mr-2">For the period</span>
-          <TextInput
-            type="date"
-            value={startDay}
-            min="2020-10-02"
-            max={endDay}
-            onChange={(e) => setStartDay(e.target.value)}
-            disabled={loading}
-          />
-          <span className="mx-2">To</span>
-          <TextInput
-            type="date"
-            value={endDay}
-            min={startDay}
-            max={new Date().toJSON().slice(0, 10)}
-            onChange={(e) => setEndDay(e.target.value)}
-            disabled={loading}
-          />
-          <Button
-            color="gray"
-            className="ml-4"
-            disabled={!validKey || loading}
-            onClick={async () => await checkKey(address, true)}
-          >
-            <FiSearch />
-          </Button>
+          <div className="inline-flex items-center gap-2">
+            <TextInput
+              type="date"
+              value={startDay}
+              min="2020-10-02"
+              max={endDay}
+              onChange={(e) => setStartDay(e.target.value)}
+              disabled={loading}
+            />
+            <span>To</span>
+            <TextInput
+              type="date"
+              value={endDay}
+              min={startDay}
+              max={new Date().toJSON().slice(0, 10)}
+              onChange={(e) => setEndDay(e.target.value)}
+              disabled={loading}
+            />
+            <Button
+              color="gray"
+              disabled={!validKey || loading}
+              onClick={async () => await checkKey(address, true)}
+            >
+              <FiSearch />
+            </Button>
+          </div>
         </div>
         <div className="flex justify-center mt-4 w-full xl:w-11/12">
           {loading ? (
