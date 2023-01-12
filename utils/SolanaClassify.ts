@@ -44,9 +44,7 @@ export interface UtlType {
 const SOL_LOGO_URI =
   "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png";
 
-//let sol_rpc = process.env.SOLANA_RPC? process.env.SOLANA_RPC : "";
 let connection: web3.Connection;
-//let connection = new web3.Connection(sol_rpc);
 let fetchedList: TokenType[] = [];
 
 export async function classifyTransaction(
@@ -101,8 +99,8 @@ export async function classifyTransaction(
           txn_context = " Listed ";
           fee_context = " Listed ";
         } else if (
-          item.meta.logMessages[12].includes(" ExecuteSale") ||
-          item.meta.logMessages[14].includes(" ExecuteSale")
+          item.meta.logMessages[12]?.includes(" ExecuteSale") ||
+          item.meta.logMessages[14]?.includes(" ExecuteSale")
         ) {
           txn_context = " Sale ";
           fee_context = " Sale ";
@@ -419,6 +417,7 @@ export async function classifyTransaction(
           const owner = await connection.getAccountInfoAndContext(
             item.transaction.message.accountKeys[token.accountIndex].pubkey
           );
+          await sleep(150);
           if (owner.value?.owner.toBase58() == "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA") {
             //SPL token
             //get ultimate owner
@@ -439,6 +438,7 @@ export async function classifyTransaction(
           const owner = await connection.getAccountInfoAndContext(
             item.transaction.message.accountKeys[token.accountIndex].pubkey
           );
+          await sleep(150);
           if (owner.value?.owner.toBase58() == "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA") {
             //SPL token
             //get ultimate owner
@@ -815,3 +815,7 @@ async function fetchTokenData(mintsIn: string[], utl: UtlType[], showMetadata: b
 
   return namedToken;
 }
+
+const sleep = (milliseconds: number) => {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+};

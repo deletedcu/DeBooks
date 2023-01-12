@@ -33,10 +33,10 @@ export default function useFetchAddress() {
   const [fetchedTransactions, setFetchedTransactions] = useState<ParsedTransactionWithMeta[]>([]);
   const [storedCoinGeckoData, setStoredCoinGeckoData] = useState<PriceType[]>(priceData);
 
-  const FETCH_LIMIT = 250;
-  const solana_rpc: string = process.env.SOLANA_RPC
-    ? process.env.SOLANA_RPC
-    : "https://necessary-wandering-flower.solana-mainnet.discover.quiknode.pro/d7339a265b1518217396ac5f2827114e5fee6424/";
+  const FETCH_LIMIT = 200;
+  const solana_rpc: string = process.env.NEXT_PUBLIC_SOLANA_RPC
+    ? process.env.NEXT_PUBLIC_SOLANA_RPC
+    : "https://api.mainnect-beta.solana.com";
   const connection = new Connection(solana_rpc);
 
   useEffect(() => {
@@ -84,7 +84,7 @@ export default function useFetchAddress() {
     }
 
     workingArray.sort((a, b) => (b.timestamp > a.timestamp ? 1 : b.timestamp < a.timestamp ? -1 : 0));
-    setFullArray((prev) => [...prev, ...workingArray]);
+    setFullArray(workingArray);
   }
 
   async function toggleMetadata(keyIn: string): Promise<void> {
@@ -142,9 +142,12 @@ export default function useFetchAddress() {
 
   async function fetchForAddress(keyIn: string, startDay: Dayjs, endDay: Dayjs) {
     let workingArray: WorkType[] = [];
+    let workingTransactions: ParsedTransactionWithMeta[] = [];
+    setShowConversion(false);
     setCurrentPage(1);
     setFetchedTransactions([]);
     setFullArray([]);
+    setDisplayArray([]);
     setLoading(true);
 
     const signatureBracket = await interpolateBlockSignatures(startDay, endDay);
@@ -165,9 +168,8 @@ export default function useFetchAddress() {
     setLoadingText("pre-fetching...");
 
     let position = 0;
-    let batchSize = 200;
     while (position < accountList.length) {
-      const itemsForBatch = accountList.slice(position, position + batchSize);
+      const itemsForBatch = accountList.slice(position, position + FETCH_LIMIT);
       await Promise.all(
         itemsForBatch.map(async (account) => {
           setLoadingText(`pre-fetching... ${Math.round((accountList.indexOf(account) / accountList.length) * 100)}%`);
@@ -176,6 +178,7 @@ export default function useFetchAddress() {
             before: signatureBracket[1],
             until: signatureBracket[0],
           });
+          await sleep(150);
           if (fetched.length > 0) {
             signatures.push(...fetched);
 
@@ -189,6 +192,7 @@ export default function useFetchAddress() {
                   before: lastSig,
                   until: signatureBracket[0],
                 });
+                await sleep(150);
                 for await (const account of tokenAccounts.value) {
                   if (
                     utl_api.content
@@ -205,6 +209,7 @@ export default function useFetchAddress() {
                     if (fetched1) {
                       loopSigs.push(fetched1);
                     }
+                    await sleep(150);
                   }
                 }
 
@@ -221,7 +226,7 @@ export default function useFetchAddress() {
           }
         })
       );
-      position += batchSize;
+      position += FETCH_LIMIT;
     }
 
     // Get all signatures, remove duplicates and undefined.
@@ -238,29 +243,30 @@ export default function useFetchAddress() {
       let reformatArray = result.map((x) => x.signature);
 
       // Fetching parsed transactions
-      let y = 0;
+      let y = 0, yIncrements = 20;
       while (y < reformatArray.length) {
         try {
           setLoadingText(
             y > 0 ? `fetching data... ${Math.round((y / reformatArray.length) * 100)}%` : "fetching data..."
           );
           let arr = await connection.getParsedTransactions(
-            reformatArray.slice(y, Math.min(y + FETCH_LIMIT, reformatArray.length)),
+            reformatArray.slice(y, Math.min(y + yIncrements, reformatArray.length)),
             { maxSupportedTransactionVersion: 1 }
           );
+          await sleep(150);
           arr.forEach((tx) => {
             if (tx) {
-              fetchedTransactions.push(tx);
+              workingTransactions.push(tx);
             }
           });
-          y += FETCH_LIMIT;
+          y += yIncrements;
         } catch (e) {
           console.log("fetching parsed transactions error ", e);
         }
       }
 
       let curTxn = 0;
-      for await (const item of fetchedTransactions) {
+      for await (const item of workingTransactions) {
         curTxn++;
 
         if (item) {
@@ -288,14 +294,14 @@ export default function useFetchAddress() {
 
         setLoadingText(
           `${showMetadata ? "analyzing with metadata..." : "analyzing..."} ${Math.round(
-            (curTxn / fetchedTransactions.length) * 100
+            (curTxn / workingTransactions.length) * 100
           )}%`
         );
       }
 
-      setFetchedTransactions(fetchedTransactions);
+      setFetchedTransactions(workingTransactions);
       workingArray.sort((a, b) => (b.timestamp > a.timestamp ? 1 : b.timestamp < a.timestamp ? -1 : 0));
-      setFullArray((prev) => [...prev, ...workingArray]);
+      setFullArray(workingArray);
     }
     setLoading(false);
   }
@@ -478,6 +484,7 @@ export default function useFetchAddress() {
         } else {
           item.usd_amount = (item.amount ?? 0) * filteredData[0].usd;
         }
+        setStoredCoinGeckoData(storedCoinGeckoData);
       } else {
         item.usd_amount = 0;
       }
@@ -488,6 +495,7 @@ export default function useFetchAddress() {
   }
 
   useEffect(() => {
+    console.log("useEffect fullArray", fullArray);
     sliceDisplayArray(fullArray);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fullArray, showFees, showFailed, textFilter]);

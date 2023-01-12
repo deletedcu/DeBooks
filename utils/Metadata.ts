@@ -28,7 +28,7 @@ export async function getTokenMetadata(token_address: PublicKey) {
         },
       ],
     };
-    const sol_rpc = process.env.SOLANA_RPC ? process.env.SOLANA_RPC : "";
+    const sol_rpc = process.env.NEXT_PUBLIC_SOLANA_RPC ? process.env.NEXT_PUBLIC_SOLANA_RPC : "";
 
     const metadata_res = await fetch(sol_rpc, {
       method: "POST",
@@ -52,7 +52,7 @@ export async function getTokenMetadata(token_address: PublicKey) {
       return metadata.data;
     }
   } catch (e) {
-    console.log(e);
+    console.log("getTokenMetadata error", e);
   }
 }
 export async function getTokensMetadata(token_addresses: PublicKey[]) {
@@ -74,7 +74,7 @@ export async function getTokensMetadata(token_addresses: PublicKey[]) {
           },
         ],
       };
-      const sol_rpc = process.env.SOLANA_RPC ? process.env.SOLANA_RPC : "";
+      const sol_rpc = process.env.NEXT_PUBLIC_SOLANA_RPC ? process.env.NEXT_PUBLIC_SOLANA_RPC : "";
       const metadata_res = await fetch(sol_rpc, {
         method: "POST",
         headers: {

@@ -1,12 +1,12 @@
-import { Alert, Badge, Button, DarkThemeToggle, Dropdown, Spinner, TextInput, Tooltip } from "flowbite-react";
+import { PublicKey } from "@solana/web3.js";
+import dayjs from "dayjs";
+import { Alert, Button, DarkThemeToggle, Dropdown, Spinner, TextInput, Tooltip } from "flowbite-react";
 import { KeyboardEvent, useEffect, useState } from "react";
 import { FiAlertCircle, FiHelpCircle, FiSearch, FiSettings } from "react-icons/fi";
 import { HiLightningBolt, HiOutlineLightningBolt } from "react-icons/hi";
 import MyFooter from "../components/footer";
-import useFetchAddress from "../hooks/useFetchAddress";
-import { PublicKey } from "@solana/web3.js";
-import dayjs from "dayjs";
 import RecordTable from "../components/recordTable";
+import useFetchAddress from "../hooks/useFetchAddress";
 
 export default function Home() {
   const [address, setAddress] = useState("");
@@ -66,7 +66,10 @@ export default function Home() {
       } else {
         setValidKey(false);
       }
-    } catch (e) {}
+    } catch (e) {
+      console.log("checkKey error", e);
+      setValidKey(false);
+    }
   }
 
   return (
@@ -152,7 +155,7 @@ export default function Home() {
             <FiSearch />
           </Button>
         </div>
-        <div className="flex justify-center mt-4 w-full lg:w-4/5">
+        <div className="flex justify-center mt-4 w-full xl:w-11/12">
           {loading ? (
             <Alert>
               <Spinner size="sm" />
