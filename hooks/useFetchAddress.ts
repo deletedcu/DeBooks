@@ -469,6 +469,7 @@ export default function useFetchAddress() {
               "/history?date=" +
               dayjs.unix(item.timestamp).format("DD-MM-YYYY");
             let response = await fetchAndRetryIfNecessary(() => fetch(req));
+            await sleep(1500);
             let data = await response.json();
 
             let new_value: PriceType = {

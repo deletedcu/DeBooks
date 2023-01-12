@@ -2,10 +2,11 @@
 import dayjs from "dayjs";
 import { Alert, Table, TextInput, Tooltip } from "flowbite-react";
 import Link from "next/link";
-import { FiAlertCircle } from "react-icons/fi";
+import { FiAlertCircle, FiClock } from "react-icons/fi";
 import { csvGenerator } from "../../utils/CsvGenerator";
 import { WorkType } from "../../utils/SolanaClassify";
 import Pagination from "../pagination";
+import { useState } from "react";
 
 export default function RecordTable({
   keyIn,
@@ -48,6 +49,8 @@ export default function RecordTable({
   setShowConversion: (a: boolean) => void;
   converting: boolean;
 }) {
+  const [isUTC, setIsUTC] = useState(true);
+
   const downloadHandler = () => {
     let filename = `debooks_${keyIn}_${startDay}_${endDay}.csv`;
 
@@ -135,7 +138,7 @@ export default function RecordTable({
                   {showFees ? (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 stroke-transparent fill-purple-700"
+                      className="h-6 w-6 stroke-transparent fill-purple-700 dark:fill-purple-500"
                       viewBox="0 0 20 20"
                     >
                       <path
@@ -147,7 +150,7 @@ export default function RecordTable({
                   ) : (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 stroke-current fill-transparent"
+                      className="h-6 w-6 stroke-current fill-transparent"
                       viewBox="0 0 24 24"
                       strokeWidth="2"
                     >
@@ -163,7 +166,7 @@ export default function RecordTable({
               {/* <Tooltip content="Toggle failed Txns on/off">
                 <button className="btn btn-xs btn-ghost normal-case" onClick={() => setShowFailed(!showFailed)}>
                   {showFailed ? (
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" className="h-5 w-5 fill-purple-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" className="h-6 w-6 fill-purple-700 dark:fill-purple-500">
                       <g>
                         <path d="M11.28 5.47a.75.75 0 010 1.06l-4 4a.75.75 0 01-1.06 0l-2-2a.75.75 0 011.06-1.06l1.47 1.47 3.47-3.47a.75.75 0 011.06 0z" />
                         <path
@@ -174,7 +177,7 @@ export default function RecordTable({
                       </g>
                     </svg>
                   ) : (
-                    <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 fill-current">
+                    <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 fill-current">
                       <g>
                         <path d="M8.74.213a2.25 2.25 0 00-1.48 0L6.035.64a.75.75 0 00.493 1.417l1.226-.427a.75.75 0 01.493 0l4.75 1.653a.75.75 0 01.504.708v4.01c0 .334-.044.661-.127.98a.75.75 0 101.453.374C14.938 8.922 15 8.47 15 8V3.991a2.25 2.25 0 00-1.51-2.125L8.74.213z" />
                         <path
@@ -192,7 +195,7 @@ export default function RecordTable({
                   {showConversion ? (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 stroke-transparent fill-purple-700"
+                      className="h-6 w-6 stroke-transparent fill-purple-700 dark:fill-purple-500"
                       viewBox="0 0 20 20"
                     >
                       <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
@@ -205,7 +208,7 @@ export default function RecordTable({
                   ) : (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 stroke-current fill-transparent"
+                      className="h-6 w-6 stroke-current fill-transparent"
                       viewBox="0 0 24 24"
                       strokeWidth="2"
                     >
@@ -222,7 +225,7 @@ export default function RecordTable({
                 <button className="btn btn-xs btn-ghost normal-case" onClick={downloadHandler}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 stroke-current fill-transparent"
+                    className="h-6 w-6 stroke-current fill-transparent"
                     viewBox="0 0 24 24"
                     strokeWidth="2"
                   >
@@ -239,20 +242,28 @@ export default function RecordTable({
           {displayArray.length > 0 ? (
             <div className="flex flex-col">
               <Table className="text-gray-900 dark:text-gray-100">
-                <Table.Head className="bg-gray-100">
-                  <Table.HeadCell>Date</Table.HeadCell>
-                  <Table.HeadCell>Description</Table.HeadCell>
-                  <Table.HeadCell>Ref</Table.HeadCell>
-                  <Table.HeadCell>Change Amount</Table.HeadCell>
-                  {showConversion && <Table.HeadCell>USD</Table.HeadCell>}
-                  <Table.HeadCell>Token</Table.HeadCell>
+                <Table.Head className="bg-gray-100 whitespace-nowrap">
+                  <Table.HeadCell className="td-padding">
+                    <button onClick={() => setIsUTC(!isUTC)}>
+                      <div className="inline-flex text-xs uppercase font-bold">
+                        Date{isUTC ? "(UTC)" : <FiClock size={12} color="#0ea5e9" className="ml-1" />}
+                      </div>
+                    </button>
+                  </Table.HeadCell>
+                  <Table.HeadCell className="td-padding">Description</Table.HeadCell>
+                  <Table.HeadCell className="td-padding">Ref</Table.HeadCell>
+                  <Table.HeadCell className="td-padding">Change Amount</Table.HeadCell>
+                  {showConversion && <Table.HeadCell className="td-padding">USD</Table.HeadCell>}
+                  <Table.HeadCell className="td-padding">Token</Table.HeadCell>
                 </Table.Head>
                 <Table.Body className="divide-y">
                   {displayArray.slice(perPage * (currentPage - 1), perPage * currentPage).map((item, index) => (
-                    <Table.Row key={index} className="dark:border-gray-700">
-                      <Table.Cell>{dayjs.unix(item.timestamp).format("YYYY-MM-DD")}</Table.Cell>
-                      <Table.Cell className="whitespace-nowrap">{item.description}</Table.Cell>
-                      <Table.Cell>
+                    <Table.Row key={index} className="dark:border-gray-700 whitespace-nowrap">
+                      <Table.Cell className="td-padding">
+                        {isUTC ? dayjs.unix(item.timestamp).format("YYYY-MM-DD") : dayjs.unix(item.timestamp).fromNow()}
+                      </Table.Cell>
+                      <Table.Cell className="td-padding">{item.description}</Table.Cell>
+                      <Table.Cell className="td-padding">
                         <Link
                           href={`https://solscan.io/tx/${item.signature}`}
                           target="_blank"
@@ -261,26 +272,33 @@ export default function RecordTable({
                           {item.signature.substring(0, 4)}...
                         </Link>
                       </Table.Cell>
-                      <Table.Cell>
+                      <Table.Cell className="td-padding">
                         <span className={item.amount! >= 0 ? "text-green-500" : "text-red-500"}>
-                          {item.amount! > 0 && "+"}
+                          {item.amount! >= 0 && "+"}
                           {item.amount?.toLocaleString("en-US", { maximumFractionDigits: 10 })}
                         </span>
                       </Table.Cell>
                       {showConversion && (
-                        <Table.Cell>
+                        <Table.Cell className="td-padding">
                           {converting ? (
                             <progress className="progress w-[2rem]" />
                           ) : (
                             <span className={item.usd_amount! >= 0 ? "text-green-500" : "text-red-500"}>
-                              {item.usd_amount! > 0 && "+"}
-                              {item.usd_amount?.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 4 })}
+                              {item.usd_amount! >= 0 && "+"}
+                              {item.usd_amount?.toLocaleString("en-US", {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 4,
+                              })}
                             </span>
                           )}
                         </Table.Cell>
                       )}
-                      <Table.Cell>
-                        <Link href={`https://solscan.io/token/${item.mint}`} target="_blank" className="hover:underline">
+                      <Table.Cell className="td-padding">
+                        <Link
+                          href={`https://solscan.io/token/${item.mint}`}
+                          target="_blank"
+                          className="hover:underline"
+                        >
                           <div className="flex items-center gap-2">
                             {item.logo_uri ? (
                               <img
@@ -295,7 +313,7 @@ export default function RecordTable({
                                 <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372zm5.6-532.7c53 0 89 33.8 93 83.4.3 4.2 3.8 7.4 8 7.4h56.7c2.6 0 4.7-2.1 4.7-4.7 0-86.7-68.4-147.4-162.7-147.4C407.4 290 344 364.2 344 486.8v52.3C344 660.8 407.4 734 517.3 734c94 0 162.7-58.8 162.7-141.4 0-2.6-2.1-4.7-4.7-4.7h-56.8c-4.2 0-7.6 3.2-8 7.3-4.2 46.1-40.1 77.8-93 77.8-65.3 0-102.1-47.9-102.1-133.6v-52.6c.1-87 37-135.5 102.2-135.5z"></path>
                               </svg>
                             )}
-                            <span className="truncate">{item.token_name}</span>
+                            <span>{item.token_name}</span>
                           </div>
                         </Link>
                       </Table.Cell>
