@@ -152,6 +152,10 @@ export default function useFetchAddress() {
 
     const signatureBracket = await interpolateBlockSignatures(startDay, endDay);
     console.log("interpolateBlockSignatures:", signatureBracket);
+    if (signatureBracket[0] === "" || signatureBracket[1] === "") {
+      setLoading(false);
+      return;
+    }
     let tokenAccounts = await connection.getParsedTokenAccountsByOwner(new PublicKey(keyIn), {
       programId: token.TOKEN_PROGRAM_ID,
     });
