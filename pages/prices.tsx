@@ -69,6 +69,7 @@ export default function Prices() {
         const item: PriceType = {
           id: coinId,
           date: dayjs.unix(Number(key)).format("DD-MM-YYYY"),
+          // @ts-ignore
           usd: Number(value["v"][0].toFixed(10)),
         };
         result.push(item);
