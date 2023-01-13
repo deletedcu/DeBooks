@@ -140,15 +140,6 @@ export default function useFetchAddress() {
     setDisplayArray(filteredArray);
   }
 
-  async function getSignaturesAndRetryIfNecessary(callAPIFn: Function): Promise<ConfirmedSignatureInfo[]> {
-    const response = await callAPIFn();
-    if (response.status == "429") {
-      await sleep(600);
-      return getSignaturesAndRetryIfNecessary(callAPIFn);
-    }
-    return response;
-  }
-
   async function fetchForAddress(keyIn: string, startDay: Dayjs, endDay: Dayjs) {
     let workingArray: WorkType[] = [];
     let workingTransactions: ParsedTransactionWithMeta[] = [];
@@ -182,11 +173,11 @@ export default function useFetchAddress() {
       await Promise.all(
         itemsForBatch.map(async (account) => {
           setLoadingText(`pre-fetching... ${Math.round((accountList.indexOf(account) / accountList.length) * 100)}%`);
-          let fetched = await getSignaturesAndRetryIfNecessary(() => connection.getSignaturesForAddress(account, {
+          let fetched = await connection.getSignaturesForAddress(account, {
             limit: FETCH_LIMIT,
             before: signatureBracket[1],
             until: signatureBracket[0],
-          }));
+          });
           // await sleep(500);
 
           if (fetched.length > 0) {
@@ -197,11 +188,11 @@ export default function useFetchAddress() {
 
             while (lastDay > startDay) {
               try {
-                let loopSigs = await getSignaturesAndRetryIfNecessary(() => connection.getSignaturesForAddress(new PublicKey(keyIn), {
+                let loopSigs = await connection.getSignaturesForAddress(new PublicKey(keyIn), {
                   limit: FETCH_LIMIT,
                   before: lastSig,
                   until: signatureBracket[0],
-                }));
+                });
                 
                 // for await (const account of tokenAccounts.value) {
                 //   if (
@@ -433,16 +424,6 @@ export default function useFetchAddress() {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
   };
 
-  async function fetchAndRetryIfNecessary(callAPIFn: Function): Promise<Response> {
-    const response = await callAPIFn();
-    //console.log(response)
-    if (response.status == "429") {
-      await sleep(10000);
-      return fetchAndRetryIfNecessary(callAPIFn);
-    }
-    return response;
-  }
-
   async function convertTransactions(): Promise<void> {
     let utl_api: UtlType[] = [];
     try {
@@ -476,8 +457,7 @@ export default function useFetchAddress() {
               utlToken.extensions.coingeckoId +
               "/history?date=" +
               dayjs.unix(item.timestamp).format("DD-MM-YYYY");
-            let response = await fetchAndRetryIfNecessary(() => fetch(req));
-            // await sleep(1500);
+            let response = await fetch(req);
             let data = await response.json();
 
             let new_value: PriceType = {

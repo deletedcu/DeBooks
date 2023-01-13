@@ -1,7 +1,7 @@
 import dayjs, { Dayjs } from "dayjs";
 import { Alert, Button, Spinner, Table, TextInput } from "flowbite-react";
 import { useState } from "react";
-import { FiSearch } from "react-icons/fi";
+import { FiSave, FiSearch, FiUmbrella } from "react-icons/fi";
 import dummyData from "../utils/dummy.json";
 
 interface PriceType {
@@ -29,15 +29,51 @@ export default function Prices() {
     }
   }
 
+  async function fetchCoinGeckoApis(coinId: string, startDay: Dayjs, endDay: Dayjs): Promise<PriceType[]> {
+    let result: PriceType[] = [];
+    let day = startDay;
+    let url = "https://api.coingecko.com/api/v3/coins/" + coinId + "/history";
+    while (day <= endDay) {
+      try {
+        const reqUrl = `${url}?date=${day.format("DD-MM-YYYY")}`;
+        const response = await fetch(reqUrl);
+        const data = await response.json();
+
+        const item: PriceType = {
+          id: coinId,
+          date: day.format("DD-MM-YYYY"),
+          usd: Number(data.market_data.current_price.usd.toFixed(10))
+        }
+
+        result.push(item);
+        day = day.add(1, "day");
+      } catch (e) {
+        console.log(e);
+        console.log(result);
+        await sleep(60000);
+      }
+    }
+    return result;
+  }
+
+  const sleep = (milliseconds: number) => {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+  };
+
   function parseData() {
     let result: PriceType[] = [];
+    let dates: string[] = [];
     for (const [key, value] of Object.entries(dummyData)) {
-      const item: PriceType = {
-        id: coinId,
-        date: dayjs.unix(Number(key)).format("DD-MM-YYYY"),
-        usd: Number(value["v"][0].toFixed(10)),
-      };
-      result.push(item);
+      const date = dayjs.unix(Number(key)).format("DD-MM-YYYY");
+      if (dates.indexOf(date) === -1) {
+        const item: PriceType = {
+          id: coinId,
+          date: dayjs.unix(Number(key)).format("DD-MM-YYYY"),
+          usd: Number(value["v"][0].toFixed(10)),
+        };
+        result.push(item);
+        dates.push(date);
+      }
     }
     return result;
   }
@@ -49,6 +85,14 @@ export default function Prices() {
   function generateHandler() {
     setLoading(true);
     const result = parseData();
+    console.log(result);
+    setPrices(result);
+    setLoading(false);
+  }
+
+  async function coingeckoHandler() {
+    setLoading(true);
+    const result = await fetchCoinGeckoApis(coinId, dayjs(startDate), dayjs(endDate));
     console.log(result);
     setPrices(result);
     setLoading(false);
@@ -93,11 +137,16 @@ export default function Prices() {
               onChange={(e) => setEndDate(e.target.value)}
               disabled={loading}
             />
+          </div>
+          <div className="inline-flex items-center gap-2">
             <Button color="gray" onClick={async () => searchHandler()}>
-              <FiSearch />
+              <FiUmbrella />
             </Button>
             <Button disabled={loading} onClick={async () => generateHandler()}>
               <FiSearch />
+            </Button>
+            <Button disabled={loading} onClick={async () => coingeckoHandler()}>
+              <FiSave />
             </Button>
           </div>
         </div>
