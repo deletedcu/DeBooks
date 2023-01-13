@@ -5,7 +5,7 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useEffect, useState } from "react";
 import { UtlType, WorkType, classifyTransaction } from "../utils/SolanaClassify";
-import priceData from "./wrappedSolana.json";
+import priceData from "./prices.json";
 
 dayjs.extend(localizedFormat);
 dayjs.extend(relativeTime);
@@ -140,6 +140,15 @@ export default function useFetchAddress() {
     setDisplayArray(filteredArray);
   }
 
+  async function getSignaturesAndRetryIfNecessary(callAPIFn: Function): Promise<ConfirmedSignatureInfo[]> {
+    const response = await callAPIFn();
+    if (response.status == "429") {
+      await sleep(600);
+      return getSignaturesAndRetryIfNecessary(callAPIFn);
+    }
+    return response;
+  }
+
   async function fetchForAddress(keyIn: string, startDay: Dayjs, endDay: Dayjs) {
     let workingArray: WorkType[] = [];
     let workingTransactions: ParsedTransactionWithMeta[] = [];
@@ -167,18 +176,19 @@ export default function useFetchAddress() {
     let signatures: ConfirmedSignatureInfo[] = [];
     setLoadingText("pre-fetching...");
 
-    let position = 0;
+    let position = 0, positionIncrements = 10;
     while (position < accountList.length) {
-      const itemsForBatch = accountList.slice(position, position + FETCH_LIMIT);
+      const itemsForBatch = accountList.slice(position, position + positionIncrements);
       await Promise.all(
         itemsForBatch.map(async (account) => {
           setLoadingText(`pre-fetching... ${Math.round((accountList.indexOf(account) / accountList.length) * 100)}%`);
-          let fetched = await connection.getSignaturesForAddress(account, {
+          let fetched = await getSignaturesAndRetryIfNecessary(() => connection.getSignaturesForAddress(account, {
             limit: FETCH_LIMIT,
             before: signatureBracket[1],
             until: signatureBracket[0],
-          });
-          await sleep(150);
+          }));
+          // await sleep(500);
+
           if (fetched.length > 0) {
             signatures.push(...fetched);
 
@@ -187,31 +197,30 @@ export default function useFetchAddress() {
 
             while (lastDay > startDay) {
               try {
-                let loopSigs = await connection.getSignaturesForAddress(new PublicKey(keyIn), {
+                let loopSigs = await getSignaturesAndRetryIfNecessary(() => connection.getSignaturesForAddress(new PublicKey(keyIn), {
                   limit: FETCH_LIMIT,
                   before: lastSig,
                   until: signatureBracket[0],
-                });
-                await sleep(150);
-                for await (const account of tokenAccounts.value) {
-                  if (
-                    utl_api.content
-                      .flatMap((s: UtlType) => s.address)
-                      .indexOf(account.account.data.parsed.info.mint) !== -1
-                  ) {
-                    let fetched1 = (
-                      await connection.getSignaturesForAddress(account.pubkey, {
-                        limit: FETCH_LIMIT,
-                        before: lastSig,
-                        until: signatureBracket[0],
-                      })
-                    )[0];
-                    if (fetched1) {
-                      loopSigs.push(fetched1);
-                    }
-                    await sleep(150);
-                  }
-                }
+                }));
+                
+                // for await (const account of tokenAccounts.value) {
+                //   if (
+                //     utl_api.content
+                //       .flatMap((s: UtlType) => s.address)
+                //       .indexOf(account.account.data.parsed.info.mint) !== -1
+                //   ) {
+                //     let fetched1 = (
+                //       await connection.getSignaturesForAddress(account.pubkey, {
+                //         limit: FETCH_LIMIT,
+                //         before: lastSig,
+                //         until: signatureBracket[0],
+                //       })
+                //     )[0];
+                //     if (fetched1) {
+                //       loopSigs.push(fetched1);
+                //     }
+                //   }
+                // }
 
                 if (loopSigs.length === 0) break;
 
@@ -226,7 +235,7 @@ export default function useFetchAddress() {
           }
         })
       );
-      position += FETCH_LIMIT;
+      position += positionIncrements;
     }
 
     // Get all signatures, remove duplicates and undefined.
@@ -243,7 +252,7 @@ export default function useFetchAddress() {
       let reformatArray = result.map((x) => x.signature);
 
       // Fetching parsed transactions
-      let y = 0, yIncrements = 20;
+      let y = 0, yIncrements = 5;
       while (y < reformatArray.length) {
         try {
           setLoadingText(
@@ -253,7 +262,6 @@ export default function useFetchAddress() {
             reformatArray.slice(y, Math.min(y + yIncrements, reformatArray.length)),
             { maxSupportedTransactionVersion: 1 }
           );
-          await sleep(150);
           arr.forEach((tx) => {
             if (tx) {
               workingTransactions.push(tx);
@@ -469,7 +477,7 @@ export default function useFetchAddress() {
               "/history?date=" +
               dayjs.unix(item.timestamp).format("DD-MM-YYYY");
             let response = await fetchAndRetryIfNecessary(() => fetch(req));
-            await sleep(1500);
+            // await sleep(1500);
             let data = await response.json();
 
             let new_value: PriceType = {

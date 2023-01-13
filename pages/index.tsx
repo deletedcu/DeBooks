@@ -136,7 +136,7 @@ export default function Home() {
             <TextInput
               type="date"
               value={startDay}
-              min="2020-10-02"
+              min="2020-04-11"
               max={endDay}
               onChange={(e) => setStartDay(e.target.value)}
               disabled={loading}
