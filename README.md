@@ -1,4 +1,5 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# DeBooks
+The name is derived from “decentralized bookkeeping” — this name can mean a lot of things but what we’re feverously building is dynamic and human readable blockchain wallet transaction statements. Blockchain transactions are hard to understand and we’re doing our bit to bring more users on-chain.
 
 ## Getting Started
 
