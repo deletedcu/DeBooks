@@ -187,5 +187,138 @@
     "symbol": "XTAG",
     "coingeckoId": "xhashtag",
     "coinmarketId": 12781
+  },
+  {
+    "address": "SLRSSpSLUTP7okbCUBYStWCo1vUgyt775faPqz8HUMr",
+    "name": "Solrise Finance",
+    "symbol": "SLRS",
+    "coingeckoId": "solrise-finance",
+    "coinmarketId": 9989
+  },
+  {
+    "address": "3FoUAsGDbvTD6YZ4wVKJgTB76onJUKz7GPEBNiR5b8wc",
+    "name": "Cheems",
+    "symbol": "CHEEMS",
+    "coingeckoId": "cheems",
+    "coinmarketId": 10269
+  },
+  {
+    "address": "CRWNYkqdgvhGGae9CKfNka58j6QQkaD5bLhKXvUYqnc1",
+    "name": "Crowny",
+    "symbol": "CRWNY",
+    "coingeckoId": "crowny-token",
+    "coinmarketId": 9348
+  },
+  {
+    "address": "GsNzxJfFn6zQdJGeYsupJWzUAm57Ba7335mfhWvFiE9Z",
+    "name": "Dexlab",
+    "symbol": "DXL",
+    "coingeckoId": "dexlab",
+    "coinmarketId": 11251
+  },
+  {
+    "address": "cxxShYRVcepDudXhe7U62QHvw8uBJoKFifmzggGKVC2",
+    "name": "SolChicks",
+    "symbol": "CHICKS",
+    "coingeckoId": "solchicks-token",
+    "coinmarketId": 14523
+  },
+  {
+    "address": "DubwWZNWiNGMMeeQHPnMATNj77YZPZSAz2WVR5WjLJqz",
+    "name": "CropperFinance",
+    "symbol": "CRP",
+    "coingeckoId": "cropperfinance",
+    "coinmarketId": 11387
+  },
+  {
+    "address": "5U9QqCPhqXAJcEv9uyzFJd5zhN93vuPk1aNNkXnUfPnt",
+    "name": "Bitspawn",
+    "symbol": "SPWN",
+    "coingeckoId": "bitspawn",
+    "coinmarketId": 10285
+  },
+  {
+    "address": "2HeykdKjzHKGm2LKHw8pDYwjKPiFEoXAz74dirhUgQvq",
+    "name": "Sator",
+    "symbol": "SAO",
+    "coingeckoId": "sator",
+    "coinmarketId": 14389
+  },
+  {
+    "address": "HVkFqcMHevVPb4XKrf4XowjEaVVsBoqJ2U1EG59Dfk5j",
+    "name": "VisionGame",
+    "symbol": "VISION",
+    "coingeckoId": "visiongame",
+    "coinmarketId": 18330
+  },
+  {
+    "address": "4dmKkXNHdgYsXqBHCuMikNQWwVomZURhYvkkX5c4pQ7y",
+    "name": "Synthetify",
+    "symbol": "SNY",
+    "coingeckoId": "synthetify-token",
+    "coinmarketId": 9447
+  },
+  {
+    "address": "StepAscQoEioFxxWGnh2sLBDFp9d8rvKz2Yp39iDpyT",
+    "name": "Step Finance",
+    "symbol": "STEP",
+    "coingeckoId": "step-finance",
+    "coinmarketId": 9443
+  },
+  {
+    "address": "SAMUmmSvrE8yqtcG94oyP1Zu2P9t8PSRSV3vewsGtPM",
+    "name": "Samusky",
+    "symbol": "SAMU",
+    "coingeckoId": "samusky-token",
+    "coinmarketId": 14303
+  },
+  {
+    "address": "Gsai2KN28MTGcSZ1gKYFswUpFpS7EM9mvdR9c8f6iVXJ",
+    "name": "SolanaSail Governance",
+    "symbol": "GSAIL",
+    "coingeckoId": "solanasail-governance-token",
+    "coinmarketId": 11471
+  },
+  {
+    "address": "EdAhkbj5nF9sRM7XN7ewuW8C9XEUMs8P7cnoQ57SYE96",
+    "name": "Fabric",
+    "symbol": "FAB",
+    "coingeckoId": "fabric",
+    "coinmarketId": 11462
+  },
+  {
+    "address": "orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE",
+    "name": "Orca",
+    "symbol": "ORCA",
+    "coingeckoId": "orca",
+    "coinmarketId": 11165
+  },
+  {
+    "address": "EcQCUYv57C4V6RoPxkVUiDwtX1SP8y8FP5AEToYL8Az",
+    "name": "Walken",
+    "symbol": "WLKN",
+    "coingeckoId": "walken",
+    "coinmarketId": 18775
+  },
+  {
+    "address": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
+    "name": "Marinade",
+    "symbol": "MNDE",
+    "coingeckoId": "marinade",
+    "coinmarketId": 13803
+  },
+  {
+    "address": "ETAtLmCmsoiEEKfNrHKJ2kYy3MoABhU6NQvpSfij5tDs",
+    "name": "Media Network",
+    "symbol": "MEDIA",
+    "coingeckoId": "media-network",
+    "coinmarketId": 9524
+  },
+  {
+    "address": "E5ndSkaB17Dm7CsD22dvcjfrYSDLCxFcMd6z8ddCk5wp",
+    "name": "Aldrin",
+    "symbol": "RIN",
+    "coingeckoId": "aldrin",
+    "coinmarketId": 10935
   }
 ]
