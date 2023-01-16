@@ -36,7 +36,7 @@ export default function Home() {
     showConversion,
     setShowConversion,
     converting,
-    toggleMetadata,
+    toggleMetadata
   } = useFetchAddress();
 
   useEffect(() => {

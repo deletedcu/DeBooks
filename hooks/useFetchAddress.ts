@@ -5,17 +5,45 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useEffect, useState } from "react";
 import { UtlType, WorkType, classifyTransaction } from "../utils/SolanaClassify";
-import priceData from "./prices.json";
 
 dayjs.extend(localizedFormat);
 dayjs.extend(relativeTime);
 
 interface PriceType {
   id: string;
-  address: string;
   date: string;
   usd: number;
 }
+
+const tokenMap = [
+  "So11111111111111111111111111111111111111112",
+  "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
+  "SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt",
+  "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+  "MangoCzJ36AjZyKwVj3VnYU4GTonjfVEnJmvvWaxLac",
+  "9LzCMqDgTKYz9Drzqnpgee3SGa89up3a247ypMj2xrqM",
+  "7i5KKsX2weiTkry7jA4ZwSuXGhs5eJBEjY8vVxR4pfRx",
+  "EchesyfXePKdLtoiZSL8pBe8Myagyy8ZRqsACNCFGnvp",
+  "56tNQ29XBrbovm5K5SThuQatjCy92w2wKUaUeQ8WCD9g",
+  "ATLASXmbPQxBUYbxPsV97usA3fPQYEqzQBUHgiFCUsXx",
+  "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+  "SLNDpmoWTVADgEdndyvWzroNL7zSi1dF9PC3xHGtPwp",
+  "CKaKtYvz6dKPyMvYq9Rh3UBrnNqYZAyd7iF4hJtjUvks",
+  "zebeczgi5fSEtbpfQKVZKCJ3WgYXxjkMUkNNx7fLKAF",
+  "C98A4nkJXhpVZNAZdHUA95RpTF3T4whtQubL3YobiUX9",
+  "DFL1zNkaGPWm1BqAVqRjCZvHmwTFrEaJtbzJWgseoNJh",
+  "Fm9rHUTF5v3hwMLbStjZXqNBBoZyGriQaFM6sTFz3K8A",
+  "PRSMNsEPqhGVCH1TtWiJqPjJyh2cKrLostPZTNy1o5x",
+  "MAPS41MDahZ9QdKXhVa4dWB9RuyfV4XqhyAZ8XcYepb",
+  "TuLipcqtGVXP9XR62wM8WWCm6a9vhLs7T1uoWBk6FDs",
+  "9nEqaUcb16sQ3Tn1psbkWqyhPdLmfHWjKGymREjsAgTE",
+  "BiDB55p4G3n1fGhwKFpxsokBMqgctL4qnZpDH1bVQxMD",
+  "3bRTivrVsitbmCTGtqwp7hxXPsybkjn4XLNtPsHqa3zR",
+  "z3dn17yLaGMKffVogeFHQ9zWVcXgqgf3PQnDsNs2g6M",
+  "BKipkearSqAUdNKa1WDstvcMjoPsSKBuNyvKDQDDu9WE",
+  "5gs8nf4wojB5EXgDUWNLwXpknzgV2YWDhveAeBZpVLbp"
+];
 
 export default function useFetchAddress() {
   const [perPage, setPerPage] = useState(10);
@@ -32,7 +60,7 @@ export default function useFetchAddress() {
   const [displayArray, setDisplayArray] = useState<WorkType[]>([]);
   const [totalPages, setTotalPages] = useState(0);
   const [fetchedTransactions, setFetchedTransactions] = useState<ParsedTransactionWithMeta[]>([]);
-  const [storedCoinGeckoData, setStoredCoinGeckoData] = useState<PriceType[]>(priceData);
+  const [storedCoinGeckoData, setStoredCoinGeckoData] = useState<PriceType[]>([]);
 
   const FETCH_LIMIT = 200;
   const solana_rpc: string = process.env.NEXT_PUBLIC_SOLANA_RPC
@@ -147,6 +175,7 @@ export default function useFetchAddress() {
     setShowConversion(false);
     setCurrentPage(1);
     setFetchedTransactions([]);
+    setStoredCoinGeckoData([]);
     setFullArray([]);
     setDisplayArray([]);
     setLoading(true);
@@ -165,9 +194,22 @@ export default function useFetchAddress() {
     let utl_api = await response.json();
     let accountList = [new PublicKey(keyIn)];
 
+    let tokenPrices: PriceType[] = [];
     for await (const account of tokenAccounts.value) {
       accountList.push(account.pubkey);
+
+      // Read prices json files
+      try {
+        if (tokenMap.includes(account.account.data.parsed.info.mint)) {
+          const response = await fetch(`./pricedata/${account.account.data.parsed.info.mint}.json`);
+          const data = await response.json();
+          tokenPrices.push(...data);
+        }
+      } catch (e) {
+        console.log("Read prices json files error", account.pubkey.toBase58(), e);
+      }
     }
+    setStoredCoinGeckoData(tokenPrices);
 
     let signatures: ConfirmedSignatureInfo[] = [];
     setLoadingText("pre-fetching...");
@@ -467,7 +509,6 @@ export default function useFetchAddress() {
 
             let new_value: PriceType = {
               id: utlToken.extensions!.coingeckoId,
-              address: utlToken.address,
               date: dayjs.unix(item.timestamp).format("DD-MM-YYYY"),
               usd: data.market_data.current_price.usd,
             };
@@ -531,6 +572,6 @@ export default function useFetchAddress() {
     totalPages,
     fetchedTransactions,
     fetchForAddress,
-    toggleMetadata,
+    toggleMetadata
   };
 }

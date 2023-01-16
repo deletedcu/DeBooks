@@ -6,18 +6,17 @@ import dummyData from "../utils/dummy.json";
 
 interface PriceType {
   id: string;
-  address: string;
   date: string;
   usd: number;
+  timestamp?: number;
 }
 
 export default function Prices() {
   const [prices, setPrices] = useState<PriceType[]>([]);
   const [coinId, setCoinId] = useState("");
   const [id, setId] = useState("");
-  const [tokenAddress, setTokenAddress] = useState("");
   const [loading, setLoading] = useState(false);
-  const [startDate, setStartDate] = useState<string>(dayjs().subtract(1, 'year').format("YYYY-MM-DD"));
+  const [startDate, setStartDate] = useState<string>(dayjs().subtract(3, "years").add(1, "day").format("YYYY-MM-DD"));
   const [endDate, setEndDate] = useState<string>(dayjs().format("YYYY-MM-DD"));
 
   async function fetchApis(id: string, startDay: Dayjs, endDay: Dayjs): Promise<void> {
@@ -43,7 +42,6 @@ export default function Prices() {
 
         const item: PriceType = {
           id: coinId,
-          address: tokenAddress,
           date: day.format("DD-MM-YYYY"),
           usd: Number(data.market_data.current_price.usd.toFixed(10))
         }
@@ -71,15 +69,20 @@ export default function Prices() {
       if (dates.indexOf(date) === -1) {
         const item: PriceType = {
           id: coinId,
-          address: tokenAddress,
           date: dayjs.unix(Number(key)).format("DD-MM-YYYY"),
           // @ts-ignore
           usd: Number(value["v"][0].toFixed(10)),
+          timestamp: Number(key)
         };
         result.push(item);
         dates.push(date);
       }
     }
+    result = result.sort((a, b) => b.timestamp! - a.timestamp!).map(x => ({
+      id: x.id,
+      date: x.date,
+      usd: x.usd,
+    }));
     return result;
   }
 
@@ -122,12 +125,6 @@ export default function Prices() {
               value={id}
               placeholder="CoinMarket coin id"
               onChange={(e) => setId(e.target.value)}
-            />
-            <TextInput
-              type="text"
-              value={tokenAddress}
-              placeholder="Token address"
-              onChange={(e) => setTokenAddress(e.target.value)}
             />
           </div>
           <div className="inline-flex items-center gap-2">
