@@ -1,13 +1,14 @@
 import dayjs, { Dayjs } from "dayjs";
 import { Alert, Button, Spinner, Table, TextInput } from "flowbite-react";
 import { useState } from "react";
-import { FiSave, FiSearch, FiUmbrella } from "react-icons/fi";
+import { FiCompass, FiLink, FiSearch } from "react-icons/fi";
 import dummyData from "../utils/dummy.json";
 
 interface PriceType {
   id: string;
   date: string;
   usd: number;
+  timestamp?: number;
 }
 
 export default function Prices() {
@@ -15,7 +16,7 @@ export default function Prices() {
   const [coinId, setCoinId] = useState("");
   const [id, setId] = useState("");
   const [loading, setLoading] = useState(false);
-  const [startDate, setStartDate] = useState<string>(dayjs().subtract(1, 'year').format("YYYY-MM-DD"));
+  const [startDate, setStartDate] = useState<string>(dayjs().subtract(3, "years").add(1, "day").format("YYYY-MM-DD"));
   const [endDate, setEndDate] = useState<string>(dayjs().format("YYYY-MM-DD"));
 
   async function fetchApis(id: string, startDay: Dayjs, endDay: Dayjs): Promise<void> {
@@ -71,11 +72,17 @@ export default function Prices() {
           date: dayjs.unix(Number(key)).format("DD-MM-YYYY"),
           // @ts-ignore
           usd: Number(value["v"][0].toFixed(10)),
+          timestamp: Number(key)
         };
         result.push(item);
         dates.push(date);
       }
     }
+    result = result.sort((a, b) => b.timestamp! - a.timestamp!).map(x => ({
+      id: x.id,
+      date: x.date,
+      usd: x.usd,
+    }));
     return result;
   }
 
@@ -105,7 +112,7 @@ export default function Prices() {
         <span className="text-2xl font-bold my-4">Prices</span>
       </header>
       <main className="flex flex-col flex-1 items-center w-full max-w-7xl mx-auto my-4 px-4 py-0">
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col items-center gap-4">
           <div className="inline-flex items-center gap-2">
             <TextInput
               type="text"
@@ -141,13 +148,13 @@ export default function Prices() {
           </div>
           <div className="inline-flex items-center gap-2">
             <Button color="gray" onClick={async () => searchHandler()}>
-              <FiUmbrella />
+              <FiLink />
             </Button>
             <Button disabled={loading} onClick={async () => generateHandler()}>
               <FiSearch />
             </Button>
             <Button disabled={loading} onClick={async () => coingeckoHandler()}>
-              <FiSave />
+              <FiCompass />
             </Button>
           </div>
         </div>

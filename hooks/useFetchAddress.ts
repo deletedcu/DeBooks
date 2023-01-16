@@ -5,7 +5,7 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useEffect, useState } from "react";
 import { UtlType, WorkType, classifyTransaction } from "../utils/SolanaClassify";
-import priceData from "./prices.json";
+import tokenMaps from "./tokenMaps.json";
 
 dayjs.extend(localizedFormat);
 dayjs.extend(relativeTime);
@@ -15,6 +15,8 @@ interface PriceType {
   date: string;
   usd: number;
 }
+
+const tokens = tokenMaps.filter(x => x.address);
 
 export default function useFetchAddress() {
   const [perPage, setPerPage] = useState(10);
@@ -31,7 +33,7 @@ export default function useFetchAddress() {
   const [displayArray, setDisplayArray] = useState<WorkType[]>([]);
   const [totalPages, setTotalPages] = useState(0);
   const [fetchedTransactions, setFetchedTransactions] = useState<ParsedTransactionWithMeta[]>([]);
-  const [storedCoinGeckoData, setStoredCoinGeckoData] = useState<PriceType[]>(priceData);
+  const [storedCoinGeckoData, setStoredCoinGeckoData] = useState<PriceType[]>([]);
 
   const FETCH_LIMIT = 200;
   const solana_rpc: string = process.env.NEXT_PUBLIC_SOLANA_RPC
@@ -146,6 +148,7 @@ export default function useFetchAddress() {
     setShowConversion(false);
     setCurrentPage(1);
     setFetchedTransactions([]);
+    setStoredCoinGeckoData([]);
     setFullArray([]);
     setDisplayArray([]);
     setLoading(true);
@@ -164,9 +167,22 @@ export default function useFetchAddress() {
     let utl_api = await response.json();
     let accountList = [new PublicKey(keyIn)];
 
+    let tokenPrices: PriceType[] = [];
     for await (const account of tokenAccounts.value) {
       accountList.push(account.pubkey);
+
+      // Read prices json files
+      try {
+        if (tokens.includes(account.account.data.parsed.info.mint)) {
+          const response = await fetch(`./pricedata/${account.account.data.parsed.info.mint}.json`);
+          const data = await response.json();
+          tokenPrices.push(...data);
+        }
+      } catch (e) {
+        console.log("Read prices json files error", account.pubkey.toBase58(), e);
+      }
     }
+    setStoredCoinGeckoData(tokenPrices);
 
     let signatures: ConfirmedSignatureInfo[] = [];
     setLoadingText("pre-fetching...");
@@ -469,15 +485,15 @@ export default function useFetchAddress() {
               date: dayjs.unix(item.timestamp).format("DD-MM-YYYY"),
               usd: data.market_data.current_price.usd,
             };
-            storedCoinGeckoData.push(new_value);
             item.usd_amount = (item.amount ?? 0) * new_value.usd;
+            storedCoinGeckoData.push(new_value);
+            setStoredCoinGeckoData(storedCoinGeckoData);
           } catch (e) {
             console.log("CoinGecko api error", e);
           }
         } else {
           item.usd_amount = (item.amount ?? 0) * filteredData[0].usd;
         }
-        setStoredCoinGeckoData(storedCoinGeckoData);
       } else {
         item.usd_amount = 0;
       }
@@ -529,6 +545,6 @@ export default function useFetchAddress() {
     totalPages,
     fetchedTransactions,
     fetchForAddress,
-    toggleMetadata,
+    toggleMetadata
   };
 }
