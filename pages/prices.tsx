@@ -6,6 +6,7 @@ import dummyData from "../utils/dummy.json";
 
 interface PriceType {
   id: string;
+  address: string;
   date: string;
   usd: number;
 }
@@ -14,6 +15,7 @@ export default function Prices() {
   const [prices, setPrices] = useState<PriceType[]>([]);
   const [coinId, setCoinId] = useState("");
   const [id, setId] = useState("");
+  const [tokenAddress, setTokenAddress] = useState("");
   const [loading, setLoading] = useState(false);
   const [startDate, setStartDate] = useState<string>(dayjs().subtract(1, 'year').format("YYYY-MM-DD"));
   const [endDate, setEndDate] = useState<string>(dayjs().format("YYYY-MM-DD"));
@@ -41,6 +43,7 @@ export default function Prices() {
 
         const item: PriceType = {
           id: coinId,
+          address: tokenAddress,
           date: day.format("DD-MM-YYYY"),
           usd: Number(data.market_data.current_price.usd.toFixed(10))
         }
@@ -68,6 +71,7 @@ export default function Prices() {
       if (dates.indexOf(date) === -1) {
         const item: PriceType = {
           id: coinId,
+          address: tokenAddress,
           date: dayjs.unix(Number(key)).format("DD-MM-YYYY"),
           // @ts-ignore
           usd: Number(value["v"][0].toFixed(10)),
@@ -105,7 +109,7 @@ export default function Prices() {
         <span className="text-2xl font-bold my-4">Prices</span>
       </header>
       <main className="flex flex-col flex-1 items-center w-full max-w-7xl mx-auto my-4 px-4 py-0">
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col items-center gap-4">
           <div className="inline-flex items-center gap-2">
             <TextInput
               type="text"
@@ -118,6 +122,12 @@ export default function Prices() {
               value={id}
               placeholder="CoinMarket coin id"
               onChange={(e) => setId(e.target.value)}
+            />
+            <TextInput
+              type="text"
+              value={tokenAddress}
+              placeholder="Token address"
+              onChange={(e) => setTokenAddress(e.target.value)}
             />
           </div>
           <div className="inline-flex items-center gap-2">

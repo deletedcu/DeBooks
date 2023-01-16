@@ -12,6 +12,7 @@ dayjs.extend(relativeTime);
 
 interface PriceType {
   id: string;
+  address: string;
   date: string;
   usd: number;
 }
@@ -466,6 +467,7 @@ export default function useFetchAddress() {
 
             let new_value: PriceType = {
               id: utlToken.extensions!.coingeckoId,
+              address: utlToken.address,
               date: dayjs.unix(item.timestamp).format("DD-MM-YYYY"),
               usd: data.market_data.current_price.usd,
             };
