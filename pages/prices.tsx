@@ -1,7 +1,7 @@
 import dayjs, { Dayjs } from "dayjs";
 import { Alert, Button, Spinner, Table, TextInput } from "flowbite-react";
 import { useState } from "react";
-import { FiSave, FiSearch, FiUmbrella } from "react-icons/fi";
+import { FiCompass, FiLink, FiSearch } from "react-icons/fi";
 import dummyData from "../utils/dummy.json";
 
 interface PriceType {
@@ -141,13 +141,13 @@ export default function Prices() {
           </div>
           <div className="inline-flex items-center gap-2">
             <Button color="gray" onClick={async () => searchHandler()}>
-              <FiUmbrella />
+              <FiLink />
             </Button>
             <Button disabled={loading} onClick={async () => generateHandler()}>
               <FiSearch />
             </Button>
             <Button disabled={loading} onClick={async () => coingeckoHandler()}>
-              <FiSave />
+              <FiCompass />
             </Button>
           </div>
         </div>

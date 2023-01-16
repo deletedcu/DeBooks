@@ -469,15 +469,15 @@ export default function useFetchAddress() {
               date: dayjs.unix(item.timestamp).format("DD-MM-YYYY"),
               usd: data.market_data.current_price.usd,
             };
-            storedCoinGeckoData.push(new_value);
             item.usd_amount = (item.amount ?? 0) * new_value.usd;
+            storedCoinGeckoData.push(new_value);
+            setStoredCoinGeckoData(storedCoinGeckoData);
           } catch (e) {
             console.log("CoinGecko api error", e);
           }
         } else {
           item.usd_amount = (item.amount ?? 0) * filteredData[0].usd;
         }
-        setStoredCoinGeckoData(storedCoinGeckoData);
       } else {
         item.usd_amount = 0;
       }
