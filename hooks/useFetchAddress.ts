@@ -5,6 +5,7 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useEffect, useState } from "react";
 import { UtlType, WorkType, classifyTransaction } from "../utils/SolanaClassify";
+import tokenMaps from "./tokenMaps.json";
 
 dayjs.extend(localizedFormat);
 dayjs.extend(relativeTime);
@@ -15,35 +16,7 @@ interface PriceType {
   usd: number;
 }
 
-const tokenMap = [
-  "So11111111111111111111111111111111111111112",
-  "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-  "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
-  "SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt",
-  "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
-  "MangoCzJ36AjZyKwVj3VnYU4GTonjfVEnJmvvWaxLac",
-  "9LzCMqDgTKYz9Drzqnpgee3SGa89up3a247ypMj2xrqM",
-  "7i5KKsX2weiTkry7jA4ZwSuXGhs5eJBEjY8vVxR4pfRx",
-  "EchesyfXePKdLtoiZSL8pBe8Myagyy8ZRqsACNCFGnvp",
-  "56tNQ29XBrbovm5K5SThuQatjCy92w2wKUaUeQ8WCD9g",
-  "ATLASXmbPQxBUYbxPsV97usA3fPQYEqzQBUHgiFCUsXx",
-  "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
-  "SLNDpmoWTVADgEdndyvWzroNL7zSi1dF9PC3xHGtPwp",
-  "CKaKtYvz6dKPyMvYq9Rh3UBrnNqYZAyd7iF4hJtjUvks",
-  "zebeczgi5fSEtbpfQKVZKCJ3WgYXxjkMUkNNx7fLKAF",
-  "C98A4nkJXhpVZNAZdHUA95RpTF3T4whtQubL3YobiUX9",
-  "DFL1zNkaGPWm1BqAVqRjCZvHmwTFrEaJtbzJWgseoNJh",
-  "Fm9rHUTF5v3hwMLbStjZXqNBBoZyGriQaFM6sTFz3K8A",
-  "PRSMNsEPqhGVCH1TtWiJqPjJyh2cKrLostPZTNy1o5x",
-  "MAPS41MDahZ9QdKXhVa4dWB9RuyfV4XqhyAZ8XcYepb",
-  "TuLipcqtGVXP9XR62wM8WWCm6a9vhLs7T1uoWBk6FDs",
-  "9nEqaUcb16sQ3Tn1psbkWqyhPdLmfHWjKGymREjsAgTE",
-  "BiDB55p4G3n1fGhwKFpxsokBMqgctL4qnZpDH1bVQxMD",
-  "3bRTivrVsitbmCTGtqwp7hxXPsybkjn4XLNtPsHqa3zR",
-  "z3dn17yLaGMKffVogeFHQ9zWVcXgqgf3PQnDsNs2g6M",
-  "BKipkearSqAUdNKa1WDstvcMjoPsSKBuNyvKDQDDu9WE",
-  "5gs8nf4wojB5EXgDUWNLwXpknzgV2YWDhveAeBZpVLbp"
-];
+const tokens = tokenMaps.filter(x => x.address);
 
 export default function useFetchAddress() {
   const [perPage, setPerPage] = useState(10);
@@ -200,7 +173,7 @@ export default function useFetchAddress() {
 
       // Read prices json files
       try {
-        if (tokenMap.includes(account.account.data.parsed.info.mint)) {
+        if (tokens.includes(account.account.data.parsed.info.mint)) {
           const response = await fetch(`./pricedata/${account.account.data.parsed.info.mint}.json`);
           const data = await response.json();
           tokenPrices.push(...data);
