@@ -166,6 +166,9 @@ export default function useFetchAddress() {
     let utl_api = await response.json();
     let accountList = [new PublicKey(keyIn)];
 
+    let signatures: ConfirmedSignatureInfo[] = [];
+    setLoadingText("pre-fetching...");
+    
     let tokenPrices: PriceType[] = [];
     for await (const account of tokenAccounts.value) {
       accountList.push(account.pubkey);
@@ -182,9 +185,6 @@ export default function useFetchAddress() {
       }
     }
     setStoredCoinGeckoData(tokenPrices);
-
-    let signatures: ConfirmedSignatureInfo[] = [];
-    setLoadingText("pre-fetching...");
 
     let position = 0, positionIncrements = 10;
     while (position < accountList.length) {
