@@ -16,8 +16,6 @@ interface PriceType {
   usd: number;
 }
 
-const tokens = tokenMaps.filter(x => x.address);
-
 export default function useFetchAddress() {
   const [perPage, setPerPage] = useState(10);
   const [loading, setLoading] = useState(false);
@@ -34,7 +32,8 @@ export default function useFetchAddress() {
   const [totalPages, setTotalPages] = useState(0);
   const [fetchedTransactions, setFetchedTransactions] = useState<ParsedTransactionWithMeta[]>([]);
   const [storedCoinGeckoData, setStoredCoinGeckoData] = useState<PriceType[]>([]);
-
+  
+  const tokens = tokenMaps.map(x => x.address);
   const FETCH_LIMIT = 200;
   const solana_rpc: string = process.env.NEXT_PUBLIC_SOLANA_RPC
     ? process.env.NEXT_PUBLIC_SOLANA_RPC
@@ -167,6 +166,9 @@ export default function useFetchAddress() {
     let utl_api = await response.json();
     let accountList = [new PublicKey(keyIn)];
 
+    let signatures: ConfirmedSignatureInfo[] = [];
+    setLoadingText("pre-fetching...");
+    
     let tokenPrices: PriceType[] = [];
     for await (const account of tokenAccounts.value) {
       accountList.push(account.pubkey);
@@ -183,9 +185,6 @@ export default function useFetchAddress() {
       }
     }
     setStoredCoinGeckoData(tokenPrices);
-
-    let signatures: ConfirmedSignatureInfo[] = [];
-    setLoadingText("pre-fetching...");
 
     let position = 0, positionIncrements = 10;
     while (position < accountList.length) {
