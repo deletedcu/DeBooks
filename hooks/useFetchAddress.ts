@@ -16,8 +16,6 @@ interface PriceType {
   usd: number;
 }
 
-const tokens = tokenMaps.filter(x => x.address);
-
 export default function useFetchAddress() {
   const [perPage, setPerPage] = useState(10);
   const [loading, setLoading] = useState(false);
@@ -34,7 +32,8 @@ export default function useFetchAddress() {
   const [totalPages, setTotalPages] = useState(0);
   const [fetchedTransactions, setFetchedTransactions] = useState<ParsedTransactionWithMeta[]>([]);
   const [storedCoinGeckoData, setStoredCoinGeckoData] = useState<PriceType[]>([]);
-
+  
+  const tokens = tokenMaps.map(x => x.address);
   const FETCH_LIMIT = 200;
   const solana_rpc: string = process.env.NEXT_PUBLIC_SOLANA_RPC
     ? process.env.NEXT_PUBLIC_SOLANA_RPC
