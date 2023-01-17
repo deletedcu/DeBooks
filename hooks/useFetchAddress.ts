@@ -147,7 +147,7 @@ export default function useFetchAddress() {
     setShowConversion(false);
     setCurrentPage(1);
     setFetchedTransactions([]);
-    setStoredCoinGeckoData([]);
+    // setStoredCoinGeckoData([]);
     setFullArray([]);
     setDisplayArray([]);
     setLoading(true);
@@ -170,20 +170,31 @@ export default function useFetchAddress() {
     setLoadingText("pre-fetching...");
     
     let tokenPrices: PriceType[] = [];
+    let tokenAddresses: string[] = [];
     for await (const account of tokenAccounts.value) {
       accountList.push(account.pubkey);
 
       // Read prices json files
       try {
-        if (tokens.includes(account.account.data.parsed.info.mint)) {
-          const response = await fetch(`./pricedata/${account.account.data.parsed.info.mint}.json`);
+        const mint = account.account.data.parsed.info.mint;
+        if (tokens.includes(mint)) {
+          const response = await fetch(`./pricedata/${mint}.json`);
           const data = await response.json();
           tokenPrices.push(...data);
+          tokenAddresses.push(mint);
         }
       } catch (e) {
         console.log("Read prices json files error", account.pubkey.toBase58(), e);
       }
     }
+
+    const solanaAddress = "So11111111111111111111111111111111111111112";
+    if (!tokenAddresses.includes(solanaAddress)) {
+      const response = await fetch(`./pricedata/${solanaAddress}.json`);
+      const data = await response.json();
+      tokenPrices.push(...data);
+    }
+    
     setStoredCoinGeckoData(tokenPrices);
 
     let position = 0, positionIncrements = 10;
