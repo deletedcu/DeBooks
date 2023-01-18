@@ -38,11 +38,11 @@ export interface UtlType {
   holders: number | null;
   logoURI: string;
   tags: string[];
-  extensions: { "coingeckoId": string } | undefined;
+  extensions: { coingeckoId: string } | undefined;
 }
 
-const SOL_LOGO_URI =
-  "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png";
+const SOL_MINT = "So11111111111111111111111111111111111111112";
+const SOL_LOGO_URI = `https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/${SOL_MINT}/logo.png`;
 
 let connection: web3.Connection;
 let fetchedList: TokenType[] = [];
@@ -410,15 +410,14 @@ export async function classifyTransaction(
     const postTokens = item.meta.postTokenBalances ?? [];
 
     for await (const token of preTokens) {
-      if (token.owner == undefined) {
+      if (token.owner === undefined) {
         //find owner and set it - old transactions don't have this data
         //console.log("looking for owner pre tokens")
         try {
           const owner = await connection.getAccountInfoAndContext(
             item.transaction.message.accountKeys[token.accountIndex].pubkey
           );
-          await sleep(150);
-          if (owner.value?.owner.toBase58() == "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA") {
+          if (owner.value?.owner.toBase58() === "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA") {
             //SPL token
             //get ultimate owner
             const decoded = spl_token.AccountLayout.decode(owner.value.data);
@@ -431,15 +430,14 @@ export async function classifyTransaction(
       }
     }
     for await (const token of postTokens) {
-      if (token.owner == undefined) {
+      if (token.owner === undefined) {
         //find owner and set it
         //console.log("looking for owner post tokens")
         try {
           const owner = await connection.getAccountInfoAndContext(
             item.transaction.message.accountKeys[token.accountIndex].pubkey
           );
-          await sleep(150);
-          if (owner.value?.owner.toBase58() == "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA") {
+          if (owner.value?.owner.toBase58() === "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA") {
             //SPL token
             //get ultimate owner
             const decoded = spl_token.AccountLayout.decode(owner.value.data);
@@ -461,14 +459,14 @@ export async function classifyTransaction(
     //token balance loop
 
     for await (const uniqueToken of uniqueTokens) {
-      let decimals = preTokens.filter((line) => line.mint == uniqueToken)[0]?.uiTokenAmount.decimals;
-      if (decimals == undefined) {
-        decimals = postFiltered.filter((line) => line.mint == uniqueToken)[0]?.uiTokenAmount.decimals;
+      let decimals = preTokens.filter((line) => line.mint === uniqueToken)[0]?.uiTokenAmount.decimals;
+      if (decimals === undefined) {
+        decimals = postFiltered.filter((line) => line.mint === uniqueToken)[0]?.uiTokenAmount.decimals;
       }
-      const preFil = preTokens.filter((token) => token.owner === keyIn && token.mint == uniqueToken)[0]?.uiTokenAmount
+      const preFil = preTokens.filter((token) => token.owner === keyIn && token.mint === uniqueToken)[0]?.uiTokenAmount
         .uiAmount;
-      const postFil = postTokens.filter((token) => token.owner === keyIn && token.mint == uniqueToken)[0]?.uiTokenAmount
-        .uiAmount;
+      const postFil = postTokens.filter((token) => token.owner === keyIn && token.mint === uniqueToken)[0]
+        ?.uiTokenAmount.uiAmount;
       let created = false;
       let closed = false;
       let preBal;
@@ -492,11 +490,12 @@ export async function classifyTransaction(
 
       let tokenChange = parseFloat((postBal - preBal).toFixed(decimals));
 
-      const preIndex = preTokens.filter((token) => token.owner === keyIn && token.mint == uniqueToken)[0]?.accountIndex;
-      const postIndex = postTokens.filter((token) => token.owner === keyIn && token.mint == uniqueToken)[0]
+      const preIndex = preTokens.filter((token) => token.owner === keyIn && token.mint === uniqueToken)[0]
+        ?.accountIndex;
+      const postIndex = postTokens.filter((token) => token.owner === keyIn && token.mint === uniqueToken)[0]
         ?.accountIndex;
       //need to find the SOL balance change of the wrapped sol account
-      if (uniqueToken == "So11111111111111111111111111111111111111112") {
+      if (uniqueToken === SOL_MINT) {
         if (postIndex) {
           tokenChange = item.meta
             ? (item.meta.postBalances[postIndex] - item.meta.preBalances[postIndex]) / web3.LAMPORTS_PER_SOL
@@ -531,11 +530,11 @@ export async function classifyTransaction(
             key: keyIn,
             timestamp: item.blockTime ?? 0,
             slot: item.slot,
-            success: item.meta?.err == null ? true : false,
+            success: item.meta?.err === null ? true : false,
             fee: item.meta ? item.meta.fee : null,
             amount: amount,
             usd_amount: null,
-            mint: "So11111111111111111111111111111111111111112",
+            mint: SOL_MINT,
             token_name: "SOL",
             uri: "",
             logo_uri: SOL_LOGO_URI,
@@ -570,7 +569,7 @@ export async function classifyTransaction(
           key: keyIn,
           timestamp: item.blockTime ?? 0,
           slot: item.slot,
-          success: item.meta?.err == null ? true : false,
+          success: item.meta?.err === null ? true : false,
           fee: item.meta ? item.meta.fee : null,
           amount: tokenChange,
           usd_amount: null,
@@ -610,11 +609,11 @@ export async function classifyTransaction(
           key: keyIn,
           timestamp: item.blockTime ?? 0,
           slot: item.slot,
-          success: item.meta?.err == null ? true : false,
+          success: item.meta?.err === null ? true : false,
           fee: item.meta ? item.meta.fee : null,
           amount: amount,
           usd_amount: null,
-          mint: "So11111111111111111111111111111111111111112",
+          mint: SOL_MINT,
           token_name: "SOL",
           uri: "",
           logo_uri: SOL_LOGO_URI,
@@ -645,7 +644,7 @@ export async function classifyTransaction(
         fee: item.meta ? item.meta.fee / web3.LAMPORTS_PER_SOL : null,
         amount: item.meta ? -item.meta.fee / web3.LAMPORTS_PER_SOL : null,
         usd_amount: null,
-        mint: "So11111111111111111111111111111111111111112",
+        mint: SOL_MINT,
         token_name: "SOL",
         uri: "",
         logo_uri: SOL_LOGO_URI,
@@ -668,7 +667,7 @@ export async function classifyTransaction(
         fee: item.meta ? item.meta.fee / web3.LAMPORTS_PER_SOL : null,
         amount: item.meta ? -item.meta.fee / web3.LAMPORTS_PER_SOL : null,
         usd_amount: null,
-        mint: "So11111111111111111111111111111111111111112",
+        mint: SOL_MINT,
         token_name: "SOL",
         uri: "",
         logo_uri: SOL_LOGO_URI,
@@ -684,7 +683,7 @@ export async function classifyTransaction(
 
 async function fetchTokenData(mintsIn: string[], utl: UtlType[], showMetadata: boolean): Promise<TokenType> {
   let namedToken: TokenType = { mint: "", name: "Unknown Token ", uri: "", nft: false, logo_uri: "" };
-  if (mintsIn.length == 1) {
+  if (mintsIn.length === 1) {
     if (showMetadata) {
       const existingIndex = fetchedList.flatMap((s) => s.mint).indexOf(mintsIn[0]);
       if (existingIndex != -1) {
@@ -694,8 +693,8 @@ async function fetchTokenData(mintsIn: string[], utl: UtlType[], showMetadata: b
       }
 
       //let utlToken:Token = await utl.fetchMint(new web3.PublicKey(mintIn))
-      const utlToken = utl.filter((item) => item.address == mintsIn[0])[0];
-      if (utlToken == null || utlToken == undefined) {
+      const utlToken = utl.filter((item) => item.address === mintsIn[0])[0];
+      if (utlToken === null || utlToken === undefined) {
         try {
           const nftnames = await metadata.getTokenMetadata(new web3.PublicKey(mintsIn[0]));
           if (nftnames) {
@@ -761,8 +760,8 @@ async function fetchTokenData(mintsIn: string[], utl: UtlType[], showMetadata: b
           namedToken.name = namedToken.name + " " + fetchedList[existingIndex].name;
         }
         //let utlToken:Token = await utl.fetchMint(new web3.PublicKey(mintIn))
-        const utlToken = utl.filter((item) => item.address == mint)[0];
-        if (utlToken == null || utlToken == undefined) {
+        const utlToken = utl.filter((item) => item.address === mint)[0];
+        if (utlToken === null || utlToken === undefined) {
           try {
             const nftnames = await metadata.getTokenMetadata(new web3.PublicKey(mint));
             //console.log(mintIn, nftnames)
@@ -815,7 +814,3 @@ async function fetchTokenData(mintsIn: string[], utl: UtlType[], showMetadata: b
 
   return namedToken;
 }
-
-const sleep = (milliseconds: number) => {
-  return new Promise((resolve) => setTimeout(resolve, milliseconds));
-};
