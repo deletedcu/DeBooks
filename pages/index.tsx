@@ -140,6 +140,7 @@ export default function Home() {
               max={endDay}
               onChange={(e) => setStartDay(e.target.value)}
               disabled={loading}
+              aria-label="Start date"
             />
             <span>To</span>
             <TextInput
@@ -149,9 +150,11 @@ export default function Home() {
               max={new Date().toJSON().slice(0, 10)}
               onChange={(e) => setEndDay(e.target.value)}
               disabled={loading}
+              aria-label="End date"
             />
             <Button
               color="gray"
+              aria-label="Search"
               disabled={!validKey || loading}
               onClick={async () => await checkKey(address, true)}
             >

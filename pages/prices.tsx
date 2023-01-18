@@ -16,8 +16,8 @@ export default function Prices() {
   const [coinId, setCoinId] = useState("");
   const [id, setId] = useState("");
   const [loading, setLoading] = useState(false);
-  const [startDate, setStartDate] = useState<string>(dayjs().subtract(3, "years").add(1, "day").format("YYYY-MM-DD"));
-  const [endDate, setEndDate] = useState<string>(dayjs().format("YYYY-MM-DD"));
+  const [startDate, setStartDate] = useState<string>(dayjs().subtract(3, "years").format("YYYY-MM-DD"));
+  const [endDate, setEndDate] = useState<string>(dayjs().subtract(1, "day").format("YYYY-MM-DD"));
 
   async function fetchApis(id: string, startDay: Dayjs, endDay: Dayjs): Promise<void> {
     let fromDay = startDay;

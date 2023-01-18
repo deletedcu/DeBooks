@@ -320,5 +320,145 @@
     "symbol": "RIN",
     "coingeckoId": "aldrin",
     "coinmarketId": 10935
+  },
+  {
+    "address": "2wmKXX1xsxLfrvjEPrt2UHiqj8Gbzwxvffr9qmNjsw8g",
+    "name": "Solar",
+    "symbol": "SOLAR",
+    "coingeckoId": "solar",
+    "coinmarketId": 14195
+  },
+  {
+    "address": "AAmGoPDFLG6bE82BgZWjVi8k95tj9Tf3vUN7WvtUm2BU",
+    "name": "RaceFi",
+    "symbol": "RACEFI",
+    "coingeckoId": "racefi",
+    "coinmarketId": 15100
+  },
+  {
+    "address": "HfYFjMKNZygfMC8LsQ8LtpPsPxEJoXJx4M6tqi75Hajo",
+    "name": "Cryowar",
+    "symbol": "CWAR",
+    "coingeckoId": "cryowar-token",
+    "coinmarketId": 12722
+  },
+  {
+    "address": "3uejHm24sWmniGA5m4j4S1DVuGqzYBR5DJpevND4mivq",
+    "name": "Cripco",
+    "symbol": "IP3",
+    "coingeckoId": "cripco",
+    "coinmarketId": 20909
+  },
+  {
+    "address": "BRLsMczKuaR5w9vSubF4j8HwEGGprVAyyVgS4EX7DKEg",
+    "name": "Cykura",
+    "symbol": "CYS",
+    "coingeckoId": "cyclos",
+    "coinmarketId": 10217
+  },
+  {
+    "address": "HBB111SCo9jkCejsZfz8Ec8nH7T6THF8KEKSnvwT6XK6",
+    "name": "Hubble",
+    "symbol": "HBB",
+    "coingeckoId": "hubble",
+    "coinmarketId": 16643
+  },
+  {
+    "address": "Saber2gLauYim4Mvftnrasomsv6NvAuncvMEZwcLpD1",
+    "name": "Saber",
+    "symbol": "SBR",
+    "coingeckoId": "saber",
+    "coinmarketId": 11181
+  },
+  {
+    "address": "EwJN2GqUGXXzYmoAciwuABtorHczTA5LqbukKXV1viH7",
+    "name": "UPFI Network",
+    "symbol": "UPS",
+    "coingeckoId": "upfi-network",
+    "coinmarketId": 14322
+  },
+  {
+    "address": "MERt85fc5boKw3BW1eYdxonEuJNvXbiMbs6hvheau5K",
+    "name": "Mercurial",
+    "symbol": "MER",
+    "coingeckoId": "mercurial",
+    "coinmarketId": 9549
+  },
+  {
+    "address": "7SZUnH7H9KptyJkUhJ5L4Kee5fFAbqVgCHvt7B6wg4Xc",
+    "name": "TheSolanDAO",
+    "symbol": "SDO",
+    "coingeckoId": "thesolandao",
+    "coinmarketId": 17111
+  },
+  {
+    "address": "AD27ov5fVU2XzwsbvnFvb1JpCBaCB5dRXrczV9CqSVGb",
+    "name": "Realy Metaverse",
+    "symbol": "REAL",
+    "coingeckoId": "realy-metaverse",
+    "coinmarketId": 14463
+  },
+  {
+    "address": "ANAxByE6G2WjFp7A4NqtWYXb3mgruyzZYg3spfxe6Lbo",
+    "name": "Nirvana ANA",
+    "symbol": "ANA",
+    "coingeckoId": "nirvana-ana",
+    "coinmarketId": 19513
+  },
+  {
+    "address": "PoRTjZMPXb9T7dyU7tpLEZRQj7e6ssfAE62j2oQuc6y",
+    "name": "Port Finance",
+    "symbol": "PORT",
+    "coingeckoId": "port-finance",
+    "coinmarketId": 11220
+  },
+  {
+    "address": "JET6zMJWkCN9tpRT2v2jfAmm5VnQFDpUBCyaKojmGtz",
+    "name": "JET",
+    "symbol": "JET",
+    "coingeckoId": "jet",
+    "coinmarketId": 12236
+  },
+  {
+    "address": "H1G6sZ1WDoMmMCFqBKAbg9gkQPCo1sKQtaJWz9dHmqZr",
+    "name": "SHIBONK",
+    "symbol": "SBONK",
+    "coingeckoId": "shibonk-311f81df-a4ea-4f31-9e61-df0af8211bd7",
+    "coinmarketId": 23183
+  },
+  {
+    "address": "8RYSc3rrS4X4bvBCtSJnhcpPpMaAJkXnVKZPzANxQHgz",
+    "name": "Solyard Finance",
+    "symbol": "YARD",
+    "coingeckoId": "solyard-finance",
+    "coinmarketId": 11927
+  },
+  {
+    "address": "GPyzPHuFFGvN4yWWixt6TYUtDG49gfMdFFi2iniTmCkh",
+    "name": "CHILI",
+    "symbol": "CHILI",
+    "coingeckoId": "chili",
+    "coinmarketId": 23172
+  },
+  {
+    "address": "Hmatmu1ktLbobSvim94mfpZmjL5iiyoM1zidtXJRAdLZ",
+    "name": "Parasol Finance",
+    "symbol": "PSOL",
+    "coingeckoId": "parasol-finance",
+    "coinmarketId": 16138
+  },
+  {
+    "address": "7j7H7sgsnNDeCngAPjpaCN4aaaru4HS7NAFYSEUyzJ3k",
+    "name": "SolRazr",
+    "symbol": "SOLR",
+    "coingeckoId": "solrazr",
+    "coinmarketId": 12125
+  },
+  {
+    "address": "Uuc6hiKT9Y6ASoqs2phonGGw2LAtecfJu9yEohppzWH",
+    "name": "Baby Samo Coin",
+    "symbol": "BABY",
+    "coingeckoId": "baby-samo-coin",
+    "coinmarketId": 14253
   }
 ]
