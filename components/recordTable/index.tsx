@@ -2,11 +2,11 @@
 import dayjs from "dayjs";
 import { Alert, Table, TextInput, Tooltip } from "flowbite-react";
 import Link from "next/link";
+import { useState } from "react";
 import { FiAlertCircle, FiClock } from "react-icons/fi";
 import { csvGenerator } from "../../utils/CsvGenerator";
 import { WorkType } from "../../utils/SolanaClassify";
 import Pagination from "../pagination";
-import { useState } from "react";
 
 export default function RecordTable({
   keyIn,
@@ -282,9 +282,11 @@ export default function RecordTable({
                         <Table.Cell className="td-padding">
                           {converting ? (
                             <progress className="progress w-[2rem]" />
+                          ) : item.usd_amount === 0 ? (
+                            <span>--</span>
                           ) : (
-                            <span className={item.usd_amount! >= 0 ? "text-green-500" : "text-red-500"}>
-                              {item.usd_amount! >= 0 && "+"}
+                            <span className={item.usd_amount! > 0 ? "text-green-500" : "text-red-500"}>
+                              {item.usd_amount! > 0 && "+"}
                               {item.usd_amount?.toLocaleString("en-US", {
                                 minimumFractionDigits: 2,
                                 maximumFractionDigits: 4,
