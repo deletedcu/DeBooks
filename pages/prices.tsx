@@ -1,8 +1,9 @@
 import dayjs, { Dayjs } from "dayjs";
 import { Alert, Button, Spinner, Table, TextInput } from "flowbite-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FiCompass, FiLink, FiSearch } from "react-icons/fi";
 import dummyData from "../utils/dummy.json";
+import Pagination from "../components/pagination";
 
 interface PriceType {
   id: string;
@@ -18,6 +19,12 @@ export default function Prices() {
   const [loading, setLoading] = useState(false);
   const [startDate, setStartDate] = useState<string>(dayjs().subtract(3, "years").format("YYYY-MM-DD"));
   const [endDate, setEndDate] = useState<string>(dayjs().subtract(1, "day").format("YYYY-MM-DD"));
+  const [perPage, setPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [perPage]);
 
   async function fetchApis(id: string, startDay: Dayjs, endDay: Dayjs): Promise<void> {
     let fromDay = startDay;
@@ -165,22 +172,34 @@ export default function Prices() {
               <span className="ml-4">Fetching prices...</span>
             </Alert>
           ) : (
-            <Table className="text-gray-900 dark:text-gray-100">
-              <Table.Head className="bg-gray-100 whitespace-nowrap">
-                <Table.HeadCell>id</Table.HeadCell>
-                <Table.HeadCell>coin id</Table.HeadCell>
-                <Table.HeadCell>usd</Table.HeadCell>
-              </Table.Head>
-              <Table.Body className="divide-y">
-                {prices.map((item, index) => (
-                  <Table.Row key={index} className="dark:border-gray-700 whitespace-nowrap">
-                    <Table.Cell>{item.id}</Table.Cell>
-                    <Table.Cell>{item.date}</Table.Cell>
-                    <Table.Cell>{item.usd.toLocaleString("en-US", { maximumFractionDigits: 10 })}</Table.Cell>
-                  </Table.Row>
-                ))}
-              </Table.Body>
-            </Table>
+            <div className="flex flex-col">
+              <p className="text-sm text-gray-700 my-2">Total <strong>{prices.length}</strong> items</p>
+              <Table className="text-gray-900 dark:text-gray-100">
+                <Table.Head className="bg-gray-100 whitespace-nowrap">
+                  <Table.HeadCell>coin id</Table.HeadCell>
+                  <Table.HeadCell>date</Table.HeadCell>
+                  <Table.HeadCell>usd</Table.HeadCell>
+                </Table.Head>
+                <Table.Body className="divide-y">
+                  {prices.slice(perPage * (currentPage - 1), perPage * currentPage).map((item, index) => (
+                    <Table.Row key={index} className="dark:border-gray-700 whitespace-nowrap">
+                      <Table.Cell>{item.id}</Table.Cell>
+                      <Table.Cell>{item.date}</Table.Cell>
+                      <Table.Cell>{item.usd.toLocaleString("en-US", { maximumFractionDigits: 10 })}</Table.Cell>
+                    </Table.Row>
+                  ))}
+                </Table.Body>
+              </Table>
+              <div className="flex justify-end mt-4">
+                <Pagination
+                  perPage={perPage}
+                  setPerPage={setPerPage}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  totalPages={Math.ceil(prices.length / perPage)}
+                />
+              </div>
+            </div>
           )}
         </div>
       </main>
