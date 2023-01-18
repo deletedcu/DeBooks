@@ -453,5 +453,12 @@
     "symbol": "SOLR",
     "coingeckoId": "solrazr",
     "coinmarketId": 12125
+  },
+  {
+    "address": "Uuc6hiKT9Y6ASoqs2phonGGw2LAtecfJu9yEohppzWH",
+    "name": "Baby Samo Coin",
+    "symbol": "BABY",
+    "coingeckoId": "baby-samo-coin",
+    "coinmarketId": 14253
   }
 ]
