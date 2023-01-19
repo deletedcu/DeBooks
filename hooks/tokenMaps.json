@@ -21,32 +21,18 @@
     "coinmarketId": 825
   },
   {
-    "address": "SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt",
-    "name": "Serum",
-    "symbol": "SRM",
-    "coingeckoId": "serum",
-    "coinmarketId": 6187
+    "address": "2wpTofQ8SkACrkZWrZDjXPitYa8AwWgX8AfxdeBRRVLX",
+    "name": "Chainlink (Wormhole)",
+    "symbol": "LINK",
+    "coingeckoId": "chainlink-wormhole",
+    "coinmarketId": 1975
   },
   {
-    "address": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
-    "name": "Raydium",
-    "symbol": "RAY",
-    "coingeckoId": "raydium",
-    "coinmarketId": 8526
-  },
-  {
-    "address": "MangoCzJ36AjZyKwVj3VnYU4GTonjfVEnJmvvWaxLac",
-    "name": "Mango",
-    "symbol": "MNGO",
-    "coingeckoId": "mango-markets",
-    "coinmarketId": 11171
-  },
-  {
-    "address": "9LzCMqDgTKYz9Drzqnpgee3SGa89up3a247ypMj2xrqM",
-    "name": "Audius (Wormhole)",
-    "symbol": "AUDIO",
-    "coingeckoId": "audius-wormhole",
-    "coinmarketId": 7455
+    "address": "HGsLG4PnZ28L8A4R5nPqKgZd86zUUdmfnkTRnuFJ5dAX",
+    "name": "Graph Token (Portal)",
+    "symbol": "GRT",
+    "coingeckoId": "the-graph-wormhole",
+    "coinmarketId": 6719
   },
   {
     "address": "7i5KKsX2weiTkry7jA4ZwSuXGhs5eJBEjY8vVxR4pfRx",
@@ -56,18 +42,32 @@
     "coinmarketId": 18069
   },
   {
-    "address": "EchesyfXePKdLtoiZSL8pBe8Myagyy8ZRqsACNCFGnvp",
-    "name": "Bonfida",
-    "symbol": "FIDA",
-    "coingeckoId": "bonfida",
-    "coinmarketId": 7978
+    "address": "9LzCMqDgTKYz9Drzqnpgee3SGa89up3a247ypMj2xrqM",
+    "name": "Audius (Wormhole)",
+    "symbol": "AUDIO",
+    "coingeckoId": "audius-wormhole",
+    "coinmarketId": 7455
   },
   {
-    "address": "56tNQ29XBrbovm5K5SThuQatjCy92w2wKUaUeQ8WCD9g",
-    "name": "Cry Cat Coin",
-    "symbol": "CRYY",
-    "coingeckoId": "cry-coin",
-    "coinmarketId": 18866
+    "address": "SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt",
+    "name": "Serum",
+    "symbol": "SRM",
+    "coingeckoId": "serum",
+    "coinmarketId": 6187
+  },
+  {
+    "address": "C98A4nkJXhpVZNAZdHUA95RpTF3T4whtQubL3YobiUX9",
+    "name": "Coin98",
+    "symbol": "C98",
+    "coingeckoId": "coin98",
+    "coinmarketId": 10903
+  },
+  {
+    "address": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+    "name": "Raydium",
+    "symbol": "RAY",
+    "coingeckoId": "raydium",
+    "coinmarketId": 8526
   },
   {
     "address": "ATLASXmbPQxBUYbxPsV97usA3fPQYEqzQBUHgiFCUsXx",
@@ -75,6 +75,34 @@
     "symbol": "ATLAS",
     "coingeckoId": "star-atlas",
     "coinmarketId": 11212
+  },
+  {
+    "address": "MangoCzJ36AjZyKwVj3VnYU4GTonjfVEnJmvvWaxLac",
+    "name": "Mango",
+    "symbol": "MNGO",
+    "coingeckoId": "mango-markets",
+    "coinmarketId": 11171
+  },
+  {
+    "address": "EchesyfXePKdLtoiZSL8pBe8Myagyy8ZRqsACNCFGnvp",
+    "name": "Bonfida",
+    "symbol": "FIDA",
+    "coingeckoId": "bonfida",
+    "coinmarketId": 7978
+  },
+  {
+    "address": "kinXdEcpDQeHPEuQnqmUgtYykqKGVFq6CeVX5iAHJq6",
+    "name": "Kin",
+    "symbol": "KIN",
+    "coingeckoId": "kin",
+    "coinmarketId": 1993
+  },
+  {
+    "address": "56tNQ29XBrbovm5K5SThuQatjCy92w2wKUaUeQ8WCD9g",
+    "name": "Cry Cat Coin",
+    "symbol": "CRYY",
+    "coingeckoId": "cry-coin",
+    "coinmarketId": 18866
   },
   {
     "address": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
@@ -91,6 +119,20 @@
     "coinmarketId": 13524
   },
   {
+    "address": "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So",
+    "name": "Marinade staked SOL",
+    "symbol": "MSOL",
+    "coingeckoId": "msol",
+    "coinmarketId": 11461
+  },
+  {
+    "address": "AFbX8oGjGpmVFywbVouvhQSRmiW2aR1mohfahi4Y2AdB",
+    "name": "STEPN Green Satoshi Token on Solana",
+    "symbol": "GST-SOL",
+    "coingeckoId": "green-satoshi-token",
+    "coinmarketId": 16352
+  },
+  {
     "address": "CKaKtYvz6dKPyMvYq9Rh3UBrnNqYZAyd7iF4hJtjUvks",
     "name": "Gari Network",
     "symbol": "GARI",
@@ -105,11 +147,18 @@
     "coinmarketId": 18860
   },
   {
-    "address": "C98A4nkJXhpVZNAZdHUA95RpTF3T4whtQubL3YobiUX9",
-    "name": "Coin98",
-    "symbol": "C98",
-    "coingeckoId": "coin98",
-    "coinmarketId": 10903
+    "address": "AURYydfxJib1ZkTir1Jn1J9ECYUtjb6rKQVmtYaixWPP",
+    "name": "Aurory",
+    "symbol": "AURY",
+    "coingeckoId": "aurory",
+    "coinmarketId": 11367
+  },
+  {
+    "address": "Fm9rHUTF5v3hwMLbStjZXqNBBoZyGriQaFM6sTFz3K8A",
+    "name": "MonkeyLeague",
+    "symbol": "MBS",
+    "coingeckoId": "monkeyball",
+    "coinmarketId": 13011
   },
   {
     "address": "DFL1zNkaGPWm1BqAVqRjCZvHmwTFrEaJtbzJWgseoNJh",
@@ -119,11 +168,11 @@
     "coinmarketId": 10294
   },
   {
-    "address": "Fm9rHUTF5v3hwMLbStjZXqNBBoZyGriQaFM6sTFz3K8A",
-    "name": "MonkeyLeague",
-    "symbol": "MBS",
-    "coingeckoId": "monkeyball",
-    "coinmarketId": 13011
+    "address": "xxxxa1sKNGwFtw2kFn8XauW9xq8hBZ5kVtcSesTT9fW",
+    "name": "Solanium",
+    "symbol": "SLIM",
+    "coingeckoId": "solanium",
+    "coinmarketId": 9741
   },
   {
     "address": "PRSMNsEPqhGVCH1TtWiJqPjJyh2cKrLostPZTNy1o5x",
@@ -287,6 +336,20 @@
     "coinmarketId": 11462
   },
   {
+    "address": "7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj",
+    "name": "Lido Staked SOL",
+    "symbol": "STSOL",
+    "coingeckoId": "lido-staked-sol",
+    "coinmarketId": 12297
+  },
+  {
+    "address": "DUSTawucrTsGU8hcqRdHDCbuYhCPADMLM2VcCb8VnFnQ",
+    "name": "DUST Protocol",
+    "symbol": "DUST",
+    "coingeckoId": "dust-protocol",
+    "coinmarketId": 18802
+  },
+  {
     "address": "orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE",
     "name": "Orca",
     "symbol": "ORCA",
@@ -301,11 +364,11 @@
     "coinmarketId": 18775
   },
   {
-    "address": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
-    "name": "Marinade",
-    "symbol": "MNDE",
-    "coingeckoId": "marinade",
-    "coinmarketId": 13803
+    "address": "SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y",
+    "name": "Shadow Token",
+    "symbol": "SHDW",
+    "coingeckoId": "genesysgo-shadow",
+    "coinmarketId": 16868
   },
   {
     "address": "ETAtLmCmsoiEEKfNrHKJ2kYy3MoABhU6NQvpSfij5tDs",
@@ -315,11 +378,32 @@
     "coinmarketId": 9524
   },
   {
+    "address": "J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn",
+    "name": "Jito Staked SOL",
+    "symbol": "JITOSOL",
+    "coingeckoId": "jito-staked-sol",
+    "coinmarketId": 22533
+  },
+  {
+    "address": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
+    "name": "Marinade",
+    "symbol": "MNDE",
+    "coingeckoId": "marinade",
+    "coinmarketId": 13803
+  },
+  {
     "address": "E5ndSkaB17Dm7CsD22dvcjfrYSDLCxFcMd6z8ddCk5wp",
     "name": "Aldrin",
     "symbol": "RIN",
     "coingeckoId": "aldrin",
     "coinmarketId": 10935
+  },
+  {
+    "address": "7kbnvuGBxxj8AG9qp8Scn56muWGaRaFqxg1FsRp3PaFT",
+    "name": "UXD Stablecoin",
+    "symbol": "UXD",
+    "coingeckoId": "uxd-stablecoin",
+    "coinmarketId": 17535
   },
   {
     "address": "2wmKXX1xsxLfrvjEPrt2UHiqj8Gbzwxvffr9qmNjsw8g",
@@ -378,6 +462,20 @@
     "coinmarketId": 14322
   },
   {
+    "address": "6naWDMGNWwqffJnnXFLBCLaYu1y5U9Rohe5wwJPHvf1p",
+    "name": "Scrap",
+    "symbol": "SCRAP",
+    "coingeckoId": "scrap",
+    "coinmarketId": 17656
+  },
+  {
+    "address": "3Dy8KFyvpUJ8nfRCbvk4HLWjNRRzxiVhTeE9PQF9RARD",
+    "name": "Arenum",
+    "symbol": "ARNM",
+    "coingeckoId": "arenum",
+    "coinmarketId": 16476
+  },
+  {
     "address": "MERt85fc5boKw3BW1eYdxonEuJNvXbiMbs6hvheau5K",
     "name": "Mercurial",
     "symbol": "MER",
@@ -406,11 +504,25 @@
     "coinmarketId": 19513
   },
   {
+    "address": "HJbNXx2YMRxgfUJ6K4qeWtjatMK5KYQT1QnsCdDWywNv",
+    "name": "Atlas DEX",
+    "symbol": "ATS",
+    "coingeckoId": "atlas-dex",
+    "coinmarketId": 17418
+  },
+  {
     "address": "PoRTjZMPXb9T7dyU7tpLEZRQj7e6ssfAE62j2oQuc6y",
     "name": "Port Finance",
     "symbol": "PORT",
     "coingeckoId": "port-finance",
     "coinmarketId": 11220
+  },
+  {
+    "address": "At7RLMbA6ZUjj7riyvFq2j5NHQ19aJabCju2VxLDAqso",
+    "name": "Battle of Guardians Share",
+    "symbol": "BGS",
+    "coingeckoId": "battle-of-guardians-share",
+    "coinmarketId": 16745
   },
   {
     "address": "JET6zMJWkCN9tpRT2v2jfAmm5VnQFDpUBCyaKojmGtz",
@@ -460,5 +572,271 @@
     "symbol": "BABY",
     "coingeckoId": "baby-samo-coin",
     "coinmarketId": 14253
+  },
+  {
+    "address": "ratioMVg27rSZbSvBopUvsdrGUzeALUfFma61mpxc8J",
+    "name": "Ratio Protocol",
+    "symbol": "RATIO",
+    "coingeckoId": "ratio-finance",
+    "coinmarketId": 18048
+  },
+  {
+    "address": "8HGyAAB1yoM1ttS7pXjHMa3dukTFGQggnFFH3hJZgzQh",
+    "name": "Cope",
+    "symbol": "COPE",
+    "coingeckoId": "cope",
+    "coinmarketId": 9015
+  },
+  {
+    "address": "FoRGERiW7odcCBGU1bztZi16osPBHjxharvDathL5eds",
+    "name": "Blocksmith Labs Forge",
+    "symbol": "$FORGE",
+    "coingeckoId": "blocksmith-labs-forge",
+    "coinmarketId": 19976
+  },
+  {
+    "address": "F3nefJBcejYbtdREjui1T9DPh5dBgpkKq7u2GAAMXs5B",
+    "name": "ALL.ART",
+    "symbol": "AART",
+    "coingeckoId": "all-art",
+    "coinmarketId": 13571
+  },
+  {
+    "address": "G7uYedVqFy97mzjygebnmmaMUVxWHFhNZotY6Zzsprvf",
+    "name": "CoreStarter",
+    "symbol": "CSTR",
+    "coingeckoId": "corestarter",
+    "coinmarketId": 15338
+  },
+  {
+    "address": "4wjPQJ6PrkC4dHhYghwJzGBVP78DkBzA2U3kHoFNBuhj",
+    "name": "LIQ Protocol",
+    "symbol": "LIQ",
+    "coingeckoId": "liq-protocol",
+    "coinmarketId": 11013
+  },
+  {
+    "address": "GFX1ZjR2P15tmrSwow6FjyDYcEkoFb4p4gJCpLBjaxHD",
+    "name": "GooseFX",
+    "symbol": "GOFX",
+    "coingeckoId": "goosefx",
+    "coinmarketId": 12898
+  },
+  {
+    "address": "5Wsd311hY8NXQhkt9cWHwTnqafk7BGEbLu8Py3DSnPAr",
+    "name": "Compendium.Fi",
+    "symbol": "CMFI",
+    "coingeckoId": "compendium-fi",
+    "coinmarketId": 16893
+  },
+  {
+    "address": "UNQtEecZ5Zb4gSSVHCAWUQEoNnSVEbWiKCi1v9kdUJJ",
+    "name": "Unique Venture clubs",
+    "symbol": "UNQ",
+    "coingeckoId": "unq",
+    "coinmarketId": 14943
+  },
+  {
+    "address": "de1QJkP1qDCk5JYCCXCeq27bQQUdCaiv7xVKFrhPSzF",
+    "name": "DeltaFi",
+    "symbol": "DELFI",
+    "coingeckoId": "deltafi",
+    "coinmarketId": 18578
+  },
+  {
+    "address": "GfJ3Vq2eSTYf1hJP6kKLE9RT6u7jF9gNszJhZwo5VPZp",
+    "name": "Solpad Finance",
+    "symbol": "SOLPAD",
+    "coingeckoId": "solpad-finance",
+    "coinmarketId": 11469
+  },
+  {
+    "address": "HxhWkVpk5NS4Ltg5nij2G671CKXFRKPK8vy271Ub4uEK",
+    "name": "Hxro",
+    "symbol": "HXRO",
+    "coingeckoId": "hxro",
+    "coinmarketId": 3748
+  },
+  {
+    "address": "inL8PMVd6iiW3RCBJnr5AsrRN6nqr4BTrcNuQWQSkvY",
+    "name": "Invictus",
+    "symbol": "IN",
+    "coingeckoId": "invictus",
+    "coinmarketId": 14278
+  },
+  {
+    "address": "a11bdAAuV8iB2fu7X6AxAvDTo1QZ8FXB3kk5eecdasp",
+    "name": "Allbridge",
+    "symbol": "ABR",
+    "coingeckoId": "allbridge",
+    "coinmarketId": 12212
+  },
+  {
+    "address": "4SZjjNABoqhbd4hnapbvoEPEqT8mnNkfbEoAwALf1V8t",
+    "name": "CaveWorld",
+    "symbol": "CAVE",
+    "coingeckoId": "cave",
+    "coinmarketId": 14587
+  },
+  {
+    "address": "GHvFFSZ9BctWsEc5nujR1MTmmJWY7tgQz2AXE6WVFtGN",
+    "name": "SOLAPE",
+    "symbol": "SOLAPE",
+    "coingeckoId": "solape-token",
+    "coinmarketId": 10452
+  },
+  {
+    "address": "8ymi88q5DtmdNTn2sPRNFkvMkszMHuLJ1e3RVdWjPa3s",
+    "name": "SolDoge",
+    "symbol": "SDOGE",
+    "coingeckoId": "soldoge",
+    "coinmarketId": 13735
+  },
+  {
+    "address": "AkhdZGVbJXPuQZ53u2LrimCjkRP6ZyxG1SoM85T98eE1",
+    "name": "Starbots",
+    "symbol": "BOT",
+    "coingeckoId": "starbots",
+    "coinmarketId": 16262
+  },
+  {
+    "address": "iVNcrNE9BRZBC9Aqf753iZiZfbszeAVUoikgT9yvr2a",
+    "name": "Investin",
+    "symbol": "IVN",
+    "coingeckoId": "investin",
+    "coinmarketId": 12265
+  },
+  {
+    "address": "6kwTqmdQkJd8qRr9RjSnUX9XJ24RmJRSrU1rsragP97Y",
+    "name": "SAIL",
+    "symbol": "SAIL",
+    "coingeckoId": "sail",
+    "coinmarketId": 10722
+  },
+  {
+    "address": "4UuGQgkD3rSeoXatXRWwRfRd21G87d5LiCfkVzNNv1Tt",
+    "name": "Solareum Wallet",
+    "symbol": "XSB",
+    "coingeckoId": "solareum-wallet",
+    "coinmarketId": 12613
+  },
+  {
+    "address": "6XWfkyg5mzGtKNftSDgYjyoPyUsLRf2rafj95XSFSFrr",
+    "name": "Kitty Coin Solana",
+    "symbol": "KITTY",
+    "coingeckoId": "kitty-coin-solana",
+    "coinmarketId": 15892
+  },
+  {
+    "address": "7puG5H5Mc6QpvaXjAVLr6GnL5hhUMnpLcUm8G3mEsgHQ",
+    "name": "Leonidas Token",
+    "symbol": "LEONIDAS",
+    "coingeckoId": "leonidas-token",
+    "coinmarketId": 14621
+  },
+  {
+    "address": "EzL6LLmv4vgfF7irkjG7ZxM92bTJ9f6nFopDXJTow7zj",
+    "name": "SolCondoms",
+    "symbol": "CONDOMS",
+    "coingeckoId": "solcondoms",
+    "coinmarketId": 16331
+  },
+  {
+    "address": "GLmaRDRmYd4u3YLfnj9eq1mrwxa1YfSweZYYZXZLTRdK",
+    "name": "Solabrador",
+    "symbol": "SOLAB",
+    "coingeckoId": "solabrador",
+    "coinmarketId": 15887
+  },
+  {
+    "address": "A5UevXJdphkzXhRtTXj8JyoYYrWnkCLHVS986JHtRLyj",
+    "name": "Solid Protocol",
+    "symbol": "SOLID",
+    "coingeckoId": "solid-protocol",
+    "coinmarketId": 16571
+  },
+  {
+    "address": "HtbhBYdcfXbbD2JiH6jtsTt2m2FXjn7h4k6iXfz98k5W",
+    "name": "Dead Knight",
+    "symbol": "DKM",
+    "coingeckoId": "dead-knight",
+    "coinmarketId": 18351
+  },
+  {
+    "address": "Fv3ZG56M2cWvF8sy9VWzWyvtHPhugNc1BAzpyoAPvL7r",
+    "name": "Solana Nut",
+    "symbol": "SOLNUT",
+    "coingeckoId": "solana-nut",
+    "coinmarketId": 16204
+  },
+  {
+    "address": "BgeRyFWWGHeVouqfHfcXUxmvfkgekhrXYVqQWf63kpJB",
+    "name": "Bored Ape Social Club",
+    "symbol": "BAPE",
+    "coingeckoId": "bored-ape-social-club",
+    "coinmarketId": 16984
+  },
+  {
+    "address": "q4bpaRKw3fJB1AJBeeBaKv3TjYzWsmntLgnSB275YUb",
+    "name": "Turtles",
+    "symbol": "TRTLS",
+    "coingeckoId": "turtles-token",
+    "coinmarketId": 15330
+  },
+  {
+    "address": "5p2zjqCd1WJzAVgcEnjhb9zWDU7b9XVhFhx4usiyN7jB",
+    "name": "CATO",
+    "symbol": "CATO",
+    "coingeckoId": "cato",
+    "coinmarketId": 11465
+  },
+  {
+    "address": "8c71AvjQeKKeWRe8jtTGG1bJ2WiYXQdbjqFbUfhHgSVk",
+    "name": "Gary",
+    "symbol": "GARY",
+    "coingeckoId": "gary",
+    "coinmarketId": 21046
+  },
+  {
+    "address": "674PmuiDtgKx3uKuJ1B16f9m5L84eFvNwj3xDMvHcbo7",
+    "name": "Mindfolk Wood",
+    "symbol": "$WOOD",
+    "coingeckoId": "mindfolk-wood",
+    "coinmarketId": 17186
+  },
+  {
+    "address": "AMdnw9H5DFtQwZowVFr4kUgSXJzLokKSinvgGiUoLSps",
+    "name": "MoonLana",
+    "symbol": "MOLA",
+    "coingeckoId": "moonlana",
+    "coinmarketId": 10185
+  },
+  {
+    "address": "7s6NLX42eURZfpyuKkVLrr9ED9hJE8718cyXFsYKqq5g",
+    "name": "Gear",
+    "symbol": "GEAR",
+    "coingeckoId": "gear",
+    "coinmarketId": 18635
+  },
+  {
+    "address": "YAWtS7vWCSRPckx1agB6sKidVXiXiDUfehXdEUSRGKE",
+    "name": "Yawww",
+    "symbol": "YAW",
+    "coingeckoId": "yawww",
+    "coinmarketId": 18748
+  },
+  {
+    "address": "6JdcMdhqgCtcP4U9tieRqmKLhPLxRMLC67QfmdXAJBvZ",
+    "name": "Kitty Solana",
+    "symbol": "KITTY",
+    "coingeckoId": "kitty-solana",
+    "coinmarketId": 14382
+  },
+  {
+    "address": "EE5L8cMU4itTsCSuor7NLK6RZx6JhsBe8GGV3oaAHm3P",
+    "name": "AvocadoCoin",
+    "symbol": "AVDO",
+    "coingeckoId": "avocadocoin",
+    "coinmarketId": 18218
   }
 ]
