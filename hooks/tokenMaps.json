@@ -336,6 +336,20 @@
     "coinmarketId": 11462
   },
   {
+    "address": "7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj",
+    "name": "Lido Staked SOL",
+    "symbol": "STSOL",
+    "coingeckoId": "lido-staked-sol",
+    "coinmarketId": 12297
+  },
+  {
+    "address": "DUSTawucrTsGU8hcqRdHDCbuYhCPADMLM2VcCb8VnFnQ",
+    "name": "DUST Protocol",
+    "symbol": "DUST",
+    "coingeckoId": "dust-protocol",
+    "coinmarketId": 18802
+  },
+  {
     "address": "orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE",
     "name": "Orca",
     "symbol": "ORCA",
@@ -350,11 +364,11 @@
     "coinmarketId": 18775
   },
   {
-    "address": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
-    "name": "Marinade",
-    "symbol": "MNDE",
-    "coingeckoId": "marinade",
-    "coinmarketId": 13803
+    "address": "SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y",
+    "name": "Shadow Token",
+    "symbol": "SHDW",
+    "coingeckoId": "genesysgo-shadow",
+    "coinmarketId": 16868
   },
   {
     "address": "ETAtLmCmsoiEEKfNrHKJ2kYy3MoABhU6NQvpSfij5tDs",
@@ -364,11 +378,32 @@
     "coinmarketId": 9524
   },
   {
+    "address": "J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn",
+    "name": "Jito Staked SOL",
+    "symbol": "JITOSOL",
+    "coingeckoId": "jito-staked-sol",
+    "coinmarketId": 22533
+  },
+  {
+    "address": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
+    "name": "Marinade",
+    "symbol": "MNDE",
+    "coingeckoId": "marinade",
+    "coinmarketId": 13803
+  },
+  {
     "address": "E5ndSkaB17Dm7CsD22dvcjfrYSDLCxFcMd6z8ddCk5wp",
     "name": "Aldrin",
     "symbol": "RIN",
     "coingeckoId": "aldrin",
     "coinmarketId": 10935
+  },
+  {
+    "address": "7kbnvuGBxxj8AG9qp8Scn56muWGaRaFqxg1FsRp3PaFT",
+    "name": "UXD Stablecoin",
+    "symbol": "UXD",
+    "coingeckoId": "uxd-stablecoin",
+    "coinmarketId": 17535
   },
   {
     "address": "2wmKXX1xsxLfrvjEPrt2UHiqj8Gbzwxvffr9qmNjsw8g",
@@ -427,6 +462,20 @@
     "coinmarketId": 14322
   },
   {
+    "address": "6naWDMGNWwqffJnnXFLBCLaYu1y5U9Rohe5wwJPHvf1p",
+    "name": "Scrap",
+    "symbol": "SCRAP",
+    "coingeckoId": "scrap",
+    "coinmarketId": 17656
+  },
+  {
+    "address": "3Dy8KFyvpUJ8nfRCbvk4HLWjNRRzxiVhTeE9PQF9RARD",
+    "name": "Arenum",
+    "symbol": "ARNM",
+    "coingeckoId": "arenum",
+    "coinmarketId": 16476
+  },
+  {
     "address": "MERt85fc5boKw3BW1eYdxonEuJNvXbiMbs6hvheau5K",
     "name": "Mercurial",
     "symbol": "MER",
@@ -455,11 +504,25 @@
     "coinmarketId": 19513
   },
   {
+    "address": "HJbNXx2YMRxgfUJ6K4qeWtjatMK5KYQT1QnsCdDWywNv",
+    "name": "Atlas DEX",
+    "symbol": "ATS",
+    "coingeckoId": "atlas-dex",
+    "coinmarketId": 17418
+  },
+  {
     "address": "PoRTjZMPXb9T7dyU7tpLEZRQj7e6ssfAE62j2oQuc6y",
     "name": "Port Finance",
     "symbol": "PORT",
     "coingeckoId": "port-finance",
     "coinmarketId": 11220
+  },
+  {
+    "address": "At7RLMbA6ZUjj7riyvFq2j5NHQ19aJabCju2VxLDAqso",
+    "name": "Battle of Guardians Share",
+    "symbol": "BGS",
+    "coingeckoId": "battle-of-guardians-share",
+    "coinmarketId": 16745
   },
   {
     "address": "JET6zMJWkCN9tpRT2v2jfAmm5VnQFDpUBCyaKojmGtz",
@@ -509,5 +572,47 @@
     "symbol": "BABY",
     "coingeckoId": "baby-samo-coin",
     "coinmarketId": 14253
+  },
+  {
+    "address": "ratioMVg27rSZbSvBopUvsdrGUzeALUfFma61mpxc8J",
+    "name": "Ratio Protocol",
+    "symbol": "RATIO",
+    "coingeckoId": "ratio-finance",
+    "coinmarketId": 18048
+  },
+  {
+    "address": "FoRGERiW7odcCBGU1bztZi16osPBHjxharvDathL5eds",
+    "name": "Blocksmith Labs Forge",
+    "symbol": "$FORGE",
+    "coingeckoId": "blocksmith-labs-forge",
+    "coinmarketId": 19976
+  },
+  {
+    "address": "F3nefJBcejYbtdREjui1T9DPh5dBgpkKq7u2GAAMXs5B",
+    "name": "ALL.ART",
+    "symbol": "AART",
+    "coingeckoId": "all-art",
+    "coinmarketId": 13571
+  },
+  {
+    "address": "G7uYedVqFy97mzjygebnmmaMUVxWHFhNZotY6Zzsprvf",
+    "name": "CoreStarter",
+    "symbol": "CSTR",
+    "coingeckoId": "corestarter",
+    "coinmarketId": 15338
+  },
+  {
+    "address": "4wjPQJ6PrkC4dHhYghwJzGBVP78DkBzA2U3kHoFNBuhj",
+    "name": "LIQ Protocol",
+    "symbol": "LIQ",
+    "coingeckoId": "liq-protocol",
+    "coinmarketId": 11013
+  },
+  {
+    "address": "GFX1ZjR2P15tmrSwow6FjyDYcEkoFb4p4gJCpLBjaxHD",
+    "name": "GooseFX",
+    "symbol": "GOFX",
+    "coingeckoId": "goosefx",
+    "coinmarketId": 12898
   }
 ]
