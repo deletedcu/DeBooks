@@ -21,32 +21,18 @@
     "coinmarketId": 825
   },
   {
-    "address": "SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt",
-    "name": "Serum",
-    "symbol": "SRM",
-    "coingeckoId": "serum",
-    "coinmarketId": 6187
+    "address": "2wpTofQ8SkACrkZWrZDjXPitYa8AwWgX8AfxdeBRRVLX",
+    "name": "Chainlink (Wormhole)",
+    "symbol": "LINK",
+    "coingeckoId": "chainlink-wormhole",
+    "coinmarketId": 1975
   },
   {
-    "address": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
-    "name": "Raydium",
-    "symbol": "RAY",
-    "coingeckoId": "raydium",
-    "coinmarketId": 8526
-  },
-  {
-    "address": "MangoCzJ36AjZyKwVj3VnYU4GTonjfVEnJmvvWaxLac",
-    "name": "Mango",
-    "symbol": "MNGO",
-    "coingeckoId": "mango-markets",
-    "coinmarketId": 11171
-  },
-  {
-    "address": "9LzCMqDgTKYz9Drzqnpgee3SGa89up3a247ypMj2xrqM",
-    "name": "Audius (Wormhole)",
-    "symbol": "AUDIO",
-    "coingeckoId": "audius-wormhole",
-    "coinmarketId": 7455
+    "address": "HGsLG4PnZ28L8A4R5nPqKgZd86zUUdmfnkTRnuFJ5dAX",
+    "name": "Graph Token (Portal)",
+    "symbol": "GRT",
+    "coingeckoId": "the-graph-wormhole",
+    "coinmarketId": 6719
   },
   {
     "address": "7i5KKsX2weiTkry7jA4ZwSuXGhs5eJBEjY8vVxR4pfRx",
@@ -56,18 +42,32 @@
     "coinmarketId": 18069
   },
   {
-    "address": "EchesyfXePKdLtoiZSL8pBe8Myagyy8ZRqsACNCFGnvp",
-    "name": "Bonfida",
-    "symbol": "FIDA",
-    "coingeckoId": "bonfida",
-    "coinmarketId": 7978
+    "address": "9LzCMqDgTKYz9Drzqnpgee3SGa89up3a247ypMj2xrqM",
+    "name": "Audius (Wormhole)",
+    "symbol": "AUDIO",
+    "coingeckoId": "audius-wormhole",
+    "coinmarketId": 7455
   },
   {
-    "address": "56tNQ29XBrbovm5K5SThuQatjCy92w2wKUaUeQ8WCD9g",
-    "name": "Cry Cat Coin",
-    "symbol": "CRYY",
-    "coingeckoId": "cry-coin",
-    "coinmarketId": 18866
+    "address": "SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt",
+    "name": "Serum",
+    "symbol": "SRM",
+    "coingeckoId": "serum",
+    "coinmarketId": 6187
+  },
+  {
+    "address": "C98A4nkJXhpVZNAZdHUA95RpTF3T4whtQubL3YobiUX9",
+    "name": "Coin98",
+    "symbol": "C98",
+    "coingeckoId": "coin98",
+    "coinmarketId": 10903
+  },
+  {
+    "address": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+    "name": "Raydium",
+    "symbol": "RAY",
+    "coingeckoId": "raydium",
+    "coinmarketId": 8526
   },
   {
     "address": "ATLASXmbPQxBUYbxPsV97usA3fPQYEqzQBUHgiFCUsXx",
@@ -75,6 +75,34 @@
     "symbol": "ATLAS",
     "coingeckoId": "star-atlas",
     "coinmarketId": 11212
+  },
+  {
+    "address": "MangoCzJ36AjZyKwVj3VnYU4GTonjfVEnJmvvWaxLac",
+    "name": "Mango",
+    "symbol": "MNGO",
+    "coingeckoId": "mango-markets",
+    "coinmarketId": 11171
+  },
+  {
+    "address": "EchesyfXePKdLtoiZSL8pBe8Myagyy8ZRqsACNCFGnvp",
+    "name": "Bonfida",
+    "symbol": "FIDA",
+    "coingeckoId": "bonfida",
+    "coinmarketId": 7978
+  },
+  {
+    "address": "kinXdEcpDQeHPEuQnqmUgtYykqKGVFq6CeVX5iAHJq6",
+    "name": "Kin",
+    "symbol": "KIN",
+    "coingeckoId": "kin",
+    "coinmarketId": 1993
+  },
+  {
+    "address": "56tNQ29XBrbovm5K5SThuQatjCy92w2wKUaUeQ8WCD9g",
+    "name": "Cry Cat Coin",
+    "symbol": "CRYY",
+    "coingeckoId": "cry-coin",
+    "coinmarketId": 18866
   },
   {
     "address": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
@@ -91,6 +119,20 @@
     "coinmarketId": 13524
   },
   {
+    "address": "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So",
+    "name": "Marinade staked SOL",
+    "symbol": "MSOL",
+    "coingeckoId": "msol",
+    "coinmarketId": 11461
+  },
+  {
+    "address": "AFbX8oGjGpmVFywbVouvhQSRmiW2aR1mohfahi4Y2AdB",
+    "name": "STEPN Green Satoshi Token on Solana",
+    "symbol": "GST-SOL",
+    "coingeckoId": "green-satoshi-token",
+    "coinmarketId": 16352
+  },
+  {
     "address": "CKaKtYvz6dKPyMvYq9Rh3UBrnNqYZAyd7iF4hJtjUvks",
     "name": "Gari Network",
     "symbol": "GARI",
@@ -105,11 +147,18 @@
     "coinmarketId": 18860
   },
   {
-    "address": "C98A4nkJXhpVZNAZdHUA95RpTF3T4whtQubL3YobiUX9",
-    "name": "Coin98",
-    "symbol": "C98",
-    "coingeckoId": "coin98",
-    "coinmarketId": 10903
+    "address": "AURYydfxJib1ZkTir1Jn1J9ECYUtjb6rKQVmtYaixWPP",
+    "name": "Aurory",
+    "symbol": "AURY",
+    "coingeckoId": "aurory",
+    "coinmarketId": 11367
+  },
+  {
+    "address": "Fm9rHUTF5v3hwMLbStjZXqNBBoZyGriQaFM6sTFz3K8A",
+    "name": "MonkeyLeague",
+    "symbol": "MBS",
+    "coingeckoId": "monkeyball",
+    "coinmarketId": 13011
   },
   {
     "address": "DFL1zNkaGPWm1BqAVqRjCZvHmwTFrEaJtbzJWgseoNJh",
@@ -119,11 +168,11 @@
     "coinmarketId": 10294
   },
   {
-    "address": "Fm9rHUTF5v3hwMLbStjZXqNBBoZyGriQaFM6sTFz3K8A",
-    "name": "MonkeyLeague",
-    "symbol": "MBS",
-    "coingeckoId": "monkeyball",
-    "coinmarketId": 13011
+    "address": "xxxxa1sKNGwFtw2kFn8XauW9xq8hBZ5kVtcSesTT9fW",
+    "name": "Solanium",
+    "symbol": "SLIM",
+    "coingeckoId": "solanium",
+    "coinmarketId": 9741
   },
   {
     "address": "PRSMNsEPqhGVCH1TtWiJqPjJyh2cKrLostPZTNy1o5x",

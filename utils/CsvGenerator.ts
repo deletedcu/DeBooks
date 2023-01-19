@@ -1,6 +1,6 @@
 export const csvGenerator = (totalData: any[], actualHeaderKey: string[], headerToShow: string[], fileName: string) => {
   let data = totalData || null;
-  if (data == null || !data.length) {
+  if (data === null || !data.length) {
     return null;
   }
   let columnDelimiter = ",";
@@ -16,7 +16,7 @@ export const csvGenerator = (totalData: any[], actualHeaderKey: string[], header
       if (Array.isArray(item[key])) {
         let arrayItem = item[key] && item[key].length > 0 ? '"' + item[key].join(",") + '"' : "-";
         result += arrayItem;
-      } else if (typeof item[key] == "string") {
+      } else if (typeof item[key] === "string") {
         let strItem = item[key] ? '"' + item[key] + '"' : "-";
         result += strItem ? strItem.replace(/\s{2,}/g, " ") : strItem;
       } else {
@@ -29,7 +29,7 @@ export const csvGenerator = (totalData: any[], actualHeaderKey: string[], header
     result += lineDelimiter;
   });
 
-  if (result == null) return;
+  if (result === null) return;
 
   var blob = new Blob([result]);
   if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
