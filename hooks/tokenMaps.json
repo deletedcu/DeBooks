@@ -581,6 +581,13 @@
     "coinmarketId": 18048
   },
   {
+    "address": "8HGyAAB1yoM1ttS7pXjHMa3dukTFGQggnFFH3hJZgzQh",
+    "name": "Cope",
+    "symbol": "COPE",
+    "coingeckoId": "cope",
+    "coinmarketId": 9015
+  },
+  {
     "address": "FoRGERiW7odcCBGU1bztZi16osPBHjxharvDathL5eds",
     "name": "Blocksmith Labs Forge",
     "symbol": "$FORGE",
@@ -614,5 +621,222 @@
     "symbol": "GOFX",
     "coingeckoId": "goosefx",
     "coinmarketId": 12898
+  },
+  {
+    "address": "5Wsd311hY8NXQhkt9cWHwTnqafk7BGEbLu8Py3DSnPAr",
+    "name": "Compendium.Fi",
+    "symbol": "CMFI",
+    "coingeckoId": "compendium-fi",
+    "coinmarketId": 16893
+  },
+  {
+    "address": "UNQtEecZ5Zb4gSSVHCAWUQEoNnSVEbWiKCi1v9kdUJJ",
+    "name": "Unique Venture clubs",
+    "symbol": "UNQ",
+    "coingeckoId": "unq",
+    "coinmarketId": 14943
+  },
+  {
+    "address": "de1QJkP1qDCk5JYCCXCeq27bQQUdCaiv7xVKFrhPSzF",
+    "name": "DeltaFi",
+    "symbol": "DELFI",
+    "coingeckoId": "deltafi",
+    "coinmarketId": 18578
+  },
+  {
+    "address": "GfJ3Vq2eSTYf1hJP6kKLE9RT6u7jF9gNszJhZwo5VPZp",
+    "name": "Solpad Finance",
+    "symbol": "SOLPAD",
+    "coingeckoId": "solpad-finance",
+    "coinmarketId": 11469
+  },
+  {
+    "address": "HxhWkVpk5NS4Ltg5nij2G671CKXFRKPK8vy271Ub4uEK",
+    "name": "Hxro",
+    "symbol": "HXRO",
+    "coingeckoId": "hxro",
+    "coinmarketId": 3748
+  },
+  {
+    "address": "inL8PMVd6iiW3RCBJnr5AsrRN6nqr4BTrcNuQWQSkvY",
+    "name": "Invictus",
+    "symbol": "IN",
+    "coingeckoId": "invictus",
+    "coinmarketId": 14278
+  },
+  {
+    "address": "a11bdAAuV8iB2fu7X6AxAvDTo1QZ8FXB3kk5eecdasp",
+    "name": "Allbridge",
+    "symbol": "ABR",
+    "coingeckoId": "allbridge",
+    "coinmarketId": 12212
+  },
+  {
+    "address": "4SZjjNABoqhbd4hnapbvoEPEqT8mnNkfbEoAwALf1V8t",
+    "name": "CaveWorld",
+    "symbol": "CAVE",
+    "coingeckoId": "cave",
+    "coinmarketId": 14587
+  },
+  {
+    "address": "GHvFFSZ9BctWsEc5nujR1MTmmJWY7tgQz2AXE6WVFtGN",
+    "name": "SOLAPE",
+    "symbol": "SOLAPE",
+    "coingeckoId": "solape-token",
+    "coinmarketId": 10452
+  },
+  {
+    "address": "8ymi88q5DtmdNTn2sPRNFkvMkszMHuLJ1e3RVdWjPa3s",
+    "name": "SolDoge",
+    "symbol": "SDOGE",
+    "coingeckoId": "soldoge",
+    "coinmarketId": 13735
+  },
+  {
+    "address": "AkhdZGVbJXPuQZ53u2LrimCjkRP6ZyxG1SoM85T98eE1",
+    "name": "Starbots",
+    "symbol": "BOT",
+    "coingeckoId": "starbots",
+    "coinmarketId": 16262
+  },
+  {
+    "address": "iVNcrNE9BRZBC9Aqf753iZiZfbszeAVUoikgT9yvr2a",
+    "name": "Investin",
+    "symbol": "IVN",
+    "coingeckoId": "investin",
+    "coinmarketId": 12265
+  },
+  {
+    "address": "6kwTqmdQkJd8qRr9RjSnUX9XJ24RmJRSrU1rsragP97Y",
+    "name": "SAIL",
+    "symbol": "SAIL",
+    "coingeckoId": "sail",
+    "coinmarketId": 10722
+  },
+  {
+    "address": "4UuGQgkD3rSeoXatXRWwRfRd21G87d5LiCfkVzNNv1Tt",
+    "name": "Solareum Wallet",
+    "symbol": "XSB",
+    "coingeckoId": "solareum-wallet",
+    "coinmarketId": 12613
+  },
+  {
+    "address": "6XWfkyg5mzGtKNftSDgYjyoPyUsLRf2rafj95XSFSFrr",
+    "name": "Kitty Coin Solana",
+    "symbol": "KITTY",
+    "coingeckoId": "kitty-coin-solana",
+    "coinmarketId": 15892
+  },
+  {
+    "address": "7puG5H5Mc6QpvaXjAVLr6GnL5hhUMnpLcUm8G3mEsgHQ",
+    "name": "Leonidas Token",
+    "symbol": "LEONIDAS",
+    "coingeckoId": "leonidas-token",
+    "coinmarketId": 14621
+  },
+  {
+    "address": "EzL6LLmv4vgfF7irkjG7ZxM92bTJ9f6nFopDXJTow7zj",
+    "name": "SolCondoms",
+    "symbol": "CONDOMS",
+    "coingeckoId": "solcondoms",
+    "coinmarketId": 16331
+  },
+  {
+    "address": "GLmaRDRmYd4u3YLfnj9eq1mrwxa1YfSweZYYZXZLTRdK",
+    "name": "Solabrador",
+    "symbol": "SOLAB",
+    "coingeckoId": "solabrador",
+    "coinmarketId": 15887
+  },
+  {
+    "address": "A5UevXJdphkzXhRtTXj8JyoYYrWnkCLHVS986JHtRLyj",
+    "name": "Solid Protocol",
+    "symbol": "SOLID",
+    "coingeckoId": "solid-protocol",
+    "coinmarketId": 16571
+  },
+  {
+    "address": "HtbhBYdcfXbbD2JiH6jtsTt2m2FXjn7h4k6iXfz98k5W",
+    "name": "Dead Knight",
+    "symbol": "DKM",
+    "coingeckoId": "dead-knight",
+    "coinmarketId": 18351
+  },
+  {
+    "address": "Fv3ZG56M2cWvF8sy9VWzWyvtHPhugNc1BAzpyoAPvL7r",
+    "name": "Solana Nut",
+    "symbol": "SOLNUT",
+    "coingeckoId": "solana-nut",
+    "coinmarketId": 16204
+  },
+  {
+    "address": "BgeRyFWWGHeVouqfHfcXUxmvfkgekhrXYVqQWf63kpJB",
+    "name": "Bored Ape Social Club",
+    "symbol": "BAPE",
+    "coingeckoId": "bored-ape-social-club",
+    "coinmarketId": 16984
+  },
+  {
+    "address": "q4bpaRKw3fJB1AJBeeBaKv3TjYzWsmntLgnSB275YUb",
+    "name": "Turtles",
+    "symbol": "TRTLS",
+    "coingeckoId": "turtles-token",
+    "coinmarketId": 15330
+  },
+  {
+    "address": "5p2zjqCd1WJzAVgcEnjhb9zWDU7b9XVhFhx4usiyN7jB",
+    "name": "CATO",
+    "symbol": "CATO",
+    "coingeckoId": "cato",
+    "coinmarketId": 11465
+  },
+  {
+    "address": "8c71AvjQeKKeWRe8jtTGG1bJ2WiYXQdbjqFbUfhHgSVk",
+    "name": "Gary",
+    "symbol": "GARY",
+    "coingeckoId": "gary",
+    "coinmarketId": 21046
+  },
+  {
+    "address": "674PmuiDtgKx3uKuJ1B16f9m5L84eFvNwj3xDMvHcbo7",
+    "name": "Mindfolk Wood",
+    "symbol": "$WOOD",
+    "coingeckoId": "mindfolk-wood",
+    "coinmarketId": 17186
+  },
+  {
+    "address": "AMdnw9H5DFtQwZowVFr4kUgSXJzLokKSinvgGiUoLSps",
+    "name": "MoonLana",
+    "symbol": "MOLA",
+    "coingeckoId": "moonlana",
+    "coinmarketId": 10185
+  },
+  {
+    "address": "7s6NLX42eURZfpyuKkVLrr9ED9hJE8718cyXFsYKqq5g",
+    "name": "Gear",
+    "symbol": "GEAR",
+    "coingeckoId": "gear",
+    "coinmarketId": 18635
+  },
+  {
+    "address": "YAWtS7vWCSRPckx1agB6sKidVXiXiDUfehXdEUSRGKE",
+    "name": "Yawww",
+    "symbol": "YAW",
+    "coingeckoId": "yawww",
+    "coinmarketId": 18748
+  },
+  {
+    "address": "6JdcMdhqgCtcP4U9tieRqmKLhPLxRMLC67QfmdXAJBvZ",
+    "name": "Kitty Solana",
+    "symbol": "KITTY",
+    "coingeckoId": "kitty-solana",
+    "coinmarketId": 14382
+  },
+  {
+    "address": "EE5L8cMU4itTsCSuor7NLK6RZx6JhsBe8GGV3oaAHm3P",
+    "name": "AvocadoCoin",
+    "symbol": "AVDO",
+    "coingeckoId": "avocadocoin",
+    "coinmarketId": 18218
   }
 ]
