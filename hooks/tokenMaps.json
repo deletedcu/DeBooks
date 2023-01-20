@@ -985,5 +985,47 @@
     "symbol": "COBAN",
     "coingeckoId": "coban",
     "coinmarketId": 13357
+  },
+  {
+    "address": "BygDd5LURoqztD3xETc99WCxLUbTi6WYSht9XiBgZ4HW",
+    "name": "Whalemap",
+    "symbol": "WMP",
+    "coingeckoId": "whalemap",
+    "coinmarketId": 16398
+  },
+  {
+    "address": "5SZSVgnQDgKKxtCe3UA3x4T7tcSRNDaL3NmfdEqpuLzo",
+    "name": "BabylonDAO",
+    "symbol": "BBY",
+    "coingeckoId": "babylondao",
+    "coinmarketId": 16869
+  },
+  {
+    "address": "49jpm8SpyTwaGaJfUa4AmU28hmW1HoKuqzXkgykysowU",
+    "name": "PSY Coin",
+    "symbol": "PSY",
+    "coingeckoId": "psy-coin",
+    "coinmarketId": 17087
+  },
+  {
+    "address": "DysbQiM8nPdZbBhvHM1EgcSE73EwtFWDanXwY8CDD3Jn",
+    "name": "Solootbox DAO",
+    "symbol": "BOX",
+    "coingeckoId": "solootbox-dao",
+    "coinmarketId": 17388
+  },
+  {
+    "address": "GZL4yjPohDShW4RofJ6dEWu2Fv7qEa5mBT7Dpje5hqe7",
+    "name": "Stoned Ape Crew Index",
+    "symbol": "SAC",
+    "coingeckoId": "stoned-ape-crew-index",
+    "coinmarketId": 18902
+  },
+  {
+    "address": "DsVPH4mAppxKrmdzcizGfPtLYEBAkQGK4eUch32wgaHY",
+    "name": "Galaxy Essential",
+    "symbol": "GXE",
+    "coingeckoId": "galaxy-essential",
+    "coinmarketId": 20316
   }
 ]
