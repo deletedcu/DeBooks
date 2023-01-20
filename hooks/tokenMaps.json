@@ -838,5 +838,194 @@
     "symbol": "AVDO",
     "coingeckoId": "avocadocoin",
     "coinmarketId": 18218
+  },
+  {
+    "address": "H7Qc9APCWWGDVxGD5fJHmLTmdEgT9GFatAKFNg6sHh8A",
+    "name": "OOGI",
+    "symbol": "OOGI",
+    "coingeckoId": "oogi",
+    "coinmarketId": 13630
+  },
+  {
+    "address": "HEhMLvpSdPviukafKwVN8BnBUTamirptsQ6Wxo5Cyv8s",
+    "name": "Future",
+    "symbol": "FTR",
+    "coingeckoId": "future",
+    "coinmarketId": 11468
+  },
+  {
+    "address": "8PMHT4swUMtBzgHnh5U564N5sjPSiUz2cjEQzFnnP1Fo",
+    "name": "Rope Token",
+    "symbol": "ROPE",
+    "coingeckoId": "rope-token",
+    "coinmarketId": 9326
+  },
+  {
+    "address": "GEYrotdkRitGUK5UMv3aMttEhVAZLhRJMcG82zKYsaWB",
+    "name": "Potato",
+    "symbol": "POTATO",
+    "coingeckoId": "potato",
+    "coinmarketId": 11814
+  },
+  {
+    "address": "51tMb3zBKDiQhNwGqpgwbavaGH54mk8fXFzxTc1xnasg",
+    "name": "ApeXit Finance",
+    "symbol": "APEX",
+    "coingeckoId": "apexit-finance",
+    "coinmarketId": 11464
+  },
+  {
+    "address": "95KN8q3qubEVjPf9trgyur2nHx8T5RCmztRbLuQ5E5i",
+    "name": "Solminter",
+    "symbol": "SMRT",
+    "coingeckoId": "solminter",
+    "coinmarketId": 11889
+  },
+  {
+    "address": "Ce3PSQfkxT5ua4r2JqCoWYrMwKWC5hEzwsrT9Hb7mAz9",
+    "name": "SolDate",
+    "symbol": "DATE",
+    "coingeckoId": "soldate-token",
+    "coinmarketId": 11969
+  },
+  {
+    "address": "LABSfApdYpC5Ek1tQiCFAoQP5K8CvADe2GgdYrA2QHh",
+    "name": "LABS Protocol",
+    "symbol": "LABS",
+    "coingeckoId": "labs-protocol",
+    "coinmarketId": 21498
+  },
+  {
+    "address": "USDrbBQwQbQ2oWHUPfA8QBHcyVxKUq1xHyXsSLKdUq2",
+    "name": "Ratio Stable Coin",
+    "symbol": "USDR",
+    "coingeckoId": "ratio-stable-coin",
+    "coinmarketId": 20674
+  },
+  {
+    "address": "ALKiRVrfLgzeAV2mCT7cJHKg3ZoPvsCRSV7VCRWnE8zQ",
+    "name": "Maneki-neko",
+    "symbol": "NEKI",
+    "coingeckoId": "maneki-neko",
+    "coinmarketId": 18522
+  },
+  {
+    "address": "6xcfmgzPgABAuAfGDhvvLLMfMDur4at7tU7j3NudUviK",
+    "name": "Fossil",
+    "symbol": "FOSSIL",
+    "coingeckoId": "fossil",
+    "coinmarketId": 17303
+  },
+  {
+    "address": "DktNJUJAWJyeLw3ykCkFNpGohE24SoEhevKBskRi6P1y",
+    "name": "Solar Bear",
+    "symbol": "SOLBEAR",
+    "coingeckoId": "solar-bear",
+    "coinmarketId": 15068
+  },
+  {
+    "address": "9ae76zqD3cgzR9gvf5Thc2NN3ACF7rqqnrLqxNzgcre6",
+    "name": "WipeMyAss",
+    "symbol": "WIPE",
+    "coingeckoId": "wipemyass",
+    "coinmarketId": 13942
+  },
+  {
+    "address": "AAXng5czWLNtTXHdWEn9Ef7kXMXEaraHj2JQKo7ZoLux",
+    "name": "DarleyGo Essence",
+    "symbol": "DGE",
+    "coingeckoId": "darleygo-essence",
+    "coinmarketId": 18930
+  },
+  {
+    "address": "E1s2muWwiLT2n3EQUL27hgviaPRRXWkpXD7ShpfgRvVz",
+    "name": "Cosmic Ape Coin",
+    "symbol": "CAC",
+    "coingeckoId": "cosmic-ape-coin",
+    "coinmarketId": 17286
+  },
+  {
+    "address": "Bx1fDtvTN6NvE4kjdPHQXtmGSg582bZx9fGy4DQNMmAT",
+    "name": "Solcubator",
+    "symbol": "SOLC",
+    "coingeckoId": "solcubator",
+    "coinmarketId": 12248
+  },
+  {
+    "address": "6uZ7MRGGf3FJhzk9TUk3QRMR2fz83WY9BEVBukRvMRVX",
+    "name": "Nana",
+    "symbol": "NANA",
+    "coingeckoId": "chimp-fight",
+    "coinmarketId": 17078
+  },
+  {
+    "address": "GzpRsvnKXKz586kRLkjdppR4dUCFwHa2qaszKkPUQx6g",
+    "name": "Loot",
+    "symbol": "LOOT",
+    "coingeckoId": "loot-token",
+    "coinmarketId": 17614
+  },
+  {
+    "address": "3DHPqxdMXogNNnpqBMF8N4Zs4dn1WR31H7UjWq6FExwG",
+    "name": "DAWG",
+    "symbol": "DAWG",
+    "coingeckoId": "dawg",
+    "coinmarketId": 15175
+  },
+  {
+    "address": "3eLpKZBgu6pKG2TSpvTfTeeimT294yxV2AEiBKZdY2ai",
+    "name": "SolX Gaming Guild",
+    "symbol": "SGG",
+    "coingeckoId": "solx-gaming-guild",
+    "coinmarketId": 17391
+  },
+  {
+    "address": "7udMmYXh6cuWVY6qQVCd9b429wDVn2J71r5BdxHkQADY",
+    "name": "COBAN",
+    "symbol": "COBAN",
+    "coingeckoId": "coban",
+    "coinmarketId": 13357
+  },
+  {
+    "address": "BygDd5LURoqztD3xETc99WCxLUbTi6WYSht9XiBgZ4HW",
+    "name": "Whalemap",
+    "symbol": "WMP",
+    "coingeckoId": "whalemap",
+    "coinmarketId": 16398
+  },
+  {
+    "address": "5SZSVgnQDgKKxtCe3UA3x4T7tcSRNDaL3NmfdEqpuLzo",
+    "name": "BabylonDAO",
+    "symbol": "BBY",
+    "coingeckoId": "babylondao",
+    "coinmarketId": 16869
+  },
+  {
+    "address": "49jpm8SpyTwaGaJfUa4AmU28hmW1HoKuqzXkgykysowU",
+    "name": "PSY Coin",
+    "symbol": "PSY",
+    "coingeckoId": "psy-coin",
+    "coinmarketId": 17087
+  },
+  {
+    "address": "DysbQiM8nPdZbBhvHM1EgcSE73EwtFWDanXwY8CDD3Jn",
+    "name": "Solootbox DAO",
+    "symbol": "BOX",
+    "coingeckoId": "solootbox-dao",
+    "coinmarketId": 17388
+  },
+  {
+    "address": "GZL4yjPohDShW4RofJ6dEWu2Fv7qEa5mBT7Dpje5hqe7",
+    "name": "Stoned Ape Crew Index",
+    "symbol": "SAC",
+    "coingeckoId": "stoned-ape-crew-index",
+    "coinmarketId": 18902
+  },
+  {
+    "address": "DsVPH4mAppxKrmdzcizGfPtLYEBAkQGK4eUch32wgaHY",
+    "name": "Galaxy Essential",
+    "symbol": "GXE",
+    "coingeckoId": "galaxy-essential",
+    "coinmarketId": 20316
   }
 ]
